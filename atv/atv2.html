@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quem regula a natureza? — Atividade objetiva (EM13CHS305) | CERO</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+
+  :root{
+    --bg:#eef4f1;
+    --bg-alt:#dcebe4;
+    --paper:#ffffff;
+    --ink:#14231e;
+    --ink-soft:#4a5f57;
+    --verde:#0f766e;
+    --verde-dark:#0a4d47;
+    --verde-2:#2f9e8f;
+    --gold:#c2603c;
+    --gold-light:#eec5b0;
+    --line:#c9dfd6;
+    --shadow:0 10px 30px rgba(10,60,55,.14);
+    --radius:14px;
+    --font-title:'Playfair Display', serif;
+    --font-body:'Source Serif 4', serif;
+    --font-mono:'JetBrains Mono', monospace;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:var(--font-body);
+    line-height:1.7;
+    -webkit-touch-callout:none;
+    user-select:none;
+  }
+  .selecionavel, main{user-select:text;}
+
+  /* ===== CAPA ===== */
+  #capa{
+    min-height:100vh;
+    display:flex; align-items:center; justify-content:center;
+    position:relative; overflow:hidden;
+    background:linear-gradient(to bottom, #072f2c, #0f766e, #2f9e8f);
+    padding:24px;
+  }
+  #capa .grade-centralizada{
+    position:absolute; top:0; bottom:0; left:50%;
+    transform:translateX(-50%); width:100%; max-width:896px;
+    pointer-events:none; z-index:0; opacity:.08;
+    background:
+      repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(255,255,255,.5) 39px, rgba(255,255,255,.5) 40px),
+      repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(255,255,255,.5) 39px, rgba(255,255,255,.5) 40px);
+    background-size:40px 40px;
+  }
+  .capa-card{
+    position:relative; z-index:1;
+    background:var(--paper); border-radius:var(--radius); box-shadow:var(--shadow);
+    max-width:480px; width:100%; padding:36px 32px; text-align:center;
+  }
+  .capa-card .tag{
+    display:inline-block; font-family:var(--font-mono); font-size:.7rem;
+    letter-spacing:.1em; text-transform:uppercase; color:var(--verde-dark);
+    background:rgba(15,118,110,.1); padding:5px 12px; border-radius:999px; margin-bottom:14px;
+  }
+  .capa-card h1{font-family:var(--font-title); font-size:1.6rem; margin:0 0 10px; color:var(--verde-dark);}
+  .capa-card p.desc{color:var(--ink-soft); font-size:.94rem; margin:0 0 22px;}
+  .capa-card input{
+    width:100%; padding:12px 14px; border:1px solid var(--line); border-radius:8px;
+    font-family:var(--font-body); font-size:1rem; margin-bottom:14px;
+  }
+  .capa-card button{
+    width:100%; padding:13px; border:none; border-radius:8px;
+    background:var(--verde); color:#fff; font-weight:600; font-size:1rem; cursor:pointer;
+    font-family:var(--font-body); transition:filter .15s ease;
+  }
+  .capa-card button:hover{filter:brightness(1.08);}
+  .capa-aviso{font-size:.78rem; color:#a8452a; margin-top:8px; display:none;}
+
+  /* ===== APP ===== */
+  #app{display:none;}
+  .sticky-header{
+    position:sticky; top:0; z-index:50;
+    background:var(--verde-dark); color:#e8f6f2;
+    padding:12px 20px; display:flex; align-items:center; justify-content:space-between;
+    flex-wrap:wrap; gap:8px; font-family:var(--font-mono); font-size:.82rem;
+  }
+  .sticky-header .aluno{font-family:var(--font-body); font-weight:600; font-size:.92rem;}
+  .barra-progresso-trilho{
+    flex:1; min-width:120px; height:8px; background:rgba(255,255,255,.2);
+    border-radius:6px; overflow:hidden; margin:0 14px;
+  }
+  .barra-progresso-fill{height:100%; background:var(--gold); width:0%; transition:width .3s ease;}
+
+  .wrap{max-width:800px; margin:0 auto; padding:32px 24px 60px;}
+
+  header.topo{margin-bottom:28px;}
+  header.topo .hero-tag{
+    display:inline-block; font-family:var(--font-mono); font-size:.72rem;
+    letter-spacing:.1em; text-transform:uppercase; color:var(--verde-dark);
+    background:rgba(15,118,110,.1); padding:5px 12px; border-radius:999px; margin-bottom:12px;
+  }
+  header.topo h1{font-family:var(--font-title); font-size:clamp(1.5rem,4vw,2rem); margin:0 0 8px; color:var(--ink);}
+  header.topo p.sub{color:var(--ink-soft); margin:0; font-size:.98rem;}
+  .descritor-bar{
+    font-family:var(--font-mono); font-size:.76rem; color:var(--ink-soft);
+    background:var(--paper); border:1px solid var(--line); border-radius:8px;
+    padding:8px 14px; margin-bottom:14px; display:inline-block;
+  }
+  .ficha-id{
+    display:flex; flex-wrap:wrap; gap:10px 26px;
+    background:var(--paper); border:1px solid var(--line); border-radius:10px;
+    padding:12px 16px; margin-top:12px; font-family:var(--font-mono); font-size:.84rem; color:var(--ink);
+  }
+  .ficha-id span b{color:var(--verde-dark);}
+
+  .instrucoes{
+    background:var(--bg-alt); border-left:3px solid var(--gold); border-radius:0 10px 10px 0;
+    padding:14px 18px; margin-bottom:26px; font-size:.9rem; color:var(--ink-soft);
+  }
+  .instrucoes b{color:var(--verde-dark);}
+
+  /* ===== TEXTO DE APOIO ===== */
+  .texto-apoio{
+    background:var(--paper); border:1px solid var(--line); border-radius:var(--radius);
+    box-shadow:var(--shadow); padding:26px 30px; margin:34px 0 20px;
+    border-top:4px solid var(--verde);
+  }
+  .texto-apoio h2{font-family:var(--font-title); font-size:1.22rem; color:var(--verde-dark); margin:0 0 4px;}
+  .texto-apoio .fonte-tag{font-family:var(--font-mono); font-size:.72rem; color:var(--ink-soft); margin-bottom:16px; display:block;}
+  .texto-apoio p{margin:0 0 14px; color:var(--ink); font-size:.97rem;}
+  .texto-apoio p:last-of-type{margin-bottom:0;}
+  .texto-apoio b{color:var(--verde-dark);}
+  .num-topico{
+    display:inline-flex; align-items:center; justify-content:center;
+    min-width:26px; height:26px; padding:0 7px; border-radius:8px; background:var(--verde);
+    color:#fff; font-family:var(--font-mono); font-size:.74rem; margin-right:9px; vertical-align:2px;
+  }
+
+  /* ===== QUESTOES ===== */
+  .questoes-titulo{
+    font-family:var(--font-title); font-size:1.2rem; color:var(--verde-dark);
+    margin:0 0 4px; display:flex; align-items:center; gap:10px;
+  }
+  .questao{
+    background:var(--paper); border:1px solid var(--line); border-radius:12px;
+    padding:20px 22px; margin-bottom:16px; border-left:4px solid var(--gold);
+  }
+  .questao .num-q{
+    display:inline-flex; align-items:center; justify-content:center;
+    width:26px; height:26px; border-radius:50%; background:var(--gold);
+    color:#fff; font-family:var(--font-mono); font-size:.78rem; margin-right:8px; flex-shrink:0;
+  }
+  .questao .enunciado{font-weight:600; color:var(--ink); margin-bottom:12px; display:flex; align-items:flex-start; flex-wrap:wrap;}
+  .questao .enunciado > span.txt{flex:1; min-width:220px;}
+
+  .opcao{
+    display:flex; gap:12px; align-items:flex-start;
+    padding:11px 14px; border:1.5px solid var(--line); border-radius:8px;
+    margin-bottom:8px; cursor:pointer; transition:all .15s ease; background:var(--paper);
+  }
+  .opcao:hover{border-color:var(--verde); background:var(--bg-alt);}
+  .opcao.sel{border-color:var(--verde); background:var(--bg-alt);}
+  .opcao.correta{border-color:var(--verde-2); background:#e6f7f2;}
+  .opcao.errada{border-color:#b3452c; background:#fdeee9;}
+  .opcao.travada{cursor:default;}
+  .opcao-letra{
+    flex:0 0 auto; width:26px; height:26px; border-radius:50%;
+    background:var(--bg-alt); color:var(--ink-soft);
+    font-family:var(--font-mono); font-weight:700; font-size:.78rem;
+    display:flex; align-items:center; justify-content:center; transition:all .15s ease;
+  }
+  .opcao.sel .opcao-letra{background:var(--verde); color:#fff;}
+  .opcao.correta .opcao-letra{background:var(--verde-2); color:#fff;}
+  .opcao.errada .opcao-letra{background:#b3452c; color:#fff;}
+  .opcao-txt{font-size:.94rem; color:var(--ink); line-height:1.6; padding-top:2px;}
+  .opcao-marca{margin-left:auto; font-size:1rem; align-self:center; display:none; flex:0 0 auto;}
+
+  .gabarito-info{
+    display:none; margin-top:12px; padding:12px 16px;
+    background:#fbf0ea; border:1px solid var(--gold-light); border-radius:8px;
+    font-size:.88rem; color:#6b3520;
+  }
+  .gabarito-info.show{display:block;}
+  .gabarito-info b{color:#9c4526;}
+  .questao .badge-resultado{
+    display:none; font-family:var(--font-mono); font-size:.68rem; font-weight:700;
+    padding:2px 10px; border-radius:20px; margin-left:8px; color:#fff;
+  }
+  .questao .badge-resultado.ok{display:inline-block; background:var(--verde-2);}
+  .questao .badge-resultado.no{display:inline-block; background:#b3452c;}
+
+  /* ===== ALERTA / FINALIZAR ===== */
+  .alerta-incompleto{
+    display:none; background:#fdf4e8; border:1px solid #f0d6ad; color:#8a5510;
+    padding:12px 16px; border-radius:8px; font-size:.9rem; margin-bottom:16px;
+  }
+  .alerta-incompleto.show{display:block;}
+
+  .acoes-finais{display:flex; gap:12px; flex-wrap:wrap; margin-top:10px;}
+  .btn{
+    font-family:var(--font-body); font-weight:600; font-size:.94rem; padding:12px 22px;
+    border-radius:8px; border:none; cursor:pointer; transition:filter .15s ease;
+  }
+  .btn:hover{filter:brightness(1.08);}
+  .btn-primario{background:var(--verde); color:#fff;}
+  .btn-secundario{background:transparent; color:var(--ink); border:1px solid var(--line);}
+  .btn-pdf{background:var(--gold); color:#fff;}
+
+  /* ===== POPUP ===== */
+  .popup-overlay{
+    display:none; position:fixed; inset:0; background:rgba(7,47,44,.62);
+    align-items:center; justify-content:center; z-index:200; padding:20px;
+  }
+  .popup-overlay.show{display:flex;}
+  .popup-card{
+    background:var(--paper); border-radius:var(--radius); box-shadow:var(--shadow);
+    max-width:420px; width:100%; padding:32px 28px; text-align:center;
+  }
+  .popup-card .emoji{font-size:2.4rem; margin-bottom:10px;}
+  .popup-card h3{font-family:var(--font-title); margin:0 0 8px; color:var(--verde-dark);}
+  .popup-card p{color:var(--ink-soft); font-size:.94rem; margin:0 0 20px;}
+
+  footer.rodape{text-align:center; padding:24px; color:var(--ink-soft); font-family:var(--font-mono); font-size:.8rem;}
+
+  @media (max-width:600px){
+    .wrap{padding:24px 16px 50px;}
+    .texto-apoio, .questao{padding:18px 18px;}
+  }
+
+</style>
+</head>
+<body>
+
+<!-- ===== CAPA ===== -->
+<div id="capa">
+  <div class="grade-centralizada"></div>
+  <div class="capa-card">
+    <span class="tag">3ª série · Sociologia · CERO</span>
+    <h1>Quem regula a natureza?</h1>
+    <p class="desc">Sociedade de risco, governança ambiental e justiça. Nove tópicos de revisão e 20 questões objetivas de análise e inferência, com cinco alternativas cada. Preencha os dados para começar.</p>
+    <input type="text" id="nome-aluno" placeholder="Seu nome completo">
+    <input type="text" id="turma-aluno" placeholder="Turma (ex.: 3ª A)">
+    <button onclick="iniciarAtividade()">Iniciar atividade</button>
+    <div class="capa-aviso" id="capa-aviso">Digite seu nome para continuar.</div>
+  </div>
+</div>
+
+<!-- ===== APP ===== -->
+<div id="app">
+  <div class="sticky-header">
+    <span class="aluno" id="header-nome"></span>
+    <div class="barra-progresso-trilho"><div class="barra-progresso-fill" id="barra-fill"></div></div>
+    <span id="contador-geral">Respondidas: 0/20</span>
+  </div>
+
+  <div class="wrap">
+    <header class="topo selecionavel">
+      <span class="descritor-bar">Sociologia / 3ª série do Ensino Médio &nbsp;|&nbsp; (EM13CHS305) – Órgãos, acordos e fiscalização ambiental</span>
+      <span class="hero-tag" style="display:block; margin-top:10px;">Atividade avaliativa · nível de proficiência alto</span>
+      <h1>Quem regula a natureza?</h1>
+      <p class="sub">Sociedade de risco, governança ambiental e justiça: o que órgãos, leis e acordos internacionais podem — e não podem — fazer.</p>
+      <div class="ficha-id" id="ficha-id">
+        <span><b>NOME:</b> <span id="ficha-nome"></span></span>
+        <span><b>DATA:</b> <span id="ficha-data"></span></span>
+        <span><b>TURMA:</b> <span id="ficha-turma"></span></span>
+      </div>
+    </header>
+
+    <main>
+      
+      <h2 class="questoes-titulo">Revisão e questões objetivas</h2>
+
+      <section class="texto-apoio selecionavel">
+        <h2><span class="num-topico">1</span>A natureza como questão social</h2>
+        <span class="fonte-tag">Revisão — Sociologia, 3ª série do Ensino Médio</span>
+        <p>Catástrofes ambientais costumam ser lidas como acaso. A Sociologia desfaz essa leitura: o dano ambiental é <b>produzido socialmente</b> — decidido em conselhos, licenciado por órgãos públicos, financiado por bancos, distribuído de forma desigual pelo território e cobrado, quase sempre, de quem menos participou da decisão. Se o dano vem de decisões, ele pode ser regulado por decisões.</p>
+        <p><b>Ulrich Beck</b> mostrou que a sociedade industrial passou a produzir, junto com a riqueza, riscos de alta consequência e irreversíveis. Esses riscos são <i>invisíveis</i> (dependem de laudos e de especialistas), <i>globais</i> (não param na fronteira de quem os produziu) e vêm de dentro do próprio progresso. A isso ele chama <b>modernização reflexiva</b>: a sociedade precisa se voltar sobre si mesma e julgar as consequências das decisões que tomou.</p>
+        <p><b>Enrique Leff</b> acrescenta que a crise ambiental não é um desarranjo econômico corrigível com tecnologia mais eficiente: é uma <b>crise civilizatória</b>, nascida de valores que organizam a vida em torno do progresso e da acumulação. Ele propõe substituir a racionalidade de mercado por uma <b>racionalidade ambiental</b>, apoiada no saber ambiental.</p>
+      </section>
+
+      <div class="questao objetiva" data-questao="obj-1" data-correta="2" data-topico="1">
+        <div class="enunciado"><span class="num-q">1</span><span class="txt">O abastecimento de água de um município é interrompido depois que análises laboratoriais detectam um contaminante que não altera cor, cheiro nem sabor da água. Enquanto os laudos não são divulgados, parte da população nega a existência do problema. Essa situação ilustra, sobretudo, qual traço do risco descrito por Ulrich Beck? <span class="badge-resultado" id="badge-obj-1"></span></span></div>
+        <div class="opcao" data-idx="0" onclick="marcarOpcao(1,0)"><div class="opcao-letra">A</div><div class="opcao-txt">A irreversibilidade do dano, que impede qualquer reparação posterior do ambiente atingido pelo contaminante.</div><div class="opcao-marca" id="marca-1-0"></div></div>
+        <div class="opcao" data-idx="1" onclick="marcarOpcao(1,1)"><div class="opcao-letra">B</div><div class="opcao-txt">A fatalidade natural do evento, que escaparia por completo às decisões tomadas por instituições humanas.</div><div class="opcao-marca" id="marca-1-1"></div></div>
+        <div class="opcao" data-idx="2" onclick="marcarOpcao(1,2)"><div class="opcao-letra">C</div><div class="opcao-txt">A invisibilidade do risco, que só se torna perceptível pela mediação de laudos e de especialistas.</div><div class="opcao-marca" id="marca-1-2"></div></div>
+        <div class="opcao" data-idx="3" onclick="marcarOpcao(1,3)"><div class="opcao-letra">D</div><div class="opcao-txt">A ausência de modernização, que manteria a população exposta a ameaças típicas do período pré-industrial.</div><div class="opcao-marca" id="marca-1-3"></div></div>
+        <div class="opcao" data-idx="4" onclick="marcarOpcao(1,4)"><div class="opcao-letra">E</div><div class="opcao-txt">A globalidade do risco, que faz o dano ultrapassar as fronteiras do país onde ele foi produzido.</div><div class="opcao-marca" id="marca-1-4"></div></div>
+        <div class="gabarito-info" id="gab-1"><b>Gabarito: C.</b> O risco moderno é invisível: só existe publicamente quando um laudo técnico o torna perceptível. Por isso ele exige instituições capazes de medir e de dar publicidade ao que ninguém enxerga a olho nu. A globalidade (E) é outro traço do risco em Beck, mas não é o que a situação descreve.</div>
+      </div>
+
+      <div class="questao objetiva" data-questao="obj-2" data-correta="0" data-topico="1">
+        <div class="enunciado"><span class="num-q">2</span><span class="txt">Uma mineradora anuncia que resolverá seus impactos ambientais trocando equipamentos por outros de maior eficiência energética, sem alterar metas de produção nem escala de extração. A crítica que Enrique Leff dirigiria a esse anúncio é a de que <span class="badge-resultado" id="badge-obj-2"></span></span></div>
+        <div class="opcao" data-idx="0" onclick="marcarOpcao(2,0)"><div class="opcao-letra">A</div><div class="opcao-txt">a crise é civilizatória: nasce dos valores que organizam a vida social em torno do progresso e da acumulação.</div><div class="opcao-marca" id="marca-2-0"></div></div>
+        <div class="opcao" data-idx="1" onclick="marcarOpcao(2,1)"><div class="opcao-letra">B</div><div class="opcao-txt">a crise é apenas um desarranjo de mercado, corrigível pela substituição gradual de equipamentos obsoletos.</div><div class="opcao-marca" id="marca-2-1"></div></div>
+        <div class="opcao" data-idx="2" onclick="marcarOpcao(2,2)"><div class="opcao-letra">C</div><div class="opcao-txt">a crise decorre do crescimento populacional e se resolve com o controle demográfico dos países mais pobres do mundo.</div><div class="opcao-marca" id="marca-2-2"></div></div>
+        <div class="opcao" data-idx="3" onclick="marcarOpcao(2,3)"><div class="opcao-letra">D</div><div class="opcao-txt">a crise é um efeito colateral inevitável, que caberá às gerações futuras administrar com novas tecnologias.</div><div class="opcao-marca" id="marca-2-3"></div></div>
+        <div class="opcao" data-idx="4" onclick="marcarOpcao(2,4)"><div class="opcao-letra">E</div><div class="opcao-txt">a crise resulta de falhas técnicas isoladas, sem qualquer relação com a racionalidade econômica vigente.</div><div class="opcao-marca" id="marca-2-4"></div></div>
+        <div class="gabarito-info" id="gab-2"><b>Gabarito: A.</b> Para Leff, eficiência técnica dentro da mesma racionalidade de mercado não toca a raiz do problema: a crise nasce dos valores que tratam a natureza como estoque. A saída é uma racionalidade ambiental, que integra ecologia, economia, cultura e política.</div>
+      </div>
+
+      <div class="questao objetiva" data-questao="obj-3" data-correta="4" data-topico="1">
+        <div class="enunciado"><span class="num-q">3</span><span class="txt">O conceito de modernização reflexiva sustenta que a sociedade moderna produz, ela mesma, os riscos que precisa administrar. A consequência política que Beck extrai dessa constatação é <span class="badge-resultado" id="badge-obj-3"></span></span></div>
+        <div class="opcao" data-idx="0" onclick="marcarOpcao(3,0)"><div class="opcao-letra">A</div><div class="opcao-txt">que a sociedade deve retornar a formas de produção anteriores à industrialização para eliminar riscos.</div><div class="opcao-marca" id="marca-3-0"></div></div>
+        <div class="opcao" data-idx="1" onclick="marcarOpcao(3,1)"><div class="opcao-letra">B</div><div class="opcao-txt">que o progresso técnico corrige automaticamente os danos que ele mesmo provocou ao longo do tempo.</div><div class="opcao-marca" id="marca-3-1"></div></div>
+        <div class="opcao" data-idx="2" onclick="marcarOpcao(3,2)"><div class="opcao-letra">C</div><div class="opcao-txt">que os riscos ambientais vêm de fora da modernidade, sendo produzidos por sociedades que ainda não completaram sua industrialização.</div><div class="opcao-marca" id="marca-3-2"></div></div>
+        <div class="opcao" data-idx="3" onclick="marcarOpcao(3,3)"><div class="opcao-letra">D</div><div class="opcao-txt">que o julgamento dos riscos cabe apenas aos cientistas, sem participação de instituições políticas.</div><div class="opcao-marca" id="marca-3-3"></div></div>
+        <div class="opcao" data-idx="4" onclick="marcarOpcao(3,4)"><div class="opcao-letra">E</div><div class="opcao-txt">que a sociedade precisa julgar as consequências das próprias decisões, o que exige instituições reguladoras.</div><div class="opcao-marca" id="marca-3-4"></div></div>
+        <div class="gabarito-info" id="gab-3"><b>Gabarito: E.</b> Reflexiva quer dizer voltada sobre si mesma: a sociedade é obrigada a avaliar decisões que ela própria tomou. Daí a necessidade de instituições capazes de medir, autorizar, proibir e punir — e de cooperar para além das fronteiras nacionais.</div>
+      </div>
+
+      <section class="texto-apoio selecionavel">
+        <h2><span class="num-topico">2</span>Antropoceno ou Capitaloceno: quem é o sujeito da degradação</h2>
+        <span class="fonte-tag">Revisão — Sociologia, 3ª série do Ensino Médio</span>
+        <p>O termo <b>Antropoceno</b> nomeia uma nova era geológica marcada pelo impacto humano decisivo. Não há consenso sobre seu início: máquina a vapor no século XVIII, agricultura na Antiguidade ou a difusão do plástico no século XX.</p>
+        <p>Sociologicamente, a discussão decisiva não é a data: é o <b>sujeito</b>. Dizer que “o ser humano” degradou o planeta coloca no mesmo balanço quem emitiu e quem foi atingido, quem lucrou e quem perdeu o rio. <b>Jason Moore</b> e <b>Donna Haraway</b> propõem o termo <b>Capitaloceno</b>: o agente não é a humanidade em geral, mas uma organização social específica, com sua lógica de acumulação ilimitada.</p>
+        <p><b>Ailton Krenak</b> acrescenta que existe uma pluralidade de modos de habitar a Terra, e que a ideia de um “humano” único já é parte do problema. A disputa tem efeito prático: se o problema é “a humanidade”, a solução vira individual (reciclar, consumir menos); se é um modelo econômico, ela exige norma, fiscalização e responsabilização de agentes concretos.</p>
+      </section>
+
+      <div class="questao objetiva" data-questao="obj-4" data-correta="1" data-topico="2">
+        <div class="enunciado"><span class="num-q">4</span><span class="txt">Uma campanha publicitária afirma: “Foi o ser humano que destruiu o planeta. Faça a sua parte: recicle.” A objeção que Moore e Haraway levantariam a essa formulação é a de que <span class="badge-resultado" id="badge-obj-4"></span></span></div>
+        <div class="opcao" data-idx="0" onclick="marcarOpcao(4,0)"><div class="opcao-letra">A</div><div class="opcao-txt">o termo correto seria Antropoceno, pois a responsabilidade recai igualmente sobre toda a espécie humana.</div><div class="opcao-marca" id="marca-4-0"></div></div>
+        <div class="opcao" data-idx="1" onclick="marcarOpcao(4,1)"><div class="opcao-letra">B</div><div class="opcao-txt">a fórmula iguala quem lucrou e quem perdeu o rio, deslocando a responsabilidade para o consumo individual.</div><div class="opcao-marca" id="marca-4-1"></div></div>
+        <div class="opcao" data-idx="2" onclick="marcarOpcao(4,2)"><div class="opcao-letra">C</div><div class="opcao-txt">a campanha erra ao datar o início da nova era na difusão do plástico, e não na invenção da máquina a vapor.</div><div class="opcao-marca" id="marca-4-2"></div></div>
+        <div class="opcao" data-idx="3" onclick="marcarOpcao(4,3)"><div class="opcao-letra">D</div><div class="opcao-txt">a campanha subestima o papel da tecnologia, única via capaz de reverter os danos já causados ao planeta.</div><div class="opcao-marca" id="marca-4-3"></div></div>
+        <div class="opcao" data-idx="4" onclick="marcarOpcao(4,4)"><div class="opcao-letra">E</div><div class="opcao-txt">o problema é ambiental e não sociológico, de modo que a Sociologia não teria competência para avaliá-lo.</div><div class="opcao-marca" id="marca-4-4"></div></div>
+        <div class="gabarito-info" id="gab-4"><b>Gabarito: B.</b> A crítica do Capitaloceno é sobre responsabilidade, não sobre datas. Ao dizer “o ser humano”, a campanha apaga a assimetria entre quem decidiu e quem foi atingido — e, por isso, propõe uma solução individual para um problema estrutural.</div>
+      </div>
+
+      <div class="questao objetiva" data-questao="obj-5" data-correta="3" data-topico="2">
+        <div class="enunciado"><span class="num-q">5</span><span class="txt">Ao discutir a nomeação da nova era geológica, Ailton Krenak sustenta uma posição que também é uma crítica ao etnocentrismo do debate. Essa posição afirma <span class="badge-resultado" id="badge-obj-5"></span></span></div>
+        <div class="opcao" data-idx="0" onclick="marcarOpcao(5,0)"><div class="opcao-letra">A</div><div class="opcao-txt">que os povos indígenas também são responsáveis, na mesma medida, pela degradação global dos ecossistemas do planeta.</div><div class="opcao-marca" id="marca-5-0"></div></div>
+        <div class="opcao" data-idx="1" onclick="marcarOpcao(5,1)"><div class="opcao-letra">B</div><div class="opcao-txt">que a solução da crise depende da adoção universal de tecnologias limpas por todos os povos do planeta.</div><div class="opcao-marca" id="marca-5-1"></div></div>
+        <div class="opcao" data-idx="2" onclick="marcarOpcao(5,2)"><div class="opcao-letra">C</div><div class="opcao-txt">que o conceito de Antropoceno deve ser abandonado por não ter aceitação entre geólogos e climatologistas.</div><div class="opcao-marca" id="marca-5-2"></div></div>
+        <div class="opcao" data-idx="3" onclick="marcarOpcao(5,3)"><div class="opcao-letra">D</div><div class="opcao-txt">que existem muitos modos distintos de habitar a Terra, e que supor um “humano” único já é parte do problema.</div><div class="opcao-marca" id="marca-5-3"></div></div>
+        <div class="opcao" data-idx="4" onclick="marcarOpcao(5,4)"><div class="opcao-letra">E</div><div class="opcao-txt">que a discussão sobre o nome da era geológica é irrelevante diante da urgência das metas climáticas.</div><div class="opcao-marca" id="marca-5-4"></div></div>
+        <div class="gabarito-info" id="gab-5"><b>Gabarito: D.</b> Krenak recusa a ideia de uma humanidade homogênea: tomar a história ocidental como medida de “humano” apaga povos cujos modos de vida produziram impactos radicalmente menores.</div>
+      </div>
+
+      <section class="texto-apoio selecionavel">
+        <h2><span class="num-topico">3</span>Do movimento social à norma jurídica</h2>
+        <span class="fonte-tag">Revisão — Sociologia, 3ª série do Ensino Médio</span>
+        <p>Nenhum órgão ambiental nasceu de geração espontânea: foi a pressão organizada do movimento ambientalista, somada a desastres de grande repercussão, que empurrou Estados a legislar.</p>
+        <p>Duas vertentes clássicas se opõem. O <b>preservacionismo</b> entende que toda interferência humana produz dano e defende a natureza intocada — daí as unidades de <b>proteção integral</b>, de uso restrito à pesquisa, à educação e ao turismo ecológico. O <b>conservacionismo</b> entende que o ser humano é parte da natureza — daí as unidades de <b>uso sustentável</b>, que admitem populações e atividades como o extrativismo.</p>
+        <p>No Brasil, a síntese ganhou forma no <b>socioambientalismo</b>, que vincula proteção da natureza a direitos territoriais. <b>Chico Mendes</b> não reivindicava a propriedade individual da terra, mas a garantia de que os seringueiros continuassem vivendo da floresta em pé; sua luta contribuiu para as reservas extrativistas, hoje geridas pelo ICMBio. É o que a Sociologia chama de <b>institucionalização de um movimento social</b>. Defender a norma em território de conflito segue sendo atividade de risco, como mostram os assassinatos de lideranças e o caso de Bruno Pereira e Dom Phillips, em 2022.</p>
+      </section>
+
+      <div class="questao objetiva" data-questao="obj-6" data-correta="0" data-topico="3">
+        <div class="enunciado"><span class="num-q">6</span><span class="txt">Uma comunidade que vive da coleta de frutos e da extração de látex pede a criação de uma área protegida que lhe permita permanecer no território e seguir trabalhando ali. A demanda se apoia em qual vertente e resultaria em que tipo de unidade? <span class="badge-resultado" id="badge-obj-6"></span></span></div>
+        <div class="opcao" data-idx="0" onclick="marcarOpcao(6,0)"><div class="opcao-letra">A</div><div class="opcao-txt">No conservacionismo, com a criação de uma unidade de uso sustentável, que admite moradores e atividades.</div><div class="opcao-marca" id="marca-6-0"></div></div>
+        <div class="opcao" data-idx="1" onclick="marcarOpcao(6,1)"><div class="opcao-letra">B</div><div class="opcao-txt">No preservacionismo, com a criação de uma unidade de proteção integral, de território mantido intocado.</div><div class="opcao-marca" id="marca-6-1"></div></div>
+        <div class="opcao" data-idx="2" onclick="marcarOpcao(6,2)"><div class="opcao-letra">C</div><div class="opcao-txt">No preservacionismo, com uso restrito à pesquisa científica, à educação ambiental e ao turismo ecológico.</div><div class="opcao-marca" id="marca-6-2"></div></div>
+        <div class="opcao" data-idx="3" onclick="marcarOpcao(6,3)"><div class="opcao-letra">D</div><div class="opcao-txt">No socioambientalismo, que substitui a unidade de conservação pela titulação individual da propriedade.</div><div class="opcao-marca" id="marca-6-3"></div></div>
+        <div class="opcao" data-idx="4" onclick="marcarOpcao(6,4)"><div class="opcao-letra">E</div><div class="opcao-txt">No conservacionismo, que impede qualquer atividade extrativista dentro dos limites da área protegida.</div><div class="opcao-marca" id="marca-6-4"></div></div>
+        <div class="gabarito-info" id="gab-6"><b>Gabarito: A.</b> Conservacionismo entende que uso e proteção não se separam: a unidade de uso sustentável admite populações e atividades como a coleta de frutos e de látex. A alternativa E inverte a premissa da própria vertente que nomeia.</div>
+      </div>
+
+      <div class="questao objetiva" data-questao="obj-7" data-correta="2" data-topico="3">
+        <div class="enunciado"><span class="num-q">7</span><span class="txt">A trajetória que vai da luta dos seringueiros do Acre até a criação das reservas extrativistas, geridas por um órgão federal que leva o nome de Chico Mendes, é usada pela Sociologia como exemplo de que <span class="badge-resultado" id="badge-obj-7"></span></span></div>
+        <div class="opcao" data-idx="0" onclick="marcarOpcao(7,0)"><div class="opcao-letra">A</div><div class="opcao-txt">a criação de órgãos ambientais decorre da iniciativa espontânea do poder público federal.</div><div class="opcao-marca" id="marca-7-0"></div></div>
+        <div class="opcao" data-idx="1" onclick="marcarOpcao(7,1)"><div class="opcao-letra">B</div><div class="opcao-txt">a violência no campo é um problema de segurança pública sem relação com a política ambiental.</div><div class="opcao-marca" id="marca-7-1"></div></div>
+        <div class="opcao" data-idx="2" onclick="marcarOpcao(7,2)"><div class="opcao-letra">C</div><div class="opcao-txt">uma reivindicação de baixo se converte em categoria jurídica, em órgão público e em orçamento.</div><div class="opcao-marca" id="marca-7-2"></div></div>
+        <div class="opcao" data-idx="3" onclick="marcarOpcao(7,3)"><div class="opcao-letra">D</div><div class="opcao-txt">os seringueiros reivindicavam a propriedade individual da terra, obtida com a criação das reservas.</div><div class="opcao-marca" id="marca-7-3"></div></div>
+        <div class="opcao" data-idx="4" onclick="marcarOpcao(7,4)"><div class="opcao-letra">E</div><div class="opcao-txt">o ambientalismo brasileiro importou integralmente a pauta preservacionista dos Estados Unidos.</div><div class="opcao-marca" id="marca-7-4"></div></div>
+        <div class="gabarito-info" id="gab-7"><b>Gabarito: C.</b> É a definição de institucionalização de um movimento social: a demanda deixa de ser bandeira e vira norma, órgão e verba. Vale lembrar que Chico Mendes pedia o direito de trabalhar na floresta em pé, não a propriedade individual (D).</div>
+      </div>
+
+      <section class="texto-apoio selecionavel">
+        <h2><span class="num-topico">4</span>A arquitetura internacional: organismos e acordos</h2>
+        <span class="fonte-tag">Revisão — Sociologia, 3ª série do Ensino Médio</span>
+        <p>Como não existe governo mundial, a regulação internacional se apoia em organizações multilaterais e em acordos entre Estados soberanos. Marcos: FAO e UICN (1945-1948), Clube de Roma (1968), <b>Estocolmo</b> (1972), Relatório Brundtland (1987), <b>Rio-92</b> (Agenda 21, convenções do clima e da biodiversidade, princípio das “responsabilidades comuns, mas diferenciadas”), COPs desde 1995, ODS em 2015, Rio+10 e Rio+20.</p>
+        <p>As competências são distintas: <b>ONU/Pnuma</b> coordena agendas e apoia políticas, mas não legisla sobre o território de um país nem multa empresas; <b>convenções e COPs</b> fixam metas negociadas, mas não obrigam quem não ratificou; o <b>IPCC</b> sintetiza a ciência do clima, mas não define política nem fiscaliza; a <b>FAO</b> orienta usos do solo e a segurança alimentar, mas não embarga obras; <b>UICN e WWF</b> classificam espécies e financiam projetos, com influência técnica e reputacional.</p>
+        <p>Predomina a <b>soft law</b>: declarações e recomendações orientam a conduta dos Estados sem força coercitiva direta. Se falta coerção, o que faz um acordo funcionar? Mecanismos sociais de pressão — reputação internacional, condicionalidade de crédito e investimento, ação de ONGs e cobertura da imprensa.</p>
+      </section>
+
+      <div class="questao objetiva" data-questao="obj-8" data-correta="1" data-topico="4">
+        <div class="enunciado"><span class="num-q">8</span><span class="txt">Um país signatário de uma declaração internacional descumpre as metas ali anunciadas e não sofre nenhuma sanção jurídica. Do ponto de vista do regime ambiental internacional, isso ocorre porque <span class="badge-resultado" id="badge-obj-8"></span></span></div>
+        <div class="opcao" data-idx="0" onclick="marcarOpcao(8,0)"><div class="opcao-letra">A</div><div class="opcao-txt">o país não ratificou nenhum dos tratados que compõem o regime climático internacional em vigor.</div><div class="opcao-marca" id="marca-8-0"></div></div>
+        <div class="opcao" data-idx="1" onclick="marcarOpcao(8,1)"><div class="opcao-letra">B</div><div class="opcao-txt">declarações e recomendações internacionais orientam os Estados sem força coercitiva direta.</div><div class="opcao-marca" id="marca-8-1"></div></div>
+        <div class="opcao" data-idx="2" onclick="marcarOpcao(8,2)"><div class="opcao-letra">C</div><div class="opcao-txt">o Pnuma só pode aplicar sanções a empresas privadas, e não a Estados nacionais soberanos.</div><div class="opcao-marca" id="marca-8-2"></div></div>
+        <div class="opcao" data-idx="3" onclick="marcarOpcao(8,3)"><div class="opcao-letra">D</div><div class="opcao-txt">a corte ambiental da ONU depende de autorização do Conselho de Segurança para julgar o caso.</div><div class="opcao-marca" id="marca-8-3"></div></div>
+        <div class="opcao" data-idx="4" onclick="marcarOpcao(8,4)"><div class="opcao-letra">E</div><div class="opcao-txt">as metas climáticas são fixadas pelo IPCC, painel sem qualquer vínculo com os Estados-membros.</div><div class="opcao-marca" id="marca-8-4"></div></div>
+        <div class="gabarito-info" id="gab-8"><b>Gabarito: B.</b> É a definição de soft law. A Rio-92, por exemplo, não tinha força de lei: suas decisões cumpriam a função de orientar práticas. A ausência de sanção não é falha de aplicação, é característica do instrumento.</div>
+      </div>
+
+      <div class="questao objetiva" data-questao="obj-9" data-correta="4" data-topico="4">
+        <div class="enunciado"><span class="num-q">9</span><span class="txt">Se os acordos internacionais raramente dispõem de poder coercitivo, a Sociologia explica sua eficácia recorrendo a que tipo de mecanismo? <span class="badge-resultado" id="badge-obj-9"></span></span></div>
+        <div class="opcao" data-idx="0" onclick="marcarOpcao(9,0)"><div class="opcao-letra">A</div><div class="opcao-txt">À ação direta do Pnuma, que pode embargar empreendimentos poluidores no território dos países signatários.</div><div class="opcao-marca" id="marca-9-0"></div></div>
+        <div class="opcao" data-idx="1" onclick="marcarOpcao(9,1)"><div class="opcao-letra">B</div><div class="opcao-txt">À imposição de multas pelo IPCC aos Estados que descumprem as metas de redução de emissões.</div><div class="opcao-marca" id="marca-9-1"></div></div>
+        <div class="opcao" data-idx="2" onclick="marcarOpcao(9,2)"><div class="opcao-letra">C</div><div class="opcao-txt">À existência de um governo mundial capaz de uniformizar a legislação ambiental entre os países.</div><div class="opcao-marca" id="marca-9-2"></div></div>
+        <div class="opcao" data-idx="3" onclick="marcarOpcao(9,3)"><div class="opcao-letra">D</div><div class="opcao-txt">À obrigatoriedade automática dos tratados sobre países que sequer participaram das negociações.</div><div class="opcao-marca" id="marca-9-3"></div></div>
+        <div class="opcao" data-idx="4" onclick="marcarOpcao(9,4)"><div class="opcao-letra">E</div><div class="opcao-txt">A mecanismos sociais de pressão: reputação, crédito condicionado, ONGs e cobertura da imprensa.</div><div class="opcao-marca" id="marca-9-4"></div></div>
+        <div class="gabarito-info" id="gab-9"><b>Gabarito: E.</b> Sem coerção jurídica, o que sustenta o acordo é a pressão social: perder reputação, crédito e investimento tem custo político e econômico real. Por isso a cobertura da imprensa e a atuação de ONGs integram o próprio mecanismo regulatório.</div>
+      </div>
+
+      <div class="questao objetiva" data-questao="obj-10" data-correta="3" data-topico="4">
+        <div class="enunciado"><span class="num-q">10</span><span class="txt">Em uma sessão da Câmara Municipal, um vereador propõe acionar o IPCC para fiscalizar as emissões de uma indústria instalada na cidade. A proposta é tecnicamente inviável porque <span class="badge-resultado" id="badge-obj-10"></span></span></div>
+        <div class="opcao" data-idx="0" onclick="marcarOpcao(10,0)"><div class="opcao-letra">A</div><div class="opcao-txt">o IPCC só atua em países que não ratificaram o Acordo de Paris e não dispõem de órgão ambiental próprio.</div><div class="opcao-marca" id="marca-10-0"></div></div>
+        <div class="opcao" data-idx="1" onclick="marcarOpcao(10,1)"><div class="opcao-letra">B</div><div class="opcao-txt">a fiscalização de emissões industriais compete exclusivamente à FAO, agência especializada da ONU.</div><div class="opcao-marca" id="marca-10-1"></div></div>
+        <div class="opcao" data-idx="2" onclick="marcarOpcao(10,2)"><div class="opcao-letra">C</div><div class="opcao-txt">o IPCC perdeu essa atribuição quando as Conferências das Partes passaram a se reunir periodicamente.</div><div class="opcao-marca" id="marca-10-2"></div></div>
+        <div class="opcao" data-idx="3" onclick="marcarOpcao(10,3)"><div class="opcao-letra">D</div><div class="opcao-txt">o IPCC sintetiza a produção científica sobre o clima, mas não fiscaliza nem define política pública.</div><div class="opcao-marca" id="marca-10-3"></div></div>
+        <div class="opcao" data-idx="4" onclick="marcarOpcao(10,4)"><div class="opcao-letra">E</div><div class="opcao-txt">a indústria precisaria antes obter licença de operação junto à UICN, o que ainda não foi providenciado.</div><div class="opcao-marca" id="marca-10-4"></div></div>
+        <div class="gabarito-info" id="gab-10"><b>Gabarito: D.</b> O IPCC é um painel científico: ele dá base técnica às negociações. Fiscalizar emissões de um empreendimento é competência do órgão ambiental brasileiro correspondente ao porte e à localização da obra.</div>
+      </div>
+
+      <section class="texto-apoio selecionavel">
+        <h2><span class="num-topico">5</span>O aparato brasileiro: competências legais e instrumentos</h2>
+        <span class="fonte-tag">Revisão — Sociologia, 3ª série do Ensino Médio</span>
+        <p>A pauta ambiental entrou na agenda pública brasileira nos anos 1980, no mesmo movimento da redemocratização — o que ajuda a explicar por que a Constituição de 1988 trata o meio ambiente como direito de todos e bem de uso comum do povo.</p>
+        <p>A <b>Lei n. 6.938/1981</b> institui a Política Nacional do Meio Ambiente e o <b>Sisnama</b>, que articula União, estados e municípios. Repare nos verbos: o <b>Conama</b> normatiza (suas resoluções têm força normativa, inclusive a que define quando se exige estudo de impacto); o <b>Ministério do Meio Ambiente</b> formula; o <b>Ibama</b>, criado em 1989, fiscaliza e pune, com poder de polícia ambiental; o <b>ICMBio</b>, criado em 2007, gere unidades de conservação federais; o <b>SNUC</b> (2000) organiza as UCs em proteção integral e uso sustentável.</p>
+        <p>Os instrumentos: <b>licenciamento</b> em etapas (licença prévia, de instalação e de operação), com condicionantes fiscalizáveis; <b>EIA/Rima</b>, submetido a audiência pública — momento em que a decisão técnica se expõe ao debate coletivo e em que aparecem as assimetrias, já que quem tem consultoria, advogado e tempo participa mais; e <b>sanções</b> (advertência, multa, embargo, apreensão, suspensão), cuja eficácia depende de orçamento, servidores e estabilidade institucional.</p>
+      </section>
+
+      <div class="questao objetiva" data-questao="obj-11" data-correta="1" data-topico="5">
+        <div class="enunciado"><span class="num-q">11</span><span class="txt">A norma que estabelece em quais casos um empreendimento precisa apresentar estudo de impacto ambiental foi editada por qual instância do Sisnama, e em razão de qual atribuição? <span class="badge-resultado" id="badge-obj-11"></span></span></div>
+        <div class="opcao" data-idx="0" onclick="marcarOpcao(11,0)"><div class="opcao-letra">A</div><div class="opcao-txt">Pelo Ibama, no exercício de seu poder de polícia ambiental sobre empreendimentos poluidores.</div><div class="opcao-marca" id="marca-11-0"></div></div>
+        <div class="opcao" data-idx="1" onclick="marcarOpcao(11,1)"><div class="opcao-letra">B</div><div class="opcao-txt">Pelo Conama, órgão consultivo e deliberativo do Sisnama, cujas resoluções têm força normativa.</div><div class="opcao-marca" id="marca-11-1"></div></div>
+        <div class="opcao" data-idx="2" onclick="marcarOpcao(11,2)"><div class="opcao-letra">C</div><div class="opcao-txt">Pelo ICMBio, responsável por gerir as unidades de conservação federais e a biodiversidade.</div><div class="opcao-marca" id="marca-11-2"></div></div>
+        <div class="opcao" data-idx="3" onclick="marcarOpcao(11,3)"><div class="opcao-letra">D</div><div class="opcao-txt">Pelo Ministério do Meio Ambiente, que formula e executa diretamente o licenciamento das obras.</div><div class="opcao-marca" id="marca-11-3"></div></div>
+        <div class="opcao" data-idx="4" onclick="marcarOpcao(11,4)"><div class="opcao-letra">E</div><div class="opcao-txt">Pelos órgãos municipais, encarregados de normatizar o licenciamento em todo o território nacional.</div><div class="opcao-marca" id="marca-11-4"></div></div>
+        <div class="gabarito-info" id="gab-11"><b>Gabarito: B.</b> Cada instância tem seu verbo: o Conama normatiza, o Ministério formula, o Ibama fiscaliza e pune, o ICMBio gere áreas protegidas. Confundir esses verbos é o erro mais comum ao analisar um caso concreto.</div>
+      </div>
+
+      <div class="questao objetiva" data-questao="obj-12" data-correta="4" data-topico="5">
+        <div class="enunciado"><span class="num-q">12</span><span class="txt">Fiscais verificam em campo que as condicionantes de uma licença federal foram descumpridas, lavram auto de infração, aplicam multa e embargam a obra. Essa atuação corresponde <span class="badge-resultado" id="badge-obj-12"></span></span></div>
+        <div class="opcao" data-idx="0" onclick="marcarOpcao(12,0)"><div class="opcao-letra">A</div><div class="opcao-txt">à competência do Conama, que aplica sanções às empresas que descumprem suas próprias resoluções.</div><div class="opcao-marca" id="marca-12-0"></div></div>
+        <div class="opcao" data-idx="1" onclick="marcarOpcao(12,1)"><div class="opcao-letra">B</div><div class="opcao-txt">à etapa de licença prévia, em que se avalia a viabilidade do empreendimento proposto.</div><div class="opcao-marca" id="marca-12-1"></div></div>
+        <div class="opcao" data-idx="2" onclick="marcarOpcao(12,2)"><div class="opcao-letra">C</div><div class="opcao-txt">à atuação do ICMBio, encarregado de punir infrações cometidas fora das unidades de conservação.</div><div class="opcao-marca" id="marca-12-2"></div></div>
+        <div class="opcao" data-idx="3" onclick="marcarOpcao(12,3)"><div class="opcao-letra">D</div><div class="opcao-txt">à Política Nacional do Meio Ambiente, que executa diretamente as ações de fiscalização em campo.</div><div class="opcao-marca" id="marca-12-3"></div></div>
+        <div class="opcao" data-idx="4" onclick="marcarOpcao(12,4)"><div class="opcao-letra">E</div><div class="opcao-txt">ao poder de polícia ambiental do Ibama, que executa a política federal de fiscalização.</div><div class="opcao-marca" id="marca-12-4"></div></div>
+        <div class="gabarito-info" id="gab-12"><b>Gabarito: E.</b> Multa, embargo, apreensão e suspensão são expressões do poder de polícia ambiental — atribuição do Ibama na esfera federal. O Conama edita normas, mas não as aplica caso a caso.</div>
+      </div>
+
+      <div class="questao objetiva" data-questao="obj-13" data-correta="0" data-topico="5">
+        <div class="enunciado"><span class="num-q">13</span><span class="txt">A audiência pública do EIA/Rima é o momento em que a decisão técnica se expõe ao debate coletivo. Sociologicamente, esse mesmo momento também revela <span class="badge-resultado" id="badge-obj-13"></span></span></div>
+        <div class="opcao" data-idx="0" onclick="marcarOpcao(13,0)"><div class="opcao-letra">A</div><div class="opcao-txt">assimetrias de participação: quem dispõe de consultoria, de advogado e de tempo participa mais.</div><div class="opcao-marca" id="marca-13-0"></div></div>
+        <div class="opcao" data-idx="1" onclick="marcarOpcao(13,1)"><div class="opcao-letra">B</div><div class="opcao-txt">a neutralidade do procedimento, que assegura peso idêntico a todos os interessados presentes.</div><div class="opcao-marca" id="marca-13-1"></div></div>
+        <div class="opcao" data-idx="2" onclick="marcarOpcao(13,2)"><div class="opcao-letra">C</div><div class="opcao-txt">a dispensa do estudo técnico, substituído pela manifestação oral dos moradores da área atingida.</div><div class="opcao-marca" id="marca-13-2"></div></div>
+        <div class="opcao" data-idx="3" onclick="marcarOpcao(13,3)"><div class="opcao-letra">D</div><div class="opcao-txt">a transferência da decisão final para a assembleia dos moradores atingidos pelo empreendimento.</div><div class="opcao-marca" id="marca-13-3"></div></div>
+        <div class="opcao" data-idx="4" onclick="marcarOpcao(13,4)"><div class="opcao-letra">E</div><div class="opcao-txt">a irrelevância da linguagem acessível do relatório, já que o público não participa da avaliação.</div><div class="opcao-marca" id="marca-13-4"></div></div>
+        <div class="gabarito-info" id="gab-13"><b>Gabarito: A.</b> A abertura formal à participação não garante participação igual. Reconhecer a assimetria é o que permite avaliar criticamente o instrumento sem negar sua importância.</div>
+      </div>
+
+      <section class="texto-apoio selecionavel">
+        <h2><span class="num-topico">6</span>Quando a regulação falha: sociologia dos desastres</h2>
+        <span class="fonte-tag">Revisão — Sociologia, 3ª série do Ensino Médio</span>
+        <p>O rompimento das barragens de rejeitos em <b>Mariana</b> (2015) e em <b>Brumadinho</b> (2019) tornou-se caso de estudo obrigatório. Em Mariana, a lama destruiu o distrito de Bento Rodrigues, deixou mais de vinte mortos e desaparecidos e atingiu o Rio Doce, interrompendo o abastecimento em cidades de Minas Gerais e do Espírito Santo. Entre os atingidos estão comunidades do povo indígena krenak.</p>
+        <p>A socióloga <b>Norma Valencio</b> recusa a palavra “tragédia”: o desastre é, antes de tudo, a constatação pública de uma <b>vulnerabilidade</b> na relação entre Estado e sociedade diante de uma ameaça que não se conseguiu impedir nem minorar. Decretar situação de emergência é sinalizar incapacidade institucional.</p>
+        <p>Cada desastre funciona como um <b>teste de estresse</b> do sistema regulatório: permite perguntar quem licenciou, com base em qual estudo, quem deveria fiscalizar, com quantos servidores, e o que aconteceu com as condicionantes impostas na licença.</p>
+      </section>
+
+      <div class="questao objetiva" data-questao="obj-14" data-correta="2" data-topico="6">
+        <div class="enunciado"><span class="num-q">14</span><span class="txt">Um jornal descreve o rompimento de uma barragem de rejeitos como “tragédia imprevisível”. A releitura que Norma Valencio proporia a essa manchete é a de que <span class="badge-resultado" id="badge-obj-14"></span></span></div>
+        <div class="opcao" data-idx="0" onclick="marcarOpcao(14,0)"><div class="opcao-letra">A</div><div class="opcao-txt">o evento resulta de falha exclusivamente técnica da engenharia, sem qualquer dimensão política.</div><div class="opcao-marca" id="marca-14-0"></div></div>
+        <div class="opcao" data-idx="1" onclick="marcarOpcao(14,1)"><div class="opcao-letra">B</div><div class="opcao-txt">a expressão é adequada, pois desastres decorrem de forças naturais que escapam ao controle humano.</div><div class="opcao-marca" id="marca-14-1"></div></div>
+        <div class="opcao" data-idx="2" onclick="marcarOpcao(14,2)"><div class="opcao-letra">C</div><div class="opcao-txt">o desastre constata publicamente uma vulnerabilidade na relação entre Estado e sociedade civil.</div><div class="opcao-marca" id="marca-14-2"></div></div>
+        <div class="opcao" data-idx="3" onclick="marcarOpcao(14,3)"><div class="opcao-letra">D</div><div class="opcao-txt">a responsabilidade recai sobre os moradores, que ocuparam área de risco sem autorização prévia.</div><div class="opcao-marca" id="marca-14-3"></div></div>
+        <div class="opcao" data-idx="4" onclick="marcarOpcao(14,4)"><div class="opcao-letra">E</div><div class="opcao-txt">o decreto de calamidade pública demonstra a eficiência da resposta institucional ao ocorrido.</div><div class="opcao-marca" id="marca-14-4"></div></div>
+        <div class="gabarito-info" id="gab-14"><b>Gabarito: C.</b> Chamar de tragédia naturaliza o evento e encerra a investigação. Falar em vulnerabilidade institucional desloca a explicação para decisões — de licenciamento, de fiscalização, de orçamento — que podem ser responsabilizadas.</div>
+      </div>
+
+      <div class="questao objetiva" data-questao="obj-15" data-correta="3" data-topico="6">
+        <div class="enunciado"><span class="num-q">15</span><span class="txt">Tratar um desastre como teste de estresse do sistema regulatório significa organizar a investigação em torno de qual conjunto de perguntas? <span class="badge-resultado" id="badge-obj-15"></span></span></div>
+        <div class="opcao" data-idx="0" onclick="marcarOpcao(15,0)"><div class="opcao-letra">A</div><div class="opcao-txt">Qual foi o volume exato de rejeitos liberados e qual a velocidade de deslocamento da lama ao longo do vale.</div><div class="opcao-marca" id="marca-15-0"></div></div>
+        <div class="opcao" data-idx="1" onclick="marcarOpcao(15,1)"><div class="opcao-letra">B</div><div class="opcao-txt">Quantos anos o bioma levará para se recuperar e quais espécies desapareceram definitivamente da região.</div><div class="opcao-marca" id="marca-15-1"></div></div>
+        <div class="opcao" data-idx="2" onclick="marcarOpcao(15,2)"><div class="opcao-letra">C</div><div class="opcao-txt">Qual empresa detinha a concessão da lavra e quanto ela perdeu em valor de mercado após o rompimento.</div><div class="opcao-marca" id="marca-15-2"></div></div>
+        <div class="opcao" data-idx="3" onclick="marcarOpcao(15,3)"><div class="opcao-letra">D</div><div class="opcao-txt">Quem licenciou, com base em que estudo, quem deveria fiscalizar e o que houve com as condicionantes.</div><div class="opcao-marca" id="marca-15-3"></div></div>
+        <div class="opcao" data-idx="4" onclick="marcarOpcao(15,4)"><div class="opcao-letra">E</div><div class="opcao-txt">Se houve aviso sonoro no momento do rompimento e quantos funcionários estavam em serviço no local.</div><div class="opcao-marca" id="marca-15-4"></div></div>
+        <div class="gabarito-info" id="gab-15"><b>Gabarito: D.</b> As demais perguntas são pertinentes, mas descrevem o dano. Só a alternativa D interroga o funcionamento das instituições — que é o objeto da habilidade estudada aqui.</div>
+      </div>
+
+      <section class="texto-apoio selecionavel">
+        <h2><span class="num-topico">7</span>Justiça ambiental e racismo ambiental</h2>
+        <span class="fonte-tag">Revisão — Sociologia, 3ª série do Ensino Médio</span>
+        <p>A poluição não é democrática. Moradias em encostas, em várzeas inundáveis, perto de rodovias, fábricas e aterros, sem saneamento, concentram os efeitos do dano sobre as populações de menor renda.</p>
+        <p>O princípio da <b>justiça ambiental</b> sustenta que nenhum grupo deve suportar parcela desproporcional dos impactos; nasceu nos EUA, entre 1970 e 1980, no interior dos movimentos por direitos civis. Seu oposto, a <b>injustiça ambiental</b>, é a condição de desigualdade sustentada por mecanismos sociopolíticos.</p>
+        <p>A expressão <b>racismo ambiental</b> foi formulada em 1981 por <b>Benjamin Chavis Jr.</b> O sociólogo <b>Robert Bullard</b> demonstrou que aterros e incineradores em Houston não eram instalados por critério técnico, mas em bairros de maioria negra — os territórios que ele chama de <b>zonas de sacrifício</b>. No Brasil, <b>Selene Herculano</b> e <b>Tania Pacheco</b> adaptaram o conceito; Pacheco insiste que o racismo ambiental não depende de intenção discriminatória: basta que o resultado seja sistematicamente desigual. Em Mariana, 84,5% das vítimas imediatas eram negras. Já <b>Malcom Ferdinand</b> propõe uma <b>ecologia decolonial</b>, que recusa separar a história colonial da história ambiental do mundo.</p>
+      </section>
+
+      <div class="questao objetiva" data-questao="obj-16" data-correta="4" data-topico="7">
+        <div class="enunciado"><span class="num-q">16</span><span class="txt">Ao mapear a localização de aterros e incineradores em Houston, Robert Bullard verificou que as instalações não seguiam os critérios técnicos alegados. A conclusão sociológica que ele extrai desse mapeamento é a de que <span class="badge-resultado" id="badge-obj-16"></span></span></div>
+        <div class="opcao" data-idx="0" onclick="marcarOpcao(16,0)"><div class="opcao-letra">A</div><div class="opcao-txt">a escolha dos locais respeitava estudos de impacto, ainda que sem consulta prévia aos moradores.</div><div class="opcao-marca" id="marca-16-0"></div></div>
+        <div class="opcao" data-idx="1" onclick="marcarOpcao(16,1)"><div class="opcao-letra">B</div><div class="opcao-txt">o padrão se explica pelo baixo preço dos terrenos, variável econômica sem qualquer relação com raça.</div><div class="opcao-marca" id="marca-16-1"></div></div>
+        <div class="opcao" data-idx="2" onclick="marcarOpcao(16,2)"><div class="opcao-letra">C</div><div class="opcao-txt">a concentração de resíduos em certos bairros decorre de escolhas individuais dos próprios moradores.</div><div class="opcao-marca" id="marca-16-2"></div></div>
+        <div class="opcao" data-idx="3" onclick="marcarOpcao(16,3)"><div class="opcao-letra">D</div><div class="opcao-txt">as instalações foram distribuídas de forma equilibrada entre bairros de renda alta, média e baixa.</div><div class="opcao-marca" id="marca-16-3"></div></div>
+        <div class="opcao" data-idx="4" onclick="marcarOpcao(16,4)"><div class="opcao-letra">E</div><div class="opcao-txt">a distribuição das instalações seguia a composição racial dos bairros, criando zonas de sacrifício.</div><div class="opcao-marca" id="marca-16-4"></div></div>
+        <div class="gabarito-info" id="gab-16"><b>Gabarito: E.</b> O achado de Bullard é justamente a discrepância entre o critério declarado (técnico) e o critério efetivo (racial). Zonas de sacrifício são os territórios em que essa injustiça se concentra.</div>
+      </div>
+
+      <div class="questao objetiva" data-questao="obj-17" data-correta="0" data-topico="7">
+        <div class="enunciado"><span class="num-q">17</span><span class="txt">Uma empresa se defende afirmando que não praticou racismo ambiental porque jamais teve a intenção de prejudicar a população negra do entorno. À luz da formulação de Tania Pacheco, <span class="badge-resultado" id="badge-obj-17"></span></span></div>
+        <div class="opcao" data-idx="0" onclick="marcarOpcao(17,0)"><div class="opcao-letra">A</div><div class="opcao-txt">o argumento não se sustenta: basta que o resultado da distribuição dos danos seja sistematicamente desigual.</div><div class="opcao-marca" id="marca-17-0"></div></div>
+        <div class="opcao" data-idx="1" onclick="marcarOpcao(17,1)"><div class="opcao-letra">B</div><div class="opcao-txt">o argumento procede, já que o conceito exige a comprovação documental do propósito discriminatório.</div><div class="opcao-marca" id="marca-17-1"></div></div>
+        <div class="opcao" data-idx="2" onclick="marcarOpcao(17,2)"><div class="opcao-letra">C</div><div class="opcao-txt">o argumento é irrelevante, porque o conceito de racismo ambiental não se aplicaria ao contexto brasileiro atual.</div><div class="opcao-marca" id="marca-17-2"></div></div>
+        <div class="opcao" data-idx="3" onclick="marcarOpcao(17,3)"><div class="opcao-letra">D</div><div class="opcao-txt">o argumento procede apenas quando a empresa demonstra ter cumprido as condicionantes de sua licença.</div><div class="opcao-marca" id="marca-17-3"></div></div>
+        <div class="opcao" data-idx="4" onclick="marcarOpcao(17,4)"><div class="opcao-letra">E</div><div class="opcao-txt">o argumento se sustenta se a maioria dos atingidos pertencer a mais de um grupo étnico ou racial.</div><div class="opcao-marca" id="marca-17-4"></div></div>
+        <div class="gabarito-info" id="gab-17"><b>Gabarito: A.</b> Pacheco desloca o critério da intenção para o resultado: o que caracteriza o racismo ambiental é o padrão sistemático de distribuição desigual dos danos, independentemente do propósito declarado.</div>
+      </div>
+
+      <div class="questao objetiva" data-questao="obj-18" data-correta="3" data-topico="7">
+        <div class="enunciado"><span class="num-q">18</span><span class="txt">Malcom Ferdinand recusa separar a história colonial da história ambiental do mundo. A exigência que sua proposta de ecologia decolonial dirige ao movimento ambientalista é a de <span class="badge-resultado" id="badge-obj-18"></span></span></div>
+        <div class="opcao" data-idx="0" onclick="marcarOpcao(18,0)"><div class="opcao-letra">A</div><div class="opcao-txt">restringir o debate ambiental às antigas metrópoles europeias, responsáveis pela expansão do século XV.</div><div class="opcao-marca" id="marca-18-0"></div></div>
+        <div class="opcao" data-idx="1" onclick="marcarOpcao(18,1)"><div class="opcao-letra">B</div><div class="opcao-txt">substituir a categoria de racismo ambiental pela de vulnerabilidade institucional nos países do Sul.</div><div class="opcao-marca" id="marca-18-1"></div></div>
+        <div class="opcao" data-idx="2" onclick="marcarOpcao(18,2)"><div class="opcao-letra">C</div><div class="opcao-txt">concentrar a ação ambientalista na conservação das espécies ameaçadas das ilhas do Caribe.</div><div class="opcao-marca" id="marca-18-2"></div></div>
+        <div class="opcao" data-idx="3" onclick="marcarOpcao(18,3)"><div class="opcao-letra">D</div><div class="opcao-txt">incorporar as colonizações históricas e o racismo estrutural contemporâneo às suas pautas de luta.</div><div class="opcao-marca" id="marca-18-3"></div></div>
+        <div class="opcao" data-idx="4" onclick="marcarOpcao(18,4)"><div class="opcao-letra">E</div><div class="opcao-txt">tratar a escravização como episódio encerrado, sem efeitos sobre a distribuição atual dos danos.</div><div class="opcao-marca" id="marca-18-4"></div></div>
+        <div class="gabarito-info" id="gab-18"><b>Gabarito: D.</b> Para Ferdinand, a expansão europeia iniciada no fim do século XV, sustentada pelo colonialismo e pela escravização, é inseparável da destruição ambiental que se seguiu — e, por isso, precisa entrar na pauta ambientalista.</div>
+      </div>
+
+      <section class="texto-apoio selecionavel">
+        <h2><span class="num-topico">8</span>Recorte de Goiás: o Cerrado sob regulação</h2>
+        <span class="fonte-tag">Revisão — Sociologia, 3ª série do Ensino Médio</span>
+        <p>Berço das principais bacias hidrográficas do país, o Cerrado goiano convive com a expansão de lavouras mecanizadas, pastagens e mineração — e com um regime de proteção historicamente mais frouxo que o aplicado à Amazônia Legal. O resultado é uma <b>assimetria regulatória</b> visível: percentuais de reserva legal menores, menor visibilidade internacional e menor pressão reputacional sobre quem desmata.</p>
+        <p>No estado, o Sisnama se materializa no órgão ambiental estadual, que licencia e fiscaliza empreendimentos de impacto local e regional, e no conselho estadual de meio ambiente, que edita normas complementares às do Conama. Na esfera federal, o ICMBio administra unidades como o <b>Parque Nacional da Chapada dos Veadeiros</b>, cujos limites foram redefinidos diversas vezes — cada redefinição resultado de disputa entre conservação, turismo, produção agropecuária e comunidades locais, como as do território quilombola Kalunga.</p>
+      </section>
+
+      <div class="questao objetiva" data-questao="obj-19" data-correta="2" data-topico="8">
+        <div class="enunciado"><span class="num-q">19</span><span class="txt">Uma supressão de vegetação no Cerrado goiano, de extensão equivalente a uma queimada amazônica amplamente noticiada, passa quase despercebida na imprensa internacional. Essa diferença de repercussão revela, sobretudo, que <span class="badge-resultado" id="badge-obj-19"></span></span></div>
+        <div class="opcao" data-idx="0" onclick="marcarOpcao(19,0)"><div class="opcao-letra">A</div><div class="opcao-txt">o Cerrado não integra o Sisnama, ficando fora da competência dos órgãos estaduais de licenciamento.</div><div class="opcao-marca" id="marca-19-0"></div></div>
+        <div class="opcao" data-idx="1" onclick="marcarOpcao(19,1)"><div class="opcao-letra">B</div><div class="opcao-txt">a legislação federal proíbe a supressão de vegetação na Amazônia e a autoriza integralmente no Cerrado.</div><div class="opcao-marca" id="marca-19-1"></div></div>
+        <div class="opcao" data-idx="2" onclick="marcarOpcao(19,2)"><div class="opcao-letra">C</div><div class="opcao-txt">a fiscalização depende também da pressão social e reputacional, e não apenas da norma escrita.</div><div class="opcao-marca" id="marca-19-2"></div></div>
+        <div class="opcao" data-idx="3" onclick="marcarOpcao(19,3)"><div class="opcao-letra">D</div><div class="opcao-txt">o Cerrado dispõe de percentuais de reserva legal superiores aos exigidos na Amazônia Legal.</div><div class="opcao-marca" id="marca-19-3"></div></div>
+        <div class="opcao" data-idx="4" onclick="marcarOpcao(19,4)"><div class="opcao-letra">E</div><div class="opcao-txt">a imprensa internacional desconhece a existência do bioma, o que inviabiliza qualquer cobertura.</div><div class="opcao-marca" id="marca-19-4"></div></div>
+        <div class="gabarito-info" id="gab-19"><b>Gabarito: C.</b> A norma existe nos dois biomas, mas o que sustenta sua aplicação é também a pressão social: sem visibilidade, o custo reputacional de desmatar cai. É a mesma lógica que explica a eficácia dos acordos internacionais sem coerção.</div>
+      </div>
+
+      <section class="texto-apoio selecionavel">
+        <h2><span class="num-topico">9</span>Roteiro sociológico para analisar um órgão ou acordo</h2>
+        <span class="fonte-tag">Revisão — Sociologia, 3ª série do Ensino Médio</span>
+        <p>Sete passos para investigar qualquer instituição ambiental: <b>origem</b> (que conflito ou desastre a antecedeu, que grupos pressionaram); <b>base legal</b> (que norma a instituiu e se ela normatiza, formula, licencia, fiscaliza ou gere áreas); <b>escala e competência</b> (municipal, estadual, federal ou internacional, e sobre quem tem poder); <b>instrumentos</b> (licença, estudo de impacto, multa, embargo, meta negociada, financiamento); <b>capacidade real</b> (orçamento, servidores e autonomia — a distância entre a norma e a prática); <b>distribuição dos efeitos</b> (quem é protegido, quem segue exposto, há zonas de sacrifício); e <b>participação</b> (quem tem assento e voz, e quem é apenas objeto das decisões).</p>
+      </section>
+
+      <div class="questao objetiva" data-questao="obj-20" data-correta="1" data-topico="9">
+        <div class="enunciado"><span class="num-q">20</span><span class="txt">Ao analisar um órgão ambiental estadual, um grupo de estudantes constata que a lei lhe atribui competência para licenciar e fiscalizar todo o território do estado, mas que o quadro efetivo é de poucos fiscais e orçamento reduzido. Esse achado corresponde a qual passo do roteiro sociológico? <span class="badge-resultado" id="badge-obj-20"></span></span></div>
+        <div class="opcao" data-idx="0" onclick="marcarOpcao(20,0)"><div class="opcao-letra">A</div><div class="opcao-txt">Base legal, que identifica a norma instituidora do órgão e o tipo de atribuição que ela confere.</div><div class="opcao-marca" id="marca-20-0"></div></div>
+        <div class="opcao" data-idx="1" onclick="marcarOpcao(20,1)"><div class="opcao-letra">B</div><div class="opcao-txt">Capacidade real, que confronta orçamento, servidores e autonomia com a competência atribuída pela lei.</div><div class="opcao-marca" id="marca-20-1"></div></div>
+        <div class="opcao" data-idx="2" onclick="marcarOpcao(20,2)"><div class="opcao-letra">C</div><div class="opcao-txt">Escala e competência, que define se a atuação do órgão é municipal, estadual, federal ou internacional.</div><div class="opcao-marca" id="marca-20-2"></div></div>
+        <div class="opcao" data-idx="3" onclick="marcarOpcao(20,3)"><div class="opcao-letra">D</div><div class="opcao-txt">Distribuição dos efeitos, que identifica quem é protegido e quem permanece exposto ao dano.</div><div class="opcao-marca" id="marca-20-3"></div></div>
+        <div class="opcao" data-idx="4" onclick="marcarOpcao(20,4)"><div class="opcao-letra">E</div><div class="opcao-txt">Participação, que verifica quem tem assento e voz nas decisões tomadas pelo órgão colegiado.</div><div class="opcao-marca" id="marca-20-4"></div></div>
+        <div class="gabarito-info" id="gab-20"><b>Gabarito: B.</b> O passo capacidade real é o que mede a distância entre a norma e a prática. Sem ele, a análise confunde o que a lei autoriza com o que a instituição consegue efetivamente fazer.</div>
+      </div>
+
+
+      <div class="alerta-incompleto" id="alerta-incompleto"></div>
+
+      <div class="acoes-finais">
+        <button class="btn btn-primario" onclick="finalizarAtividade()">Finalizar e corrigir</button>
+        <button class="btn btn-secundario" onclick="refazerAtividade()">Refazer</button>
+        <button class="btn btn-pdf" onclick="exportarPDF()">Exportar em PDF</button>
+      </div>
+    </main>
+  </div>
+
+  <footer class="rodape">Colégio Estadual Rodolfo de Oliveira · CERO · 2026 · Prof. Claudio</footer>
+</div>
+
+<!-- ===== POPUP ===== -->
+<div class="popup-overlay" id="popup-overlay">
+  <div class="popup-card">
+    <div class="emoji">🌿</div>
+    <h3>Atividade concluída!</h3>
+    <p id="popup-nota" style="font-family:var(--font-mono); font-weight:700; color:var(--verde-dark); font-size:1rem; margin:0 0 12px;"></p>
+    <p>O gabarito comentado já está disponível abaixo de cada questão. Leia os comentários das que você errou antes de exportar o PDF.</p>
+    <button class="btn btn-primario" onclick="fecharPopup()">Continuar</button>
+  </div>
+</div>
+
+<script>
+
+/* ===== GATE DE NOME ===== */
+function iniciarAtividade(){
+  const nome = document.getElementById('nome-aluno').value.trim();
+  const turma = document.getElementById('turma-aluno').value.trim();
+  const aviso = document.getElementById('capa-aviso');
+  if(!nome){ aviso.style.display = 'block'; return; }
+  aviso.style.display = 'none';
+  const hoje = new Date();
+  const dataFormatada = String(hoje.getDate()).padStart(2,'0') + '/' + String(hoje.getMonth()+1).padStart(2,'0') + '/' + hoje.getFullYear();
+  document.getElementById('header-nome').textContent = nome;
+  document.getElementById('ficha-nome').textContent = nome;
+  document.getElementById('ficha-data').textContent = dataFormatada;
+  document.getElementById('ficha-turma').textContent = turma || '—';
+  document.getElementById('capa').style.display = 'none';
+  document.getElementById('app').style.display = 'block';
+  window.scrollTo(0,0);
+}
+
+/* ===== MARCAÇÃO E PROGRESSO ===== */
+const TOTAL_OBJ = 20;
+const LETRAS = ['A','B','C','D','E'];
+let respMC = {};
+let corrigido = false;
+
+function marcarOpcao(num, idx){
+  if (corrigido) return;
+  respMC[num] = idx;
+  const questaoEl = document.querySelector('.questao[data-questao="obj-' + num + '"]');
+  questaoEl.querySelectorAll('.opcao').forEach(function(op){
+    op.classList.toggle('sel', parseInt(op.dataset.idx,10) === idx);
+  });
+  atualizarProgresso();
+}
+
+function atualizarProgresso(){
+  const respondidas = Object.keys(respMC).length;
+  document.getElementById('contador-geral').textContent = 'Respondidas: ' + respondidas + '/' + TOTAL_OBJ;
+  document.getElementById('barra-fill').style.width = (respondidas / TOTAL_OBJ * 100) + '%';
+}
+
+/* ===== FINALIZAR ===== */
+function finalizarAtividade(){
+  let faltando = [];
+  for(let n=1; n<=TOTAL_OBJ; n++){ if(respMC[n] === undefined) faltando.push(n); }
+
+  const alerta = document.getElementById('alerta-incompleto');
+  if(faltando.length){
+    alerta.textContent = 'Ainda faltam questões sem alternativa marcada: ' + faltando.join(', ') + '. Marque todas as 20 antes de finalizar.';
+    alerta.classList.add('show');
+    alerta.scrollIntoView({behavior:'smooth', block:'center'});
+    return;
+  }
+  alerta.classList.remove('show');
+
+  corrigido = true;
+  let acertos = 0;
+  document.querySelectorAll('.questao.objetiva').forEach(function(qEl){
+    const num = qEl.dataset.questao.replace('obj-','');
+    const correta = parseInt(qEl.dataset.correta, 10);
+    const escolha = respMC[num];
+    const acertou = escolha === correta;
+    if(acertou) acertos++;
+    qEl.querySelectorAll('.opcao').forEach(function(op){
+      const idx = parseInt(op.dataset.idx, 10);
+      op.classList.add('travada');
+      if(idx === correta){
+        op.classList.add('correta');
+        const m = document.getElementById('marca-'+num+'-'+idx);
+        m.textContent='✓'; m.style.display='block';
+      }
+      if(idx === escolha && !acertou){
+        op.classList.add('errada');
+        const m = document.getElementById('marca-'+num+'-'+idx);
+        m.textContent='✗'; m.style.display='block';
+      }
+    });
+    document.getElementById('gab-'+num).classList.add('show');
+    const badge = document.getElementById('badge-obj-'+num);
+    badge.textContent = acertou ? '✓ Acertou' : '✗ Errou';
+    badge.className = 'badge-resultado ' + (acertou ? 'ok' : 'no');
+  });
+  window.__acertos = acertos;
+
+  const pct = Math.round(acertos/TOTAL_OBJ*100);
+  document.getElementById('popup-nota').textContent = acertos + '/' + TOTAL_OBJ + ' acertos (' + pct + '%)';
+  document.getElementById('popup-overlay').classList.add('show');
+}
+
+function fecharPopup(){ document.getElementById('popup-overlay').classList.remove('show'); }
+
+function refazerAtividade(){
+  document.querySelectorAll('.opcao').forEach(function(op){ op.classList.remove('sel','correta','errada','travada'); });
+  document.querySelectorAll('.opcao-marca').forEach(function(m){ m.style.display='none'; m.textContent=''; });
+  document.querySelectorAll('.gabarito-info').forEach(function(g){ g.classList.remove('show'); });
+  document.querySelectorAll('.badge-resultado').forEach(function(b){ b.textContent=''; b.className='badge-resultado'; });
+  respMC = {};
+  corrigido = false;
+  document.getElementById('alerta-incompleto').classList.remove('show');
+  atualizarProgresso();
+  window.scrollTo(0,0);
+}
+
+/* ===== EXPORTAR PDF ===== */
+function sleep(ms){ return new Promise(function(r){ setTimeout(r, ms); }); }
+
+function esc(str){
+  const d = document.createElement('div');
+  d.textContent = str || '';
+  return d.innerHTML.replace(/\n/g, '<br>');
+}
+
+async function exportarPDF(){
+  const overlay = document.createElement('div');
+  overlay.id = 'pdf-overlay';
+  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(7,47,44,.62);display:flex;align-items:center;justify-content:center;z-index:999;';
+  overlay.innerHTML =
+    '<div style="background:#fff;border-radius:14px;padding:32px 36px;text-align:center;max-width:300px;box-shadow:0 10px 30px rgba(10,60,55,.3);font-family:\'Source Serif 4\',serif;">' +
+      '<div style="font-size:2rem;margin-bottom:8px;">📄</div>' +
+      '<h4 style="margin:0 0 4px;color:#0a4d47;font-family:\'Playfair Display\',serif;">Gerando PDF…</h4>' +
+      '<p style="margin:0 0 14px;color:#4a5f57;font-size:.86rem;">Aguarde alguns instantes.</p>' +
+      '<div style="background:#dcebe4;border-radius:6px;overflow:hidden;height:8px;">' +
+        '<div id="pdf-prog" style="height:100%;width:0%;background:#0f766e;transition:width .2s ease;"></div>' +
+      '</div>' +
+      '<div id="pdf-prog-txt" style="margin-top:8px;font-family:\'JetBrains Mono\',monospace;font-size:.74rem;color:#4a5f57;">0%</div>' +
+    '</div>';
+  document.body.appendChild(overlay);
+  await sleep(80);
+  function setP(pct, msg){
+    const pp = document.getElementById('pdf-prog'), pt = document.getElementById('pdf-prog-txt');
+    if(pp) pp.style.width = pct + '%';
+    if(pt) pt.textContent = msg || (pct + '%');
+  }
+
+  try{
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF({orientation:'portrait', unit:'px', format:'a4', hotfixes:['px_scaling']});
+    const PW = pdf.internal.pageSize.getWidth(), PH = pdf.internal.pageSize.getHeight();
+    const ML = 28, CW = PW - ML*2;
+    let y = ML;
+
+    async function addImg(el){
+      const canvas = await html2canvas(el, {scale:2, useCORS:true, logging:false, backgroundColor:'#ffffff', scrollX:0, scrollY:0, windowWidth:860});
+      const imgW = CW, imgH = (canvas.height / canvas.width) * imgW;
+      const dataUrl = canvas.toDataURL('image/jpeg', .92), avail = PH - ML*2;
+      if(imgH <= avail){
+        if(y + imgH > PH - ML){ pdf.addPage(); y = ML; }
+        pdf.addImage(dataUrl, 'JPEG', ML, y, imgW, imgH);
+        y += imgH + 8;
+      } else {
+        const pxPerPdfPt = canvas.width / imgW;
+        let srcY = 0;
+        while(srcY < canvas.height){
+          const availPt = PH - y - ML, sliceH_pt = Math.min(availPt, avail);
+          const sliceH_px = Math.round(sliceH_pt * pxPerPdfPt), actualH_px = Math.min(sliceH_px, canvas.height - srcY);
+          const tmp = document.createElement('canvas');
+          tmp.width = canvas.width; tmp.height = actualH_px;
+          tmp.getContext('2d').drawImage(canvas, 0, srcY, canvas.width, actualH_px, 0, 0, canvas.width, actualH_px);
+          const sliceUrl = tmp.toDataURL('image/jpeg', .92), slicePt = (actualH_px / canvas.width) * imgW;
+          pdf.addImage(sliceUrl, 'JPEG', ML, y, imgW, slicePt);
+          srcY += actualH_px; y += slicePt;
+          if(srcY < canvas.height){ pdf.addPage(); y = ML; }
+        }
+        y += 8;
+      }
+    }
+
+    async function band(tag, txt){
+      const b = document.createElement('div');
+      b.style.cssText = 'width:860px;font-family:Arial,sans-serif;position:absolute;left:-9999px;top:0';
+      b.innerHTML = '<div style="background:linear-gradient(90deg,#0f766e,#0a4d47);border-radius:8px;padding:12px 22px;display:flex;align-items:center;gap:12px">' +
+        '<span style="background:rgba(255,255,255,.2);color:#fff;font-weight:700;font-size:12px;letter-spacing:1px;border-radius:20px;padding:3px 12px">' + tag + '</span>' +
+        '<span style="color:#fff;font-size:15px;font-weight:700">' + txt + '</span></div>';
+      document.body.appendChild(b);
+      await sleep(20);
+      await addImg(b);
+      document.body.removeChild(b);
+    }
+
+    const nome = document.getElementById('header-nome').textContent || 'Aluno(a)';
+    const turma = document.getElementById('ficha-turma').textContent || '—';
+    const acertos = window.__acertos !== undefined ? window.__acertos : '—';
+    const pct = window.__acertos !== undefined ? Math.round(window.__acertos/20*100)+'%' : '—';
+    const now = new Date();
+    const dtStr = now.toLocaleDateString('pt-BR') + ' às ' + now.toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'});
+
+    setP(5, 'Preparando capa…'); await sleep(40);
+    const coverEl = document.createElement('div');
+    coverEl.style.cssText = 'width:860px;font-family:Arial,sans-serif;overflow:hidden;position:absolute;left:-9999px;top:0';
+    coverEl.innerHTML =
+      '<div style="background:linear-gradient(135deg,#072f2c 0%,#0f766e 60%,#2f9e8f 100%);padding:32px 48px 28px;color:white">' +
+        '<div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;opacity:.75;font-weight:700;margin-bottom:6px">Sociologia · 3ª série do Ensino Médio · EM13CHS305</div>' +
+        '<div style="font-size:26px;font-weight:900;line-height:1.2;margin-bottom:5px">Quem regula a natureza?</div>' +
+        '<div style="font-size:13px;opacity:.85;font-style:italic">Sociedade de risco, governança ambiental e justiça · 20 questões objetivas</div>' +
+      '</div>' +
+      '<div style="background:#eef4f1;padding:22px 48px 26px;border-bottom:3px solid #c2603c">' +
+        '<div style="font-size:9px;text-transform:uppercase;letter-spacing:2px;color:#0f766e;font-weight:700;margin-bottom:5px">Aluno(a)</div>' +
+        '<div style="font-size:20px;font-weight:700;color:#14231e;border-bottom:2.5px solid #0f766e;padding-bottom:6px;display:inline-block;margin-bottom:16px">' + esc(nome) + '</div>' +
+        '<div style="display:flex;gap:12px;flex-wrap:wrap">' +
+          '<div style="background:white;border-radius:8px;padding:12px 18px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.07);min-width:84px">' +
+            '<div style="font-size:22px;font-weight:900;color:#0f766e">' + esc(turma) + '</div>' +
+            '<div style="font-size:9px;text-transform:uppercase;letter-spacing:1px;color:#888;margin-top:2px">Turma</div></div>' +
+          '<div style="background:white;border-radius:8px;padding:12px 18px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.07);min-width:84px">' +
+            '<div style="font-size:22px;font-weight:900;color:#c2603c">20</div>' +
+            '<div style="font-size:9px;text-transform:uppercase;letter-spacing:1px;color:#888;margin-top:2px">Questões</div></div>' +
+          '<div style="background:white;border-radius:8px;padding:12px 18px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.07);min-width:84px">' +
+            '<div style="font-size:22px;font-weight:900;color:#0f766e">' + acertos + '/20</div>' +
+            '<div style="font-size:9px;text-transform:uppercase;letter-spacing:1px;color:#888;margin-top:2px">Acertos (' + pct + ')</div></div>' +
+          '<div style="background:white;border-radius:8px;padding:12px 18px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.07);min-width:140px">' +
+            '<div style="font-size:13px;font-weight:700;color:#333">' + dtStr + '</div>' +
+            '<div style="font-size:9px;text-transform:uppercase;letter-spacing:1px;color:#888;margin-top:2px">Gerado em</div></div>' +
+        '</div>' +
+        '<div style="font-size:9px;color:#aaa;margin-top:14px">Colégio Estadual Rodolfo de Oliveira · CERO · Goiás · 2026</div>' +
+      '</div>';
+    document.body.appendChild(coverEl); await sleep(60); await addImg(coverEl); document.body.removeChild(coverEl);
+
+    setP(12, 'Preparando questões…'); await sleep(20);
+    await band('OBJETIVAS', 'Questões Objetivas — Gabarito Comentado');
+
+    const objetivasEls = document.querySelectorAll('.questao.objetiva');
+    let oi = 0;
+    for(const qEl0 of objetivasEls){
+      const num = qEl0.dataset.questao.replace('obj-','');
+      const correta = parseInt(qEl0.dataset.correta, 10);
+      const escolha = respMC[num];
+      const acertou = escolha === correta;
+      const enuncClone = qEl0.querySelector('.enunciado').cloneNode(true);
+      const badgeInClone = enuncClone.querySelector('.badge-resultado');
+      if(badgeInClone) badgeInClone.remove();
+      const numQInClone = enuncClone.querySelector('.num-q');
+      if(numQInClone) numQInClone.remove();
+      const enunc = enuncClone.textContent.trim();
+      setP(12 + Math.round(oi/objetivasEls.length*78), 'Questão ' + num + '/20…'); await sleep(10);
+
+      let altsHTML = '';
+      qEl0.querySelectorAll('.opcao').forEach(function(op){
+        const idx = parseInt(op.dataset.idx, 10);
+        const txt = op.querySelector('.opcao-txt').textContent;
+        let bg='#fdfdfa', bd='#dbe6e0', cor='#20302a', tag='';
+        if(idx===correta){ bg='#e6f7f2'; bd='#8ed8c8'; cor='#0a3830'; tag='<span style="color:#0a6e57;font-weight:700"> ✓ correta</span>'; }
+        if(idx===escolha && !acertou){ bg='#fdeee9'; bd='#e0a693'; cor='#7a2a18'; tag='<span style="color:#a8452a;font-weight:700"> ✗ sua resposta</span>'; }
+        else if(idx===escolha && acertou){ tag='<span style="color:#0a6e57;font-weight:700"> ← sua resposta</span>'; }
+        altsHTML += '<div style="display:flex;gap:9px;align-items:flex-start;background:'+bg+';border:1px solid '+bd+';border-radius:6px;padding:8px 12px;margin-bottom:6px"><div style="flex:0 0 auto;font-weight:700;color:#0f766e;font-size:12px">'+LETRAS[idx]+')</div><div style="font-size:12px;color:'+cor+';line-height:1.55">'+esc(txt)+tag+'</div></div>';
+      });
+
+      const headBg = acertou ? 'linear-gradient(90deg,#0f8c6e,#0a5a4d)' : 'linear-gradient(90deg,#b3452c,#8a2f1c)';
+      const gabTxt = qEl0.querySelector('.gabarito-info').textContent.trim();
+      const qEl = document.createElement('div');
+      qEl.style.cssText = 'width:860px;font-family:Arial,sans-serif;background:white;overflow:hidden;border:1px solid #c9dfd6;border-radius:10px;position:absolute;left:-9999px;top:0';
+      qEl.innerHTML =
+        '<div style="background:'+headBg+';padding:10px 22px;display:flex;justify-content:space-between;align-items:center">' +
+          '<span style="color:white;font-weight:700;font-size:13px;letter-spacing:.8px">QUESTÃO ' + num + '</span>' +
+          '<span style="background:rgba(255,255,255,.2);color:white;font-size:11px;padding:3px 12px;border-radius:20px;font-weight:700">' + (acertou?'ACERTOU':'ERROU') + '</span></div>' +
+        '<div style="padding:16px 24px 14px;background:#fdfdfa">' +
+          '<div style="font-size:13px;font-weight:700;color:#14231e;line-height:1.6;margin-bottom:12px">' + esc(enunc) + '</div>' +
+          altsHTML +
+          '<div style="margin-top:10px;background:#fbf0ea;border:1px solid #eec5b0;border-radius:6px;padding:10px 14px">' +
+            '<div style="font-size:12px;color:#5d2f1c;line-height:1.6">' + esc(gabTxt) + '</div></div>' +
+        '</div>';
+      document.body.appendChild(qEl); await sleep(10); await addImg(qEl); document.body.removeChild(qEl);
+      oi++;
+    }
+
+    setP(94, 'Finalizando…'); await sleep(30);
+    const totalPages = pdf.getNumberOfPages();
+    for(let p=1; p<=totalPages; p++){
+      pdf.setPage(p);
+      const fEl = document.createElement('div');
+      fEl.style.cssText = 'width:' + Math.round(CW) + 'px;height:22px;background:#eef4f1;display:flex;align-items:center;justify-content:space-between;padding:0 28px;font-size:10px;color:#888;font-family:Arial,sans-serif;position:absolute;left:-9999px;top:0';
+      fEl.innerHTML = '<span>Quem regula a natureza? · ' + esc(nome) + ' · Acertos: ' + acertos + '/20</span><span>Página ' + p + ' de ' + totalPages + '</span>';
+      document.body.appendChild(fEl);
+      const fc = await html2canvas(fEl, {scale:2, logging:false, backgroundColor:'#eef4f1'});
+      document.body.removeChild(fEl);
+      const fUrl = fc.toDataURL('image/jpeg', .9), fH = (fc.height / fc.width) * CW;
+      pdf.setFillColor(238,244,241); pdf.rect(ML, PH-fH, CW, fH, 'F');
+      pdf.addImage(fUrl, 'JPEG', ML, PH-fH, CW, fH);
+    }
+
+    setP(100, 'Salvando…'); await sleep(200);
+    const safeName = nome.replace(/[^a-zA-Z0-9_\-]/g, '_');
+    pdf.save('Sociologia_EM13CHS305_' + safeName + '.pdf');
+
+  } catch(err){
+    console.error(err);
+    alert('Erro ao gerar PDF: ' + err.message);
+  } finally {
+    const ov = document.getElementById('pdf-overlay');
+    if(ov) document.body.removeChild(ov);
+  }
+}
+
+</script>
+
+</body>
+</html>

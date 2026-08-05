@@ -1,0 +1,1089 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Atividade — História Ambiental e Legislação no Brasil | CERO</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+  :root{
+    --bg:#f4f6f0;
+    --bg-alt:#e5ebd8;
+    --paper:#ffffff;
+    --ink:#1c261d;
+    --ink-soft:#4a594e;
+    --verde:#1f3d2b;
+    --verde-dark:#14291b;
+    --verde-2:#2f5a3f;
+    --terracota:#b4442a;
+    --terracota-light:#f2d5ce;
+    --line:#cad6c5;
+    --shadow:0 10px 30px rgba(31,61,43,.1);
+    --radius:14px;
+    --font-title:'Playfair Display', serif;
+    --font-body:'Source Serif 4', serif;
+    --font-mono:'JetBrains Mono', monospace;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:var(--font-body);
+    line-height:1.7;
+    -webkit-touch-callout:none;
+    user-select:none;
+  }
+  .selecionavel, main{user-select:text;}
+  .campo-resposta{user-select:text;}
+
+  /* ===== CAPA / GATE ===== */
+  #capa{
+    min-height:100vh;
+    display:flex; align-items:center; justify-content:center;
+    position:relative;
+    overflow:hidden;
+    background:linear-gradient(to bottom, #14291b, #1f3d2b, #2f5a3f);
+    padding:24px;
+  }
+  #capa .grade-centralizada{
+    position:absolute;
+    top:0; bottom:0; left:50%;
+    transform:translateX(-50%);
+    width:100%;
+    max-width:896px;
+    pointer-events:none;
+    z-index:0;
+    opacity:.08;
+    background:
+      repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(255,255,255,.5) 39px, rgba(255,255,255,.5) 40px),
+      repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(255,255,255,.5) 39px, rgba(255,255,255,.5) 40px);
+    background-size:40px 40px;
+  }
+  .capa-card{
+    position:relative;
+    z-index:1;
+    background:var(--paper);
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+    max-width:480px;
+    width:100%;
+    padding:36px 32px;
+    text-align:center;
+  }
+  .capa-card .tag{
+    display:inline-block; font-family:var(--font-mono); font-size:.7rem;
+    letter-spacing:.1em; text-transform:uppercase; color:var(--verde-dark);
+    background:rgba(31,61,43,.12); padding:5px 12px; border-radius:999px; margin-bottom:14px;
+  }
+  .capa-card h1{font-family:var(--font-title); font-size:1.5rem; margin:0 0 10px; color:var(--verde-dark);}
+  .capa-card p.desc{color:var(--ink-soft); font-size:.94rem; margin:0 0 22px;}
+  .capa-card input{
+    width:100%; padding:12px 14px; border:1px solid var(--line); border-radius:8px;
+    font-family:var(--font-body); font-size:1rem; margin-bottom:14px;
+  }
+  .capa-card button{
+    width:100%; padding:13px; border:none; border-radius:8px;
+    background:var(--verde); color:#fff; font-weight:600; font-size:1rem; cursor:pointer;
+    font-family:var(--font-body); transition:filter .15s ease;
+  }
+  .capa-card button:hover{filter:brightness(1.08);}
+  .capa-aviso{font-size:.78rem; color:#a33; margin-top:8px; display:none;}
+
+  /* ===== APP ===== */
+  #app{display:none;}
+  .sticky-header{
+    position:sticky; top:0; z-index:50;
+    background:var(--verde-dark); color:#f2f7f3;
+    padding:12px 20px; display:flex; align-items:center; justify-content:space-between;
+    flex-wrap:wrap; gap:8px;
+    font-family:var(--font-mono); font-size:.82rem;
+  }
+  .sticky-header .aluno{font-family:var(--font-body); font-weight:600; font-size:.92rem;}
+  .barra-progresso-trilho{
+    flex:1; min-width:120px; height:8px; background:rgba(255,255,255,.2); border-radius:6px; overflow:hidden; margin:0 14px;
+  }
+  .barra-progresso-fill{height:100%; background:var(--terracota); width:0%; transition:width .3s ease;}
+
+  .wrap{max-width:800px; margin:0 auto; padding:32px 24px 60px;}
+
+  header.topo{margin-bottom:28px;}
+  header.topo .hero-tag{
+    display:inline-block; font-family:var(--font-mono); font-size:.72rem;
+    letter-spacing:.1em; text-transform:uppercase; color:var(--verde-dark);
+    background:rgba(31,61,43,.12); padding:5px 12px; border-radius:999px; margin-bottom:12px;
+  }
+  header.topo h1{font-family:var(--font-title); font-size:clamp(1.5rem,4vw,2rem); margin:0 0 8px; color:var(--ink);}
+  header.topo p.sub{color:var(--ink-soft); margin:0; font-size:.98rem;}
+  .descritor-bar{
+    font-family:var(--font-mono); font-size:.76rem; color:var(--ink-soft);
+    background:var(--paper); border:1px solid var(--line); border-radius:8px;
+    padding:8px 14px; margin-bottom:14px; display:inline-block;
+  }
+  .ficha-id{
+    display:flex; flex-wrap:wrap; gap:10px 26px;
+    background:var(--paper); border:1px solid var(--line); border-radius:10px;
+    padding:12px 16px; margin-top:12px; font-family:var(--font-mono); font-size:.84rem; color:var(--ink);
+  }
+  .ficha-id span b{color:var(--verde-dark);}
+
+  /* ===== TEXTO DE APOIO & BOX VIDEO ===== */
+  .texto-apoio{
+    background:var(--paper); border:1px solid var(--line); border-radius:var(--radius);
+    box-shadow:var(--shadow); padding:24px 28px; margin-bottom:20px;
+  }
+  .texto-apoio h2{font-family:var(--font-title); font-size:1.2rem; color:var(--verde-dark); margin:0 0 4px;}
+  .texto-apoio .fonte-tag{font-family:var(--font-mono); font-size:.72rem; color:var(--ink-soft); margin-bottom:12px; display:block;}
+  .texto-apoio p{margin:0 0 12px; color:var(--ink);}
+  .texto-apoio p:last-of-type{margin-bottom:0;}
+
+  /* BOX VÍDEO HORIZONTAL */
+  .box-video-horizontal{
+    background:var(--bg-alt);
+    border:1px solid var(--line);
+    border-left:5px solid var(--terracota);
+    border-radius:10px;
+    padding:16px 20px;
+    margin-top:16px;
+    display:flex;
+    align-items:center;
+    gap:18px;
+  }
+  .box-video-icon{
+    font-size:2.2rem;
+    flex:0 0 auto;
+    line-height:1;
+  }
+  .box-video-info{
+    flex:1;
+  }
+  .box-video-info h4{
+    font-family:var(--font-title);
+    font-size:1.05rem;
+    margin:0 0 4px;
+    color:var(--verde-dark);
+  }
+  .box-video-info p{
+    font-size:.86rem;
+    color:var(--ink-soft);
+    margin:0 0 10px;
+    line-height:1.4;
+  }
+  .box-video-btn{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    background:var(--terracota);
+    color:#ffffff !important;
+    text-decoration:none;
+    font-family:var(--font-mono);
+    font-size:.78rem;
+    font-weight:700;
+    padding:8px 16px;
+    border-radius:6px;
+    transition:filter .15s ease;
+  }
+  .box-video-btn:hover{
+    filter:brightness(1.1);
+  }
+
+  /* ===== QUESTOES ===== */
+  .questoes-titulo{
+    font-family:var(--font-title); font-size:1.3rem; color:var(--verde-dark);
+    margin:28px 0 18px; display:flex; align-items:center; gap:10px; border-bottom:2px solid var(--terracota); padding-bottom:6px;
+  }
+  .questao{
+    background:var(--paper); border:1px solid var(--line); border-radius:12px;
+    padding:20px 22px; margin-bottom:24px;
+  }
+  .questao .num-q{
+    display:inline-flex; align-items:center; justify-content:center;
+    width:26px; height:26px; border-radius:50%; background:var(--verde);
+    color:#fff; font-family:var(--font-mono); font-size:.78rem; margin-right:8px; flex-shrink:0;
+  }
+  .questao .enunciado{font-weight:600; color:var(--ink); margin-bottom:12px; display:flex; align-items:flex-start;}
+  .questao textarea{
+    width:100%; min-height:100px; padding:12px 14px; border:1px solid var(--line); border-radius:8px;
+    font-family:var(--font-body); font-size:.96rem; resize:vertical; color:var(--ink);
+  }
+  .questao textarea:focus{outline:2px solid var(--verde-2); outline-offset:1px;}
+  .contador-chars{font-family:var(--font-mono); font-size:.72rem; color:var(--ink-soft); margin-top:6px; text-align:right;}
+
+  /* ===== OPCOES (OBJETIVAS) ===== */
+  .opcao{
+    display:flex; gap:12px; align-items:flex-start;
+    padding:12px 14px; border:1.5px solid var(--line); border-radius:8px;
+    margin-bottom:8px; cursor:pointer; transition:all .15s ease; background:var(--paper);
+  }
+  .opcao:hover{border-color:var(--verde); background:var(--bg-alt);}
+  .opcao.sel{border-color:var(--verde); background:var(--bg-alt);}
+  .opcao.correta{border-color:var(--verde-2); background:#e9f5ed;}
+  .opcao.errada{border-color:#c0392b; background:#fdeeee;}
+  .opcao.travada{cursor:default;}
+  .opcao-letra{
+    flex:0 0 auto; width:26px; height:26px; border-radius:50%;
+    background:var(--bg-alt); color:var(--ink-soft);
+    font-family:var(--font-mono); font-weight:700; font-size:.78rem;
+    display:flex; align-items:center; justify-content:center; transition:all .15s ease;
+  }
+  .opcao.sel .opcao-letra{background:var(--verde); color:#fff;}
+  .opcao.correta .opcao-letra{background:var(--verde-2); color:#fff;}
+  .opcao.errada .opcao-letra{background:#c0392b; color:#fff;}
+  .opcao-txt{font-size:.94rem; color:var(--ink); line-height:1.6; padding-top:2px;}
+  .opcao-marca{margin-left:auto; font-size:1rem; align-self:center; display:none; flex:0 0 auto;}
+  .gabarito-info{
+    display:none; margin-top:12px; padding:12px 16px;
+    background:#fbf3ea; border:1px solid #ebd4c1; border-radius:8px;
+    font-size:.88rem; color:#68331e;
+  }
+  .gabarito-info.show{display:block;}
+  .gabarito-info b{color:var(--terracota);}
+  .questao .badge-resultado{
+    display:none; font-family:var(--font-mono); font-size:.68rem; font-weight:700;
+    padding:2px 10px; border-radius:20px; margin-left:8px; color:#fff;
+  }
+  .questao .badge-resultado.ok{display:inline-block; background:var(--verde-2);}
+  .questao .badge-resultado.no{display:inline-block; background:#c0392b;}
+
+  .comentario-prof{
+    display:none; margin-top:14px; padding:14px 16px;
+    background:#eaf2ed; border:1px solid #c2dad0; border-radius:8px; font-size:.9rem; color:var(--verde-dark);
+  }
+  .comentario-prof.show{display:block;}
+  .comentario-prof b{display:block; margin-bottom:4px; font-family:var(--font-title); font-size:.92rem;}
+
+  /* ===== ALERTA / FINALIZAR ===== */
+  .alerta-incompleto{
+    display:none; background:#fdf3e2; border:1px solid #f1d9a6; color:#8a5a10;
+    padding:12px 16px; border-radius:8px; font-size:.9rem; margin-bottom:16px;
+  }
+  .alerta-incompleto.show{display:block;}
+
+  .acoes-finais{display:flex; gap:12px; flex-wrap:wrap; margin-top:20px;}
+  .btn{
+    font-family:var(--font-body); font-weight:600; font-size:.94rem; padding:12px 22px;
+    border-radius:8px; border:none; cursor:pointer; transition:filter .15s ease;
+  }
+  .btn:hover{filter:brightness(1.08);}
+  .btn-primario{background:var(--verde); color:#fff;}
+  .btn-secundario{background:transparent; color:var(--ink); border:1px solid var(--line);}
+  .btn-pdf{background:var(--terracota); color:#fff;}
+  .btn[disabled]{opacity:.5; cursor:not-allowed;}
+
+  /* ===== POPUP ===== */
+  .popup-overlay{
+    display:none; position:fixed; inset:0; background:rgba(20,41,27,.6);
+    align-items:center; justify-content:center; z-index:200; padding:20px;
+  }
+  .popup-overlay.show{display:flex;}
+  .popup-card{
+    background:var(--paper); border-radius:var(--radius); box-shadow:var(--shadow);
+    max-width:420px; width:100%; padding:32px 28px; text-align:center;
+  }
+  .popup-card .emoji{font-size:2.4rem; margin-bottom:10px;}
+  .popup-card h3{font-family:var(--font-title); margin:0 0 8px; color:var(--verde-dark);}
+  .popup-card p{color:var(--ink-soft); font-size:.94rem; margin:0 0 20px;}
+
+  footer.rodape{text-align:center; padding:24px; color:var(--ink-soft); font-family:var(--font-mono); font-size:.8rem;}
+
+  @media (max-width:600px){
+    .wrap{padding:24px 16px 50px;}
+    .texto-apoio, .questao{padding:18px 18px;}
+    .box-video-horizontal{flex-direction:column; text-align:center; gap:10px;}
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== CAPA ===== -->
+<div id="capa">
+  <div class="grade-centralizada"></div>
+  <div class="capa-card">
+    <span class="tag">3ª série · Ensino Médio · CERO</span>
+    <h1>História Ambiental e Regulação no Brasil</h1>
+    <p class="desc">Atividade de História e CHSA baseada no texto pedagógico e no documentário da TV Senado. Contém 10 questões dissertativas e 10 questões objetivas com gabarito comentado.</p>
+    <input type="text" id="nome-aluno" placeholder="Seu nome completo">
+    <input type="text" id="turma-aluno" placeholder="Turma (ex.: 3ª A)">
+    <button onclick="iniciarAtividade()">Iniciar atividade</button>
+    <div class="capa-aviso" id="capa-aviso">Por favor, digite seu nome para continuar.</div>
+  </div>
+</div>
+
+<!-- ===== APP ===== -->
+<div id="app">
+  <div class="sticky-header">
+    <span class="aluno" id="header-nome"></span>
+    <div class="barra-progresso-trilho"><div class="barra-progresso-fill" id="barra-fill"></div></div>
+    <span id="contador-geral">Respondidas: 0/20</span>
+  </div>
+
+  <div class="wrap">
+    <header class="topo selecionavel">
+      <span class="descritor-bar">Ciências Humanas e Sociais Aplicadas / 3ª série do Ensino Médio &nbsp;|&nbsp; (EM13CHS305) – A Natureza como Recurso e a Evolução da Legislação Ambiental</span>
+      <span class="hero-tag" style="display:block; margin-top:10px;">Atividade Avaliativa · Tópico 2</span>
+      <h1>A Natureza como Recurso Ilimitado e a Evolução da Legislação Ambiental no Brasil</h1>
+      <p class="sub">Leia cada bloco de apoio e assista aos trechos do documentário "EcoSenado Especial 200 anos" para responder às questões dissertativas e objetivas.</p>
+      <div class="ficha-id" id="ficha-id">
+        <span><b>NOME:</b> <span id="ficha-nome"></span></span>
+        <span><b>DATA:</b> <span id="ficha-data"></span></span>
+        <span><b>TURMA:</b> <span id="ficha-turma"></span></span>
+      </div>
+    </header>
+
+    <main>
+      <h2 class="questoes-titulo">&#9997;&#65039; Parte I — Leituras Intercaladas e Questões Dissertativas</h2>
+
+      <!-- BLOCO DISSERTATIVA 1 -->
+      <section class="texto-apoio selecionavel">
+        <h2>1. A ilusão da abundância e a exploração colonial</h2>
+        <span class="fonte-tag">Leitura de Apoio — Bloco 1</span>
+        <p>Por séculos, a exploração da natureza nas Américas operou sob o mito dos recursos inesgotáveis: a extração predatória de pau-brasil, a monocultura açucareira e a mineração de ouro organizaram um modelo econômico extrativista. As poucas normas existentes no período colonial, assentadas nas Ordenações Filipinas e em cartas régias, não visavam à preservação ecológica, mas à garantia do monopólio da Coroa Portuguesa e ao controle dos lucros do fisco.</p>
+        
+        <!-- BOX VÍDEO NA HORIZONTAL -->
+        <div class="box-video-horizontal">
+          <div class="box-video-icon">🎬</div>
+          <div class="box-video-info">
+            <h4>Vídeo de Apoio: História da Legislação Ambiental no Brasil</h4>
+            <p>Documentário EcoSenado Especial 200 Anos — Trajetória da legislação ambiental desde o Brasil Colônia até o século XXI.</p>
+            <a href="https://youtu.be/Yw22URSxrXo?si=t033jmOq8ofnxkn6" target="_blank" class="box-video-btn">▶ Assistir no YouTube</a>
+          </div>
+        </div>
+      </section>
+
+      <div class="questao" data-questao="1">
+        <div class="enunciado"><span class="num-q">1</span> Com base na leitura e no documentário da TV Senado, por que é correto afirmar que as primeiras regulamentações do Brasil Colônia (como as Ordenações Filipinas e a regulação do Pau-Brasil) não eram leis verdadeiramente "protecionistas", mas sim leis fiscais e regulatórias?</div>
+        <textarea id="resp-1" class="campo-resposta dissertativa" data-min="60" placeholder="Escreva sua resposta aqui..."></textarea>
+        <div class="contador-chars">0 caracteres (mínimo 60)</div>
+        <div class="comentario-prof">
+          <b>Comentário do professor</b>
+          Espera-se que o estudante explique que essas normas não buscavam resguardar os ecossistemas ou a biodiversidade por seu valor intrínseco, mas apenas garantir o monopólio mercantil da Coroa Portuguesa sobre a extração de recursos valiosos (madeira, minérios e navegação), evitando o uso não autorizado e a concorrência de outras potências europeias.
+        </div>
+      </div>
+
+      <!-- BLOCO DISSERTATIVA 2 -->
+      <section class="texto-apoio selecionavel">
+        <h2>2. A tese historiográfica da escassez ou perigo</h2>
+        <span class="fonte-tag">Leitura de Apoio — Bloco 2</span>
+        <p>Uma tese central da História Ambiental afirma que o meio ambiente só se torna objeto de política pública e legislação quando se torna <b>escasso</b> ou <b>perigoso</b>. Enquanto a floresta parece infinita ou os recursos aparentam inesgotabilidade, a sociedade e as elites políticas não legislam sobre sua conservação.</p>
+      </section>
+
+      <div class="questao" data-questao="2">
+        <div class="enunciado"><span class="num-q">2</span> Explique a tese de que "o ambiente só vira objeto de política pública quando se torna escasso ou perigoso". Como os primeiros códigos brasileiros (Código de Águas e Código Florestal de 1934) exemplificam essa ideia?</div>
+        <textarea id="resp-2" class="campo-resposta dissertativa" data-min="60" placeholder="Escreva sua resposta aqui..."></textarea>
+        <div class="contador-chars">0 caracteres (mínimo 60)</div>
+        <div class="comentario-prof">
+          <b>Comentário do professor</b>
+          Espera-se que o estudante indique que a legislação surge historicamente apenas no momento em que a escassez ameaça a continuidade das atividades econômicas ou a saúde coletiva. Os códigos de 1934 (na Era Vargas) nasceram da percepção de escassez da lenha para a indústria/transporte e da degradação dos mananciais hídricos em áreas urbanas, regulando o uso utilitário e energético dos recursos.
+        </div>
+      </div>
+
+      <!-- BLOCO DISSERTATIVA 3 -->
+      <section class="texto-apoio selecionavel">
+        <h2>3. A crítica pioneira da elite ilustrada no século XIX</h2>
+        <span class="fonte-tag">Leitura de Apoio — Bloco 3</span>
+        <p>Já nas primeiras décadas do século XIX, pensadores da elite ilustrada brasileira denunciavam a destruição irracional das florestas tropicais. O maior expoente desse grupo foi José Bonifácio de Andrada e Silva, o "Patriarca da Independência", que em 1819 já ficara estarrecido com a devastação das matas ciliares ao longo do rio Tietê em São Paulo.</p>
+      </section>
+
+      <div class="questao" data-questao="3">
+        <div class="enunciado"><span class="num-q">3</span> Quais eram as principais críticas de José Bonifácio de Andrada e Silva em relação à devastação florestal e às queimadas no início do século XIX? Qual era o fundamento de seu argumento?</div>
+        <textarea id="resp-3" class="campo-resposta dissertativa" data-min="60" placeholder="Escreva sua resposta aqui..."></textarea>
+        <div class="contador-chars">0 caracteres (mínimo 60)</div>
+        <div class="comentario-prof">
+          <b>Comentário do professor</b>
+          Espera-se que o estudante mencione que José Bonifácio criticava o uso do machado destruidor, a ignorância e o egoísmo dos proprietários de terras, alertando que a destruição das matas secaria rios e fontes e alteraria o clima. Seu argumento tinha caráter utilitário e racionalista: era preciso conservar as matas e usar o solo com técnica para garantir a sustentabilidade da agricultura e do futuro econômico do país.
+        </div>
+      </div>
+
+      <!-- BLOCO DISSERTATIVA 4 -->
+      <section class="texto-apoio selecionavel">
+        <h2>4. Conservacionismo versus Preservacionismo</h2>
+        <span class="fonte-tag">Leitura de Apoio — Bloco 4</span>
+        <p>A História Ambiental reconhece duas correntes clássicas no debate sobre a proteção da natureza: o <b>conservacionismo</b> (que defende o uso racional e planejado dos recursos para manter a exploração contínua) e o <b>preservacionismo</b> (que defende a intocabilidade de áreas naturais por seu valor estético, científico e intrínseco).</p>
+      </section>
+
+      <div class="questao" data-questao="4">
+        <div class="enunciado"><span class="num-q">4</span> Diferencie conservacionismo de preservacionismo. De que maneira o Sistema Nacional de Unidades de Conservação (SNUC) no Brasil acomodou essas duas tradições?</div>
+        <textarea id="resp-4" class="campo-resposta dissertativa" data-min="60" placeholder="Escreva sua resposta aqui..."></textarea>
+        <div class="contador-chars">0 caracteres (mínimo 60)</div>
+        <div class="comentario-prof">
+          <b>Comentário do professor</b>
+          Espera-se que o estudante diferencie o conservacionismo (uso sustentável/racional dos recursos) do preservacionismo (proteção integral sem intervenção humana direta). No Brasil, o SNUC acomodou ambas ao dividir as Unidades de Conservação em duas categorias: Proteção Integral (inspiração preservacionista, como Parques Nacionais) e Uso Sustentável (inspiração conservacionista, como Reservas Extrativistas e APAs).
+        </div>
+      </div>
+
+      <!-- BLOCO DISSERTATIVA 5 -->
+      <section class="texto-apoio selecionavel">
+        <h2>5. A Lei de Terras de 1850 e seus impactos socioambientais</h2>
+        <span class="fonte-tag">Leitura de Apoio — Bloco 5</span>
+        <p>Com o fim do regime colonial de sesmarias e a aprovação da Lei de Terras (Lei nº 601/1850) durante o Segundo Reinado, estabeleceu-se que as terras devolutas só poderiam ser adquiridas por compra em dinheiro. Essa legislação definiu a estrutura fundiária concentrada e latifundiária no Brasil até os dias atuais.</p>
+      </section>
+
+      <div class="questao" data-questao="5">
+        <div class="enunciado"><span class="num-q">5</span> De acordo com o documentário "EcoSenado", qual é a relação entre a aprovação da Lei de Terras em 1850, a concentração fundiária e os problemas ambientais no Brasil?</div>
+        <textarea id="resp-5" class="campo-resposta dissertativa" data-min="60" placeholder="Escreva sua resposta aqui..."></textarea>
+        <div class="contador-chars">0 caracteres (mínimo 60)</div>
+        <div class="comentario-prof">
+          <b>Comentário do professor</b>
+          Espera-se que o estudante relacione a obrigatoriedade da compra monetária de terras à exclusão de camponeses, imigrantes e ex-escravizados, consolidando o poder dos grandes latifundiários. Essa concentração gerou uma ocupação desordenada e agressiva do solo, forçando populações marginalizadas a ocupar áreas frágeis ou a expandir a fronteira agrícola por meio de queimadas descontroladas e desmatamento.
+        </div>
+      </div>
+
+      <!-- BLOCO DISSERTATIVA 6 -->
+      <section class="texto-apoio selecionavel">
+        <h2>6. A atuação dos cientistas-preservacionistas dos anos 1930</h2>
+        <span class="fonte-tag">Leitura de Apoio — Bloco 6</span>
+        <p>Na década de 1930, um grupo de cientistas e naturalistas ligados a instituições como o Museu Nacional e o Jardim Botânico do Rio de Janeiro (como Alberto José Sampaio, Cândido de Melo Leitão e Roquette-Pinto) liderou a Primeira Conferência Brasileira de Proteção à Natureza (1934), influenciando diretamente o governo Vargas.</p>
+      </section>
+
+      <div class="questao" data-questao="6">
+        <div class="enunciado"><span class="num-q">6</span> Qual era a visão política dos cientistas e naturalistas da década de 1930 para implementar o programa de proteção à natureza e criar os primeiros Parques Nacionais no Brasil?</div>
+        <textarea id="resp-6" class="campo-resposta dissertativa" data-min="60" placeholder="Escreva sua resposta aqui..."></textarea>
+        <div class="contador-chars">0 caracteres (mínimo 60)</div>
+        <div class="comentario-prof">
+          <b>Comentário do professor</b>
+          Espera-se que o estudante comente que esses naturalistas viam a necessidade de um Estado centralizado e forte (alinhado com o contexto do governo provisório de Getúlio Vargas) para impor a proteção ambiental acima dos interesses particulares dos latifundiários. Essa articulação resultou na criação dos primeiros Parques Nacionais (Itatiaia em 1937, Serra dos Órgãos e Iguaçu em 1939).
+        </div>
+      </div>
+
+      <!-- BLOCO DISSERTATIVA 7 -->
+      <section class="texto-apoio selecionavel">
+        <h2>7. O Código Florestal de 1965 e as APPs</h2>
+        <span class="fonte-tag">Leitura de Apoio — Bloco 7</span>
+        <p>Aprovado em 1965 durante o regime militar, a partir do reaproveitamento de debates legislativos acumulados desde os anos 1950, o segundo Código Florestal brasileiro (Lei nº 4.771/1965) trouxe avanços técnicos significativos na definição de áreas protegidas.</p>
+      </section>
+
+      <div class="questao" data-questao="7">
+        <div class="enunciado"><span class="num-q">7</span> Quais foram os principais conceitos de proteção introduzidos e consolidados pelo Código Florestal de 1965 (Lei nº 4.771/1965)?</div>
+        <textarea id="resp-7" class="campo-resposta dissertativa" data-min="60" placeholder="Escreva sua resposta aqui..."></textarea>
+        <div class="contador-chars">0 caracteres (mínimo 60)</div>
+        <div class="comentario-prof">
+          <b>Comentário do professor</b>
+          Espera-se que o estudante destaque a consolidação e parametrização clara das Áreas de Preservação Permanente (APPs) — protegendo encostas, topos de morros e margens de rios de acordo com a largura do leito — e a regulamentação obrigatória da Reserva Legal (porcentagem de vegetação nativa mantida nas propriedades rurais).
+        </div>
+      </div>
+
+      <!-- BLOCO DISSERTATIVA 8 -->
+      <section class="texto-apoio selecionavel">
+        <h2>8. Contradições da Ditadura Militar na Amazônia</h2>
+        <span class="fonte-tag">Leitura de Apoio — Bloco 8</span>
+        <p>Na virada dos anos 1960 para os anos 1970, o mesmo governo ditatorial que aprovara o Código Florestal em 1965 lançou grandes projetos de integração nacional na Amazônia sob o lema "Integrar para não entregar", incentivando a ocupação predatória e a abertura de rodovias como a Transamazônica (1972).</p>
+      </section>
+
+      <div class="questao" data-questao="8">
+        <div class="enunciado"><span class="num-q">8</span> Explique a contradição entre a aprovação do Código Florestal de 1965 e os projetos de integração da Amazônia promovidos pela ditadura militar nas décadas de 1960 e 1970.</div>
+        <textarea id="resp-8" class="campo-resposta dissertativa" data-min="60" placeholder="Escreva sua resposta aqui..."></textarea>
+        <div class="contador-chars">0 caracteres (mínimo 60)</div>
+        <div class="comentario-prof">
+          <b>Comentário do professor</b>
+          Espera-se que o estudante aponte a contradição entre a teoria legal do Código de 1965 e a prática estatal desenvolvimentista: o governo promoveu incentivos fiscais para o desmatamento, queimadas e pecuária ostensiva na Amazônia, inclusive utilizando desfolhantes químicos ("agente laranja"), visando à geopolítica de segurança nacional e ocupação territorial em detrimento da conservação.
+        </div>
+      </div>
+
+      <!-- BLOCO DISSERTATIVA 9 -->
+      <section class="texto-apoio selecionavel">
+        <h2>9. A Política Nacional do Meio Ambiente (1981)</h2>
+        <span class="fonte-tag">Leitura de Apoio — Bloco 9</span>
+        <p>A Lei nº 6.938/1981 instituiu no Brasil a Política Nacional do Meio Ambiente (PNMA), criando o Sistema Nacional do Meio Ambiente (SISNAMA) e estabelecendo novos instrumentos jurídicos de gestão ambiental.</p>
+      </section>
+
+      <div class="questao" data-questao="9">
+        <div class="enunciado"><span class="num-q">9</span> Por que a Lei nº 6.938/1981 (Política Nacional do Meio Ambiente) é considerada um marco divisor de águas na história da legislação ambiental no Brasil?</div>
+        <textarea id="resp-9" class="campo-resposta dissertativa" data-min="60" placeholder="Escreva sua resposta aqui..."></textarea>
+        <div class="contador-chars">0 caracteres (mínimo 60)</div>
+        <div class="comentario-prof">
+          <b>Comentário do professor</b>
+          Espera-se que o estudante explique que a PNMA superou a lógica dos códigos setoriais fragmentados ao tratar o meio ambiente como um bem público sistêmico a ser protegido de forma integrada. A lei introduziu instrumentos modernos como o Licenciamento Ambiental, a Avaliação de Impacto Ambiental (EIA/RIMA), o zoneamento ambiental e a responsabilidade civil objetiva por danos ambientais.
+        </div>
+      </div>
+
+      <!-- BLOCO DISSERTATIVA 10 -->
+      <section class="texto-apoio selecionavel">
+        <h2>10. A emergência da pressão internacional e a resposta brasileira</h2>
+        <span class="fonte-tag">Leitura de Apoio — Bloco 10</span>
+        <p>A partir da Conferência de Estocolmo (1972) e ao longo da década de 1980, ambientalistas como o gaúcho José Lutzenberger denunciaram globalmente a destruição da Amazônia. Isso gerou fortes pressões diplomáticas internacionais que coincidiram com o processo de redemocratização e a convocação da Assembleia Nacional Constituinte de 1987-1988.</p>
+      </section>
+
+      <div class="questao" data-questao="10">
+        <div class="enunciado"><span class="num-q">10</span> De que modo a pressão internacional contra o desmatamento na Amazônia e a atuação de ativistas como José Lutzenberger influenciaram os debates que culminaram na elaboração do Capítulo do Meio Ambiente na Constituição de 1988?</div>
+        <textarea id="resp-10" class="campo-resposta dissertativa" data-min="60" placeholder="Escreva sua resposta aqui..."></textarea>
+        <div class="contador-chars">0 caracteres (mínimo 60)</div>
+        <div class="comentario-prof">
+          <b>Comentário do professor</b>
+          Espera-se que o estudante argumente que as denúncias sobre a destruição amazônica expuseram o Brasil ao isolamento diplomático e financeiro. Esse cenário internacional, somado à mobilização da sociedade civil no processo de redemocratização, pressionou os constituintes a dedicar um capítulo inteiro e inédito ao meio ambiente (Art. 225) na Carta de 1988, garantindo o direito ao meio ambiente ecologicamente equilibrado como um bem de uso comum do povo.
+        </div>
+      </div>
+
+
+      <!-- PARTE II - OBJETIVAS -->
+      <h2 class="questoes-titulo">&#128221; Parte II — Questões Objetivas (Com 1 Gabarito e 4 Distratores Plausíveis)</h2>
+
+      <div class="questao objetiva" data-questao="obj-1" data-correta="2">
+        <div class="enunciado"><span class="num-q">1</span> (EM13CHS305) Durante o período do Brasil Colônia, as normas aplicadas à exploração da vegetação e dos recursos hídricos eram fundamentadas nas Ordenações Filipinas. A principal característica dessas normas era: <span class="badge-resultado" id="badge-obj-1"></span></div>
+        <div class="opcao" data-idx="0" onclick="marcarOpcao(1,0)"><div class="opcao-letra">A</div><div class="opcao-txt">Estabelecer sanções severas para proteger a biodiversidade amazônica e garantir a conservação de ecossistemas frágeis.</div><div class="opcao-marca" id="marca-1-0"></div></div>
+        <div class="opcao" data-idx="1" onclick="marcarOpcao(1,1)"><div class="opcao-letra">B</div><div class="opcao-txt">Garantir o direito constitucional de acesso das populações indígenas à terra e aos recursos naturais das florestas.</div><div class="opcao-marca" id="marca-1-1"></div></div>
+        <div class="opcao" data-idx="2" onclick="marcarOpcao(1,2)"><div class="opcao-letra">C</div><div class="opcao-txt">Regular o uso econômico dos recursos naturais com o objetivo de assegurar o monopólio e o arrecadamento fiscal da Coroa Portuguesa.</div><div class="opcao-marca" id="marca-1-2"></div></div>
+        <div class="opcao" data-idx="3" onclick="marcarOpcao(1,3)"><div class="opcao-letra">D</div><div class="opcao-txt">Criar parques nacionais e áreas de proteção ambiental para evitar a erosão causada pelo cultivo de cana-de-açúcar.</div><div class="opcao-marca" id="marca-1-3"></div></div>
+        <div class="opcao" data-idx="4" onclick="marcarOpcao(1,4)"><div class="opcao-letra">E</div><div class="opcao-txt">Proibir qualquer tipo de intervenção humana nas margens dos rios navegáveis no interior da colônia.</div><div class="opcao-marca" id="marca-1-4"></div></div>
+        <div class="gabarito-info" id="gab-1"><b>Gabarito: C.</b> No período colonial, não havia o conceito moderno de preservação ecológica. As leis visavam fiscalizar a exploração econômica e resguardar os interesses comerciais do reino de Portugal.</div>
+      </div>
+
+      <div class="questao objetiva" data-questao="obj-2" data-correta="0">
+        <div class="enunciado"><span class="num-q">2</span> (EM13CHS305) Na perspectiva da História Ambiental, a emergência das primeiras leis de proteção da natureza ocorre quando determinada sociedade percebe limites na exploração. Essa tese postula que: <span class="badge-resultado" id="badge-obj-2"></span></div>
+        <div class="opcao" data-idx="0" onclick="marcarOpcao(2,0)"><div class="opcao-letra">A</div><div class="opcao-txt">O ambiente só se torna objeto de legislação e política pública quando o recurso natural se torna escasso ou perigoso.</div><div class="opcao-marca" id="marca-2-0"></div></div>
+        <div class="opcao" data-idx="1" onclick="marcarOpcao(2,1)"><div class="opcao-letra">B</div><div class="opcao-txt">A legislação ambiental surge espontaneamente em sociedades abundantes em recursos, como forma de manifestação estética.</div><div class="opcao-marca" id="marca-2-1"></div></div>
+        <div class="opcao" data-idx="2" onclick="marcarOpcao(2,2)"><div class="opcao-letra">C</div><div class="opcao-txt">Os limites ecológicos são perceidos primeiramente pelos grandes setores agroexportadores, que evitam o lucro imediato.</div><div class="opcao-marca" id="marca-2-2"></div></div>
+        <div class="opcao" data-idx="3" onclick="marcarOpcao(2,3)"><div class="opcao-letra">D</div><div class="opcao-txt">A existência de recursos ilimitados é uma condição necessária para o fortalecimento das políticas de proteção integral.</div><div class="opcao-marca" id="marca-2-3"></div></div>
+        <div class="opcao" data-idx="4" onclick="marcarOpcao(2,4)"><div class="opcao-letra">E</div><div class="opcao-txt">As leis ambientais são elaboradas exclusivamente a partir da iniciativa de nações estrangeiras interessadas em turismo.</div><div class="opcao-marca" id="marca-2-4"></div></div>
+        <div class="gabarito-info" id="gab-2"><b>Gabarito: A.</b> Enquanto o recurso é tido como abundante e inesgotável, não há interesse na regulação estatal. A norma surge a partir da escassez ou de desastres provocados pelo uso predatório.</div>
+      </div>
+
+      <div class="questao objetiva" data-questao="obj-3" data-correta="3">
+        <div class="enunciado"><span class="num-q">3</span> (EM13CHS305) Em 1819, ao observar a destruição das matas ciliares no rio Tietê em São Paulo, José Bonifácio de Andrada e Silva manifestou profunda preocupação com o meio ambiente. O posicionamento de José Bonifácio era caracterizado por: <span class="badge-resultado" id="badge-obj-3"></span></div>
+        <div class="opcao" data-idx="0" onclick="marcarOpcao(3,0)"><div class="opcao-letra">A</div><div class="opcao-txt">Defesa do tombamento de áreas intocadas sob a perspectiva do direito intrínseco e sagrado de todas as plantas e animais.</div><div class="opcao-marca" id="marca-3-0"></div></div>
+        <div class="opcao" data-idx="1" onclick="marcarOpcao(3,1)"><div class="opcao-letra">B</div><div class="opcao-txt">Incentivo ao uso de queimadas extensivas como técnica mais rápida de expansão do monocultivo latifundiário.</div><div class="opcao-marca" id="marca-3-1"></div></div>
+        <div class="opcao" data-idx="2" onclick="marcarOpcao(3,2)"><div class="opcao-letra">C</div><div class="opcao-txt">Negação de que o corte de árvores pudesse afetar o fluxo de chuvas, rios e nascentes nas regiões agrícolas.</div><div class="opcao-marca" id="marca-3-2"></div></div>
+        <div class="opcao" data-idx="3" onclick="marcarOpcao(3,3)"><div class="opcao-letra">D</div><div class="opcao-txt">Uma visão utilitária e racionalista, argumentando que a destruição das florestas ameaçava o futuro econômico da agricultura do país.</div><div class="opcao-marca" id="marca-3-3"></div></div>
+        <div class="opcao" data-idx="4" onclick="marcarOpcao(3,4)"><div class="opcao-letra">E</div><div class="opcao-txt">Proposição da substituição de todas as técnicas de cultivo pela extração do pau-brasil nos cerrados e caatingas.</div><div class="opcao-marca" id="marca-3-4"></div></div>
+        <div class="gabarito-info" id="gab-3"><b>Gabarito: D.</b> José Bonifácio utilizava um argumento racional e pragmático: preservar as florestas era essencial para garantir o regime de chuvas, os rios e a fertilidade dos solos para a sustentabilidade da economia.</div>
+      </div>
+
+      <div class="questao objetiva" data-questao="obj-4" data-correta="1">
+        <div class="enunciado"><span class="num-q">4</span> (EM13CHS305) A aprovação da Lei de Terras (Lei nº 601/1850) no Segundo Reinado trouxe consequências profundas para a estrutura social e ambiental do Brasil porque: <span class="badge-resultado" id="badge-obj-4"></span></div>
+        <div class="opcao" data-idx="0" onclick="marcarOpcao(4,0)"><div class="opcao-letra">A</div><div class="opcao-txt">Proibiu definitivamente qualquer exploração agrícola em áreas de Mata Atlântica e Floresta Amazônica.</div><div class="opcao-marca" id="marca-4-0"></div></div>
+        <div class="opcao" data-idx="1" onclick="marcarOpcao(4,1)"><div class="opcao-letra">B</div><div class="opcao-txt">Condicionou a posse das terras devolutas exclusivamente à compra em dinheiro, promovendo grande concentração fundiária e exclusão social.</div><div class="opcao-marca" id="marca-4-1"></div></div>
+        <div class="opcao" data-idx="2" onclick="marcarOpcao(4,2)"><div class="opcao-letra">C</div><div class="opcao-txt">Distribuiu pequenas propriedades rurais para imigrantes e libertos com a obrigação de praticar agroecologia.</div><div class="opcao-marca" id="marca-4-2"></div></div>
+        <div class="opcao" data-idx="3" onclick="marcarOpcao(4,3)"><div class="opcao-letra">D</div><div class="opcao-txt">Criou o primeiro Instituto de Preservação Ambiental do Império, gerenciado por ex-escravizados e indígenas.</div><div class="opcao-marca" id="marca-4-3"></div></div>
+        <div class="opcao" data-idx="4" onclick="marcarOpcao(4,4)"><div class="opcao-letra">E</div><div class="opcao-txt">Obrigou os latifundiários a reflorestar metade de suas propriedades com espécies medicinais de uso popular.</div><div class="opcao-marca" id="marca-4-4"></div></div>
+        <div class="gabarito-info" id="gab-4"><b>Gabarito: B.</b> Ao proibir a posse por ocupação simples e exigir pagamento monetário, a lei impediu o acesso de populações pobres à terra, consolidando o poder dos grandes proprietários e do latifúndio.</div>
+      </div>
+
+      <div class="questao objetiva" data-questao="obj-5" data-correta="3">
+        <div class="enunciado"><span class="num-q">5</span> (EM13CHS305) O conceito de "preservacionismo", originado no século XIX e representado historicamente pela criação de Parques Nacionais, fundamenta-se na ideia de que: <span class="badge-resultado" id="badge-obj-5"></span></div>
+        <div class="opcao" data-idx="0" onclick="marcarOpcao(5,0)"><div class="opcao-letra">A</div><div class="opcao-txt">A natureza deve ser explorada de forma contínua até o limite de sua capacidade de regeneração industrial.</div><div class="opcao-marca" id="marca-5-0"></div></div>
+        <div class="opcao" data-idx="1" onclick="marcarOpcao(5,1)"><div class="opcao-letra">B</div><div class="opcao-txt">As florestas nativas só têm valor quando geram lucro financeiro direto por meio da extração de madeira nobre.</div><div class="opcao-marca" id="marca-5-1"></div></div>
+        <div class="opcao" data-idx="2" onclick="marcarOpcao(5,2)"><div class="opcao-letra">C</div><div class="opcao-txt">A vida selvagem e a vegetação devem ser manejadas para permitir a expansão de atividades minerárias controladas.</div><div class="opcao-marca" id="marca-5-2"></div></div>
+        <div class="opcao" data-idx="3" onclick="marcarOpcao(5,3)"><div class="opcao-letra">D</div><div class="opcao-txt">Certas áreas naturais intocadas devem ser resguardadas do uso econômico direto por seu valor intrínseco, estético e científico.</div><div class="opcao-marca" id="marca-5-3"></div></div>
+        <div class="opcao" data-idx="4" onclick="marcarOpcao(5,4)"><div class="opcao-letra">E</div><div class="opcao-txt">A população urbana deve ter permissão irrestrita para caçar e plantar em Unidades de Proteção Integral.</div><div class="opcao-marca" id="marca-5-4"></div></div>
+        <div class="gabarito-info" id="gab-5"><b>Gabarito: D.</b> Ao contrário do conservacionismo utilitário, o preservacionismo busca manter ecossistemas virgens de alteração humana direta, reconhecendo o valor ético, científico e estético da natureza intocada.</div>
+      </div>
+
+      <div class="questao objetiva" data-questao="obj-6" data-correta="0">
+        <div class="enunciado"><span class="num-q">6</span> (EM13CHS305) Na década de 1930, durante o Governo Provisório de Getúlio Vargas, o debate sobre o patrimônio natural culminou na aprovação dos primeiros códigos nacionais. Uma importante motivação pragmática para a edição do Código Florestal de 1934 foi: <span class="badge-resultado" id="badge-obj-6"></span></div>
+        <div class="opcao" data-idx="0" onclick="marcarOpcao(6,0)"><div class="opcao-letra">A</div><div class="opcao-txt">O esgotamento da oferta de lenha nas proximidades dos grandes centros urbanos e industriais do país.</div><div class="opcao-marca" id="marca-6-0"></div></div>
+        <div class="opcao" data-idx="1" onclick="marcarOpcao(6,1)"><div class="opcao-letra">B</div><div class="opcao-txt">O cumprimento das exigências ecológicas estabelecidas pela Organização das Nações Unidas (ONU).</div><div class="opcao-marca" id="marca-6-1"></div></div>
+        <div class="opcao" data-idx="2" onclick="marcarOpcao(6,2)"><div class="opcao-letra">C</div><div class="opcao-txt">A eliminação total da pesca artesanal para beneficiar a carcinicultura industrial estrangeira.</div><div class="opcao-marca" id="marca-6-2"></div></div>
+        <div class="opcao" data-idx="3" onclick="marcarOpcao(6,3)"><div class="opcao-letra">D</div><div class="opcao-txt">O atendimento às pressões de ativistas internacionais após a Conferência de Estocolmo.</div><div class="opcao-marca" id="marca-6-3"></div></div>
+        <div class="opcao" data-idx="4" onclick="marcarOpcao(6,4)"><div class="opcao-letra">E</div><div class="opcao-txt">A obrigatoriedade de devolver todas as terras do Centro-Oeste aos povos indígenas originários.</div><div class="opcao-marca" id="marca-6-4"></div></div>
+        <div class="gabarito-info" id="gab-6"><b>Gabarito: A.</b> O documentário aponta que o desmatamento ao redor das cidades ameaçava o abastecimento de energia (lenha para caldeiras, trens e residências), levando o governo a impor regras de controle sobre a extração vegetal.</div>
+      </div>
+
+      <div class="questao objetiva" data-questao="obj-7" data-correta="2">
+        <div class="enunciado"><span class="num-q">7</span> (EM13CHS305) O Código Florestal de 1965 (Lei nº 4.771/1965) trouxe uma evolução jurídica relevante em relação ao código anterior de 1934 ao consolidar com rigor métrico o conceito de: <span class="badge-resultado" id="badge-obj-7"></span></div>
+        <div class="opcao" data-idx="0" onclick="marcarOpcao(7,0)"><div class="opcao-letra">A</div><div class="opcao-txt">Créditos de carbono conversíveis em ações negociáveis na bolsa de valores.</div><div class="opcao-marca" id="marca-7-0"></div></div>
+        <div class="opcao" data-idx="1" onclick="marcarOpcao(7,1)"><div class="opcao-letra">B</div><div class="opcao-txt">Reservas extrativistas comunitárias administradas exclusivamente por populações ribeirinhas.</div><div class="opcao-marca" id="marca-7-1"></div></div>
+        <div class="opcao" data-idx="2" onclick="marcarOpcao(7,2)"><div class="opcao-letra">C</div><div class="opcao-txt">Áreas de Preservação Permanente (APPs) e parâmetros para a manutenção da Reserva Legal nas propriedades rurais.</div><div class="opcao-marca" id="marca-7-2"></div></div>
+        <div class="opcao" data-idx="3" onclick="marcarOpcao(7,3)"><div class="opcao-letra">D</div><div class="opcao-txt">Licenciamento prévio simplificado para empreendimentos nucleares no litoral atlântico.</div><div class="opcao-marca" id="marca-7-3"></div></div>
+        <div class="opcao" data-idx="4" onclick="marcarOpcao(7,4)"><div class="opcao-letra">E</div><div class="opcao-txt">Isenção total de impostos para proprietários que realizassem queimadas para renovação de pastagens.</div><div class="opcao-marca" id="marca-7-4"></div></div>
+        <div class="gabarito-info" id="gab-7"><b>Gabarito: C.</b> O código de 1965 definiu com maior clareza as faixas marginais de proteção de rios, topos de morros e encostas (APPs), além do percentual obrigatório de vegetação nativa mantido dentro de cada imóvel rural (Reserva Legal).</div>
+      </div>
+
+      <div class="questao objetiva" data-questao="obj-8" data-correta="1">
+        <div class="enunciado"><span class="num-q">8</span> (EM13CHS305) Na década de 1970, o slogan "Integrar para não entregar" foi utilizado pelos governos militares para promover grandes obras e projetos de colonização na Amazônia. Essa política resultou em: <span class="badge-resultado" id="badge-obj-8"></span></div>
+        <div class="opcao" data-idx="0" onclick="marcarOpcao(8,0)"><div class="opcao-letra">A</div><div class="opcao-txt">Erradicação total da poluição industrial nas bacias hidrográficas do Sudeste brasileiro.</div><div class="opcao-marca" id="marca-8-0"></div></div>
+        <div class="opcao" data-idx="1" onclick="marcarOpcao(8,1)"><div class="opcao-letra">B</div><div class="opcao-txt">Aceleração sem precedentes do desmatamento na floresta tropical e conflitos fundiários expressivos.</div><div class="opcao-marca" id="marca-8-1"></div></div>
+        <div class="opcao" data-idx="2" onclick="marcarOpcao(8,2)"><div class="opcao-letra">C</div><div class="opcao-txt">Criação do primeiro cinturão agroecológico com certificação internacional de sustentabilidade.</div><div class="opcao-marca" id="marca-8-2"></div></div>
+        <div class="opcao" data-idx="3" onclick="marcarOpcao(8,3)"><div class="opcao-letra">D</div><div class="opcao-txt">Redução das queimadas devido à aplicação imediata de multas administrativas pelo IBAMA.</div><div class="opcao-marca" id="marca-8-3"></div></div>
+        <div class="opcao" data-idx="4" onclick="marcarOpcao(8,4)"><div class="opcao-letra">E</div><div class="opcao-txt">Aprovação do princípio da solidariedade intergeracional na Constituição de 1967.</div><div class="opcao-marca" id="marca-8-4"></div></div>
+        <div class="gabarito-info" id="gab-8"><b>Gabarito: B.</b> O incentivo estatal à ocupação desenfreada, à pecuária expansiva e à abertura de rodovias (como a Transamazônica) gerou perda de milhões de hectares de floresta e graves impactos sociais na região.</div>
+      </div>
+
+      <div class="questao objetiva" data-questao="obj-9" data-correta="0">
+        <div class="enunciado"><span class="num-q">9</span> (EM13CHS305) A Lei nº 6.938/1981, que estabeleceu a Política Nacional do Meio Ambiente (PNMA), inovou na gestão ambiental brasileira ao introduzir como instrumento de controle: <span class="badge-resultado" id="badge-obj-9"></span></div>
+        <div class="opcao" data-idx="0" onclick="marcarOpcao(9,0)"><div class="opcao-letra">A</div><div class="opcao-txt">O Licenciamento Ambiental e o Estudo de Impacto Ambiental para atividades potencialmente poluidoras.</div><div class="opcao-marca" id="marca-9-0"></div></div>
+        <div class="opcao" data-idx="1" onclick="marcarOpcao(9,1)"><div class="opcao-letra">B</div><div class="opcao-txt">A permissão para mineração em terras indígenas sem consulta prévia às comunidades locais.</div><div class="opcao-marca" id="marca-9-1"></div></div>
+        <div class="opcao" data-idx="2" onclick="marcarOpcao(9,2)"><div class="opcao-letra">C</div><div class="opcao-txt">A privatização de todos os rios federais e nascentes para exploração por multinacionais.</div><div class="opcao-marca" id="marca-9-2"></div></div>
+        <div class="opcao" data-idx="3" onclick="marcarOpcao(9,3)"><div class="opcao-letra">D</div><div class="opcao-txt">A obrigatoriedade de queimadas anuais de florestas públicas para controle de pragas.</div><div class="opcao-marca" id="marca-9-3"></div></div>
+        <div class="opcao" data-idx="4" onclick="marcarOpcao(9,4)"><div class="opcao-letra">E</div><div class="opcao-txt">A proibição do uso de agroatrativos sintéticos em qualquer lavoura do território nacional.</div><div class="opcao-marca" id="marca-9-4"></div></div>
+        <div class="gabarito-info" id="gab-9"><b>Gabarito: A.</b> A Lei nº 6.938/1981 instituiu ferramentas essenciais de prevenção e fiscalização, condicionando a instalação de obras e indústrias ao licenciamento ambiental e aos relatórios de impacto.</div>
+      </div>
+
+      <div class="questao objetiva" data-questao="obj-10" data-correta="3">
+        <div class="enunciado"><span class="num-q">10</span> (EM13CHS305) O artigo 225 da Constituição Federal de 1988 consagrou um novo paradigma jurídico ambiental no Brasil ao declarar que: <span class="badge-resultado" id="badge-obj-10"></span></div>
+        <div class="opcao" data-idx="0" onclick="marcarOpcao(10,0)"><div class="opcao-letra">A</div><div class="opcao-txt">O meio ambiente é propriedade privada do proprietário da terra, que tem direito de destruí-lo se desejar.</div><div class="opcao-marca" id="marca-10-0"></div></div>
+        <div class="opcao" data-idx="1" onclick="marcarOpcao(10,1)"><div class="opcao-letra">B</div><div class="opcao-txt">A proteção da fauna e flora cabe exclusivamente às Forças Armadas em caso de guerra externa.</div><div class="opcao-marca" id="marca-10-1"></div></div>
+        <div class="opcao" data-idx="2" onclick="marcarOpcao(10,2)"><div class="opcao-letra">C</div><div class="opcao-txt">As leis ambientais estaduais sobrepõem-se e anulam automaticamente os tratados internacionais sobre o clima.</div><div class="opcao-marca" id="marca-10-2"></div></div>
+        <div class="opcao" data-idx="3" onclick="marcarOpcao(10,3)"><div class="opcao-letra">D</div><div class="opcao-txt">Todos têm direito ao meio ambiente ecologicamente equilibrado, bem de uso comum do povo, impondo-se ao Poder Público e à coletividade o dever de defendê-lo.</div><div class="opcao-marca" id="marca-10-3"></div></div>
+        <div class="opcao" data-idx="4" onclick="marcarOpcao(10,4)"><div class="opcao-letra">E</div><div class="opcao-txt">O desmatamento na Amazônia é um direito inalienável dos colonos sem interferência dos órgãos ambientais.</div><div class="opcao-marca" id="marca-10-4"></div></div>
+        <div class="gabarito-info" id="gab-10"><b>Gabarito: D.</b> O artigo 225 reconheceu o meio ambiente saudável como direito fundamental de terceira geração, garantindo o princípio da solidariedade intergeracional para as presentes e futuras gerações.</div>
+      </div>
+
+
+      <div class="alerta-incompleto" id="alerta-incompleto">
+        &#9888;&#65039; Ainda há questões incompletas (dissertativas com o mínimo de caracteres ou objetivas não marcadas). Revise antes de finalizar.
+      </div>
+
+      <div class="acoes-finais">
+        <button class="btn btn-primario" onclick="finalizarAtividade()">Finalizar e corrigir</button>
+        <button class="btn btn-secundario" onclick="refazerAtividade()">Refazer</button>
+        <button class="btn btn-pdf" onclick="exportarPDF()">Exportar em PDF</button>
+      </div>
+    </main>
+  </div>
+
+  <footer class="rodape">Colégio Estadual Rodolfo de Oliveira · CERO · 2026</footer>
+</div>
+
+<!-- ===== POPUP ===== -->
+<div class="popup-overlay" id="popup-overlay">
+  <div class="popup-card">
+    <div class="emoji">&#127881;</div>
+    <h3>Atividade concluída!</h3>
+    <p id="popup-nota" style="font-family:var(--font-mono); font-weight:700; color:var(--verde-dark); font-size:1rem; margin:0 0 12px;"></p>
+    <p>Suas respostas foram registradas com sucesso. Os comentários do professor e o gabarito comentado das questões objetivas estão disponíveis para revisão.</p>
+    <button class="btn btn-primario" onclick="fecharPopup()">Continuar</button>
+  </div>
+</div>
+
+<script>
+/* ===== GATE DE NOME ===== */
+function iniciarAtividade(){
+  const nome = document.getElementById('nome-aluno').value.trim();
+  const turma = document.getElementById('turma-aluno').value.trim();
+  const aviso = document.getElementById('capa-aviso');
+  if(!nome){
+    aviso.style.display = 'block';
+    return;
+  }
+  aviso.style.display = 'none';
+  const hoje = new Date();
+  const dataFormatada = String(hoje.getDate()).padStart(2,'0') + '/' + String(hoje.getMonth()+1).padStart(2,'0') + '/' + hoje.getFullYear();
+  document.getElementById('header-nome').textContent = nome;
+  document.getElementById('ficha-nome').textContent = nome;
+  document.getElementById('ficha-data').textContent = dataFormatada;
+  document.getElementById('ficha-turma').textContent = turma || '—';
+  document.getElementById('capa').style.display = 'none';
+  document.getElementById('app').style.display = 'block';
+  window.scrollTo(0,0);
+}
+
+/* ===== CONTADOR DE CARACTERES E PROGRESSO ===== */
+const textareas = document.querySelectorAll('textarea.dissertativa');
+const TOTAL_OBJ = 10;
+let respMC = {};
+let corrigido = false;
+
+function marcarOpcao(num, idx){
+  if (corrigido) return;
+  respMC[num] = idx;
+  const questaoEl = document.querySelector('.questao[data-questao="obj-' + num + '"]');
+  questaoEl.querySelectorAll('.opcao').forEach(function(op){
+    op.classList.toggle('sel', parseInt(op.dataset.idx,10) === idx);
+  });
+  atualizarProgresso();
+}
+
+function atualizarProgresso(){
+  let respondidas = 0;
+  textareas.forEach(function(t){
+    const min = parseInt(t.dataset.min, 10);
+    if(t.value.trim().length >= min) respondidas++;
+  });
+  respondidas += Object.keys(respMC).length;
+  const total = textareas.length + TOTAL_OBJ;
+  document.getElementById('contador-geral').textContent = 'Respondidas: ' + respondidas + '/' + total;
+  document.getElementById('barra-fill').style.width = (respondidas / total * 100) + '%';
+}
+
+textareas.forEach(function(t){
+  const contadorEl = t.parentElement.querySelector('.contador-chars');
+  const min = parseInt(t.dataset.min, 10);
+  t.addEventListener('input', function(){
+    contadorEl.textContent = t.value.length + ' caracteres (mínimo ' + min + ')';
+    atualizarProgresso();
+  });
+});
+
+/* ===== FINALIZAR ===== */
+function finalizarAtividade(){
+  let completo = true;
+  textareas.forEach(function(t){
+    const min = parseInt(t.dataset.min, 10);
+    if(t.value.trim().length < min) completo = false;
+  });
+  for(let n=1; n<=TOTAL_OBJ; n++){
+    if(respMC[n] === undefined) completo = false;
+  }
+
+  const alerta = document.getElementById('alerta-incompleto');
+  if(!completo){
+    alerta.classList.add('show');
+    alerta.scrollIntoView({behavior:'smooth', block:'center'});
+    return;
+  }
+  alerta.classList.remove('show');
+
+  document.querySelectorAll('.comentario-prof').forEach(function(c){
+    c.classList.add('show');
+  });
+
+  corrigido = true;
+  let acertos = 0;
+  document.querySelectorAll('.questao.objetiva').forEach(function(qEl){
+    const num = qEl.dataset.questao.replace('obj-','');
+    const correta = parseInt(qEl.dataset.correta, 10);
+    const escolha = respMC[num];
+    const acertou = escolha === correta;
+    if(acertou) acertos++;
+    qEl.querySelectorAll('.opcao').forEach(function(op){
+      const idx = parseInt(op.dataset.idx, 10);
+      op.classList.add('travada');
+      if(idx === correta){ op.classList.add('correta'); document.getElementById('marca-'+num+'-'+idx).textContent='✓'; document.getElementById('marca-'+num+'-'+idx).style.display='block'; }
+      if(idx === escolha && !acertou){ op.classList.add('errada'); document.getElementById('marca-'+num+'-'+idx).textContent='✗'; document.getElementById('marca-'+num+'-'+idx).style.display='block'; }
+    });
+    document.getElementById('gab-'+num).classList.add('show');
+    const badge = document.getElementById('badge-obj-'+num);
+    badge.textContent = acertou ? '✓ Acertou' : '✗ Errou';
+    badge.className = 'badge-resultado ' + (acertou ? 'ok' : 'no');
+  });
+  window.__acertos = acertos;
+
+  const pct = Math.round(acertos/TOTAL_OBJ*100);
+  document.getElementById('popup-nota').textContent = acertos + '/' + TOTAL_OBJ + ' acertos nas objetivas (' + pct + '%)';
+  document.getElementById('popup-overlay').classList.add('show');
+}
+
+function fecharPopup(){
+  document.getElementById('popup-overlay').classList.remove('show');
+}
+
+function refazerAtividade(){
+  textareas.forEach(function(t){
+    t.value = '';
+    t.parentElement.querySelector('.contador-chars').textContent = '0 caracteres (mínimo ' + t.dataset.min + ')';
+  });
+  document.querySelectorAll('.comentario-prof').forEach(function(c){
+    c.classList.remove('show');
+  });
+  document.querySelectorAll('.opcao').forEach(function(op){
+    op.classList.remove('sel','correta','errada','travada');
+  });
+  document.querySelectorAll('.opcao-marca').forEach(function(m){ m.style.display='none'; m.textContent=''; });
+  document.querySelectorAll('.gabarito-info').forEach(function(g){ g.classList.remove('show'); });
+  document.querySelectorAll('.badge-resultado').forEach(function(b){ b.textContent=''; b.className='badge-resultado'; });
+  respMC = {};
+  corrigido = false;
+  document.getElementById('alerta-incompleto').classList.remove('show');
+  atualizarProgresso();
+  window.scrollTo(0,0);
+}
+
+/* ===== EXPORTAR PDF ===== */
+function sleep(ms){ return new Promise(function(r){ setTimeout(r, ms); }); }
+
+function esc(str){
+  const d = document.createElement('div');
+  d.textContent = str || '';
+  return d.innerHTML.replace(/\n/g, '<br>');
+}
+
+async function exportarPDF(){
+  const overlay = document.createElement('div');
+  overlay.id = 'pdf-overlay';
+  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(20,41,27,.6);display:flex;align-items:center;justify-content:center;z-index:999;';
+  overlay.innerHTML =
+    '<div style="background:#fff;border-radius:14px;padding:32px 36px;text-align:center;max-width:300px;box-shadow:0 10px 30px rgba(31,61,43,.3);font-family:Georgia,serif;">' +
+      '<div style="font-size:2rem;margin-bottom:8px;">📄</div>' +
+      '<h4 style="margin:0 0 4px;color:#14291b;font-family:Georgia,serif;">Gerando PDF…</h4>' +
+      '<p style="margin:0 0 14px;color:#4a594e;font-size:.86rem;">Aguarde alguns instantes.</p>' +
+      '<div style="background:#e5ebd8;border-radius:6px;overflow:hidden;height:8px;">' +
+        '<div id="pdf-prog" style="height:100%;width:0%;background:#1f3d2b;transition:width .2s ease;"></div>' +
+      '</div>' +
+      '<div id="pdf-prog-txt" style="margin-top:8px;font-family:monospace;font-size:.74rem;color:#4a594e;">0%</div>' +
+    '</div>';
+  document.body.appendChild(overlay);
+  await sleep(80);
+  function setP(pct, msg){
+    const pp = document.getElementById('pdf-prog'), pt = document.getElementById('pdf-prog-txt');
+    if(pp) pp.style.width = pct + '%';
+    if(pt) pt.textContent = msg || (pct + '%');
+  }
+
+  try{
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF({orientation:'portrait', unit:'px', format:'a4', hotfixes:['px_scaling']});
+    const PW = pdf.internal.pageSize.getWidth(), PH = pdf.internal.pageSize.getHeight();
+    const ML = 28, CW = PW - ML*2;
+    let y = ML;
+
+    async function addImg(el){
+      const canvas = await html2canvas(el, {scale:2, useCORS:true, logging:false, backgroundColor:'#ffffff', scrollX:0, scrollY:0, windowWidth:860});
+      const imgW = CW, imgH = (canvas.height / canvas.width) * imgW;
+      const dataUrl = canvas.toDataURL('image/jpeg', .92), avail = PH - ML*2;
+      if(imgH <= avail){
+        if(y + imgH > PH - ML){ pdf.addPage(); y = ML; }
+        pdf.addImage(dataUrl, 'JPEG', ML, y, imgW, imgH);
+        y += imgH + 8;
+      } else {
+        const pxPerPdfPt = canvas.width / imgW;
+        let srcY = 0;
+        while(srcY < canvas.height){
+          const availPt = PH - y - ML, sliceH_pt = Math.min(availPt, avail);
+          const sliceH_px = Math.round(sliceH_pt * pxPerPdfPt), actualH_px = Math.min(sliceH_px, canvas.height - srcY);
+          const tmp = document.createElement('canvas');
+          tmp.width = canvas.width; tmp.height = actualH_px;
+          tmp.getContext('2d').drawImage(canvas, 0, srcY, canvas.width, actualH_px, 0, 0, canvas.width, actualH_px);
+          const sliceUrl = tmp.toDataURL('image/jpeg', .92), slicePt = (actualH_px / canvas.width) * imgW;
+          pdf.addImage(sliceUrl, 'JPEG', ML, y, imgW, slicePt);
+          srcY += actualH_px; y += slicePt;
+          if(srcY < canvas.height){ pdf.addPage(); y = ML; }
+        }
+        y += 8;
+      }
+    }
+
+    async function band(tag, txt){
+      const b = document.createElement('div');
+      b.style.cssText = 'width:860px;font-family:Arial,sans-serif;position:absolute;left:-9999px;top:0';
+      b.innerHTML = '<div style="background:linear-gradient(90deg,#1f3d2b,#14291b);border-radius:8px;padding:12px 22px;display:flex;align-items:center;gap:12px">' +
+        '<span style="background:rgba(255,255,255,.2);color:#fff;font-weight:700;font-size:12px;letter-spacing:1px;border-radius:20px;padding:3px 12px">' + tag + '</span>' +
+        '<span style="color:#fff;font-size:15px;font-weight:700">' + txt + '</span></div>';
+      document.body.appendChild(b);
+      await sleep(20);
+      await addImg(b);
+      document.body.removeChild(b);
+    }
+
+    const nome = document.getElementById('header-nome').textContent || 'Aluno(a)';
+    const turma = document.getElementById('ficha-turma').textContent || '—';
+    const acertos = window.__acertos !== undefined ? window.__acertos : '—';
+    const pct = window.__acertos !== undefined ? Math.round(window.__acertos/10*100)+'%' : '—';
+    const now = new Date();
+    const dtStr = now.toLocaleDateString('pt-BR') + ' às ' + now.toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'});
+
+    setP(5, 'Preparando capa…'); await sleep(40);
+    const coverEl = document.createElement('div');
+    coverEl.style.cssText = 'width:860px;font-family:Arial,sans-serif;overflow:hidden;position:absolute;left:-9999px;top:0';
+    coverEl.innerHTML =
+      '<div style="background:linear-gradient(135deg,#14291b 0%,#1f3d2b 60%,#2f5a3f 100%);padding:32px 48px 28px;color:white">' +
+        '<div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;opacity:.7;font-weight:700;margin-bottom:6px">Ciências Humanas e Sociais Aplicadas · 3ª série do Ensino Médio · EM13CHS305</div>' +
+        '<div style="font-size:26px;font-weight:900;line-height:1.2;margin-bottom:5px">História Ambiental e Regulação no Brasil</div>' +
+        '<div style="font-size:13px;opacity:.8;font-style:italic">Atividade do Tópico 2 · 10 questões dissertativas + 10 questões objetivas</div>' +
+      '</div>' +
+      '<div style="background:#f4f6f0;padding:22px 48px 26px;border-bottom:3px solid #b4442a">' +
+        '<div style="font-size:9px;text-transform:uppercase;letter-spacing:2px;color:#1f3d2b;font-weight:700;margin-bottom:5px">Aluno(a)</div>' +
+        '<div style="font-size:20px;font-weight:700;color:#1c261d;border-bottom:2.5px solid #1f3d2b;padding-bottom:6px;display:inline-block;margin-bottom:16px">' + esc(nome) + '</div>' +
+        '<div style="display:flex;gap:12px;flex-wrap:wrap">' +
+          '<div style="background:white;border-radius:8px;padding:12px 18px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.07);min-width:84px">' +
+            '<div style="font-size:22px;font-weight:900;color:#1f3d2b">' + esc(turma) + '</div>' +
+            '<div style="font-size:9px;text-transform:uppercase;letter-spacing:1px;color:#888;margin-top:2px">Turma</div></div>' +
+          '<div style="background:white;border-radius:8px;padding:12px 18px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.07);min-width:84px">' +
+            '<div style="font-size:22px;font-weight:900;color:#b4442a">10</div>' +
+            '<div style="font-size:9px;text-transform:uppercase;letter-spacing:1px;color:#888;margin-top:2px">Dissertativas</div></div>' +
+          '<div style="background:white;border-radius:8px;padding:12px 18px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.07);min-width:84px">' +
+            '<div style="font-size:22px;font-weight:900;color:#1f3d2b">' + acertos + '/10</div>' +
+            '<div style="font-size:9px;text-transform:uppercase;letter-spacing:1px;color:#888;margin-top:2px">Objetivas (' + pct + ')</div></div>' +
+          '<div style="background:white;border-radius:8px;padding:12px 18px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.07);min-width:140px">' +
+            '<div style="font-size:13px;font-weight:700;color:#333">' + dtStr + '</div>' +
+            '<div style="font-size:9px;text-transform:uppercase;letter-spacing:1px;color:#888;margin-top:2px">Gerado em</div></div>' +
+        '</div>' +
+        '<div style="font-size:9px;color:#bbb;margin-top:14px">Colégio Estadual Rodolfo de Oliveira · Goiás · 2026</div>' +
+      '</div>';
+    document.body.appendChild(coverEl); await sleep(60); await addImg(coverEl); document.body.removeChild(coverEl);
+
+    // QUESTÕES DISSERTATIVAS
+    setP(15, 'Preparando dissertativas…'); await sleep(20);
+    await band('DISSERTATIVAS', 'Parte I — Questões Dissertativas');
+
+    const QUESTOES = [
+      { num:'1', enunc:'Com base na leitura e no documentário da TV Senado, por que é correto afirmar que as primeiras regulamentações do Brasil Colônia não eram leis verdadeiramente "protecionistas", mas sim leis fiscais e regulatórias?', id:'resp-1',
+        coment:'Espera-se que o estudante explique que essas normas não buscavam resguardar os ecossistemas por seu valor intrínseco, mas apenas garantir o monopólio mercantil da Coroa Portuguesa sobre a extração de recursos valiosos, evitando a concorrência.' },
+      { num:'2', enunc:'Explique a tese de que "o ambiente só vira objeto de política pública quando se torna escasso ou perigoso". Como os primeiros códigos brasileiros (Código de Águas e Código Florestal de 1934) exemplificam essa ideia?', id:'resp-2',
+        coment:'Espera-se que o estudante indique que a legislação surge historicamente apenas quando a escassez ameaça as atividades econômicas. Os códigos de 1934 nasceram da percepção de escassez de lenha industrial e degradação de mananciais hídricos.' },
+      { num:'3', enunc:'Quais eram as principais críticas de José Bonifácio de Andrada e Silva em relação à devastação florestal e às queimadas no início do século XIX? Qual era o fundamento de seu argumento?', id:'resp-3',
+        coment:'Espera-se que o estudante mencione que José Bonifácio criticava o corte destruidor e o egoísmo dos latifundiários, alertando para a seca de rios e fontes. Seu argumento tinha caráter utilitário e racional para preservar o futuro agrícola da nação.' },
+      { num:'4', enunc:'Diferencie conservacionismo de preservacionismo. De que maneira o Sistema Nacional de Unidades de Conservação (SNUC) no Brasil acomodou essas duas tradições?', id:'resp-4',
+        coment:'Espera-se que o estudante diferencie conservacionismo (uso sustentável/racional) de preservacionismo (proteção integral sem uso direto). O SNUC acomodou ambos ao criar categorias de Uso Sustentável e de Proteção Integral.' },
+      { num:'5', enunc:'De acordo com o documentário "EcoSenado", qual é a relação entre a aprovação da Lei de Terras em 1850, a concentração fundiária e os problemas ambientais no Brasil?', id:'resp-5',
+        coment:'Espera-se que o estudante relacione a obrigatoriedade da compra monetária de terras à exclusão social e concentração fundiária no latifúndio, que incentivou a ocupação desordenada e o desmatamento nas fronteiras agrícolas.' },
+      { num:'6', enunc:'Qual era a visão política dos cientistas e naturalistas da década de 1930 para implementar o programa de proteção à natureza e criar os primeiros Parques Nacionais no Brasil?', id:'resp-6',
+        coment:'Espera-se que o estudante comente que esses naturalistas viam a necessidade de um Estado centralizado e forte no governo Vargas para impor a proteção ambiental acima dos interesses particulares latifundiários.' },
+      { num:'7', enunc:'Quais foram os principais conceitos de proteção introduzidos e consolidados pelo Código Florestal de 1965 (Lei nº 4.771/1965)?', id:'resp-7',
+        coment:'Espera-se que o estudante destaque a consolidação das Áreas de Preservação Permanente (APPs) e da Reserva Legal nas propriedades rurais.' },
+      { num:'8', enunc:'Explique a contradição entre a aprovação do Código Florestal de 1965 e os projetos de integração da Amazônia promovidos pela ditadura militar nas décadas de 1960 e 1970.', id:'resp-8',
+        coment:'Espera-se que o estudante aponte a contradição entre o código e a prática desenvolvimentista estatal que incentivou queimadas, pecuária extensiva e desfolhantes químicos na Amazônia.' },
+      { num:'9', enunc:'Por que a Lei nº 6.938/1981 (Política Nacional do Meio Ambiente) é considerada um marco divisor de águas na história da legislação ambiental no Brasil?', id:'resp-9',
+        coment:'Espera-se que o estudante explique que a PNMA tratou o meio ambiente de forma integrada, criando o SISNAMA, o Licenciamento Ambiental e a Avaliação de Impacto Ambiental (EIA/RIMA).' },
+      { num:'10', enunc:'De que modo a pressão internacional contra o desmatamento na Amazônia e a atuação de ativistas como José Lutzenberger influenciaram os debates que culminaram na elaboração do Capítulo do Meio Ambiente na Constituição de 1988?', id:'resp-10',
+        coment:'Espera-se que o estudante argumente que as denúncias internacionais de destruição ambiental pressionaram o país no processo de redemocratização, garantindo a aprovação do Artigo 225 na Carta de 1988.' }
+    ];
+
+    for(let i=0; i<QUESTOES.length; i++){
+      const q = QUESTOES[i];
+      setP(15 + Math.round(i/QUESTOES.length*38), 'Dissertativa ' + q.num + '/10…'); await sleep(10);
+
+      const valor = document.getElementById(q.id) ? document.getElementById(q.id).value : '';
+      const respostaHTML =
+        '<div style="background:#f2f7f3;border:1.5px solid #cad6c5;border-radius:8px;padding:12px 15px;min-height:40px">' +
+          '<div style="font-size:12px;color:#1c261d;line-height:1.75;white-space:pre-wrap">' + (esc(valor) || '<span style="color:#aaa">(sem resposta)</span>') + '</div>' +
+        '</div>';
+
+      const qEl = document.createElement('div');
+      qEl.style.cssText = 'width:860px;font-family:Arial,sans-serif;background:white;overflow:hidden;border:1px solid #cad6c5;border-radius:10px;position:absolute;left:-9999px;top:0';
+      qEl.innerHTML =
+        '<div style="background:linear-gradient(90deg,#1f3d2b,#14291b);padding:10px 22px;display:flex;justify-content:space-between;align-items:center">' +
+          '<span style="color:white;font-weight:700;font-size:13px;letter-spacing:.8px">QUESTÃO ' + q.num + '</span>' +
+          '<span style="background:rgba(255,255,255,.15);color:rgba(255,255,255,.9);font-size:11px;padding:3px 12px;border-radius:20px;font-weight:600">Dissertativa</span></div>' +
+        '<div style="padding:18px 24px 16px;background:#ffffff">' +
+          '<div style="font-size:13px;font-weight:700;color:#1c261d;line-height:1.6;margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid #eee">' + esc(q.enunc) + '</div>' +
+          '<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">' +
+            '<div style="width:4px;height:15px;background:#1f3d2b;border-radius:2px"></div>' +
+            '<div style="font-size:10px;font-weight:700;color:#1f3d2b;text-transform:uppercase;letter-spacing:1.5px">Resposta do Aluno(a)</div></div>' +
+          respostaHTML +
+          '<div style="display:flex;align-items:center;gap:8px;margin:12px 0 7px">' +
+            '<div style="width:4px;height:15px;background:#b4442a;border-radius:2px"></div>' +
+            '<div style="font-size:10px;font-weight:700;color:#8a2d18;text-transform:uppercase;letter-spacing:1.5px">Comentário do Professor</div></div>' +
+          '<div style="background:#fbf3ea;border:1.5px solid #f2d5ce;border-radius:8px;padding:13px 16px">' +
+            '<div style="font-size:12px;color:#68331e;line-height:1.8">' + esc(q.coment) + '</div></div>' +
+        '</div>';
+      document.body.appendChild(qEl); await sleep(10); await addImg(qEl); document.body.removeChild(qEl);
+    }
+
+    // QUESTÕES OBJETIVAS
+    setP(55, 'Preparando objetivas…'); await sleep(20);
+    await band('OBJETIVAS', 'Parte II — Questões Objetivas');
+
+    const LETRAS_PDF = ['A','B','C','D','E'];
+    const objetivasEls = document.querySelectorAll('.questao.objetiva');
+    let oi = 0;
+    for(const qEl0 of objetivasEls){
+      const num = qEl0.dataset.questao.replace('obj-','');
+      const correta = parseInt(qEl0.dataset.correta, 10);
+      const escolha = respMC[num];
+      const acertou = escolha === correta;
+      const enuncClone = qEl0.querySelector('.enunciado').cloneNode(true);
+      const badgeInClone = enuncClone.querySelector('.badge-resultado');
+      if(badgeInClone) badgeInClone.remove();
+      const numQInClone = enuncClone.querySelector('.num-q');
+      if(numQInClone) numQInClone.remove();
+      const enunc = enuncClone.textContent.trim();
+      setP(55 + Math.round(oi/objetivasEls.length*35), 'Objetiva ' + num + '/10…'); await sleep(10);
+
+      let altsHTML = '';
+      qEl0.querySelectorAll('.opcao').forEach(function(op){
+        const idx = parseInt(op.dataset.idx, 10);
+        const txt = op.querySelector('.opcao-txt').textContent;
+        let bg='#ffffff', bd='#cad6c5', cor='#1c261d', tag='';
+        if(idx===correta){ bg='#e9f5ed'; bd='#8ed8a5'; cor='#0d381c'; tag='<span style="color:#0a6e38;font-weight:700"> ✓ correta</span>'; }
+        if(idx===escolha && !acertou){ bg='#fdeeee'; bd='#e3a3a3'; cor='#7a1f1f'; tag='<span style="color:#a83232;font-weight:700"> ✗ sua resposta</span>'; }
+        else if(idx===escolha && acertou){ tag='<span style="color:#0a6e38;font-weight:700"> ← sua resposta</span>'; }
+        altsHTML += '<div style="display:flex;gap:9px;align-items:flex-start;background:'+bg+';border:1px solid '+bd+';border-radius:6px;padding:8px 12px;margin-bottom:6px"><div style="flex:0 0 auto;font-weight:700;color:#1f3d2b;font-size:12px">'+LETRAS_PDF[idx]+')</div><div style="font-size:12px;color:'+cor+';line-height:1.55">'+esc(txt)+tag+'</div></div>';
+      });
+
+      const headBg = acertou ? 'linear-gradient(90deg,#1f3d2b,#14291b)' : 'linear-gradient(90deg,#a83232,#7a1f1f)';
+      const gabTxt = qEl0.querySelector('.gabarito-info').textContent.trim();
+      const qEl = document.createElement('div');
+      qEl.style.cssText = 'width:860px;font-family:Arial,sans-serif;background:white;overflow:hidden;border:1px solid #cad6c5;border-radius:10px;position:absolute;left:-9999px;top:0';
+      qEl.innerHTML =
+        '<div style="background:'+headBg+';padding:10px 22px;display:flex;justify-content:space-between;align-items:center">' +
+          '<span style="color:white;font-weight:700;font-size:13px;letter-spacing:.8px">QUESTÃO ' + num + '</span>' +
+          '<span style="background:rgba(255,255,255,.2);color:white;font-size:11px;padding:3px 12px;border-radius:20px;font-weight:700">' + (acertou?'ACERTOU':'ERROU') + '</span></div>' +
+        '<div style="padding:16px 24px 14px;background:#ffffff">' +
+          '<div style="font-size:13px;font-weight:700;color:#1c261d;line-height:1.6;margin-bottom:12px">' + esc(enunc) + '</div>' +
+          altsHTML +
+          '<div style="margin-top:10px;background:#fbf3ea;border:1.5px solid #f2d5ce;border-radius:6px;padding:10px 14px">' +
+            '<div style="font-size:12px;color:#68331e;line-height:1.6">' + esc(gabTxt) + '</div></div>' +
+        '</div>';
+      document.body.appendChild(qEl); await sleep(10); await addImg(qEl); documentbody.removeChild(qEl);
+      oi++;
+    }
+
+    // RODAPÉ EM TODAS AS PÁGINAS
+    setP(92, 'Finalizando…'); await sleep(30);
+    const totalPages = pdf.getNumberOfPages();
+    for(let p=1; p<=totalPages; p++){
+      pdf.setPage(p);
+      const fEl = document.createElement('div');
+      fEl.style.cssText = 'width:' + Math.round(CW) + 'px;height:22px;background:#f4f6f0;display:flex;align-items:center;justify-content:space-between;padding:0 28px;font-size:10px;color:#888;font-family:Arial,sans-serif;position:absolute;left:-9999px;top:0';
+      fEl.innerHTML = '<span>Atividade — 3ª série · ' + esc(nome) + ' · Objetivas: ' + acertos + '/10</span><span>Página ' + p + ' de ' + totalPages + '</span>';
+      document.body.appendChild(fEl);
+      const fc = await html2canvas(fEl, {scale:2, logging:false, backgroundColor:'#f4f6f0'});
+      document.body.removeChild(fEl);
+      const fUrl = fc.toDataURL('image/jpeg', .9), fH = (fc.height / fc.width) * CW;
+      pdf.setFillColor(244,246,240); pdf.rect(ML, PH-fH, CW, fH, 'F');
+      pdf.addImage(fUrl, 'JPEG', ML, PH-fH, CW, fH);
+    }
+
+    setP(100, 'Salvando…'); await sleep(200);
+    const safeName = nome.replace(/[^a-zA-Z0-9_\-]/g, '_');
+    pdf.save('Atividade_EM13CHS305_Topico2_' + safeName + '.pdf');
+
+  } catch(err){
+    console.error(err);
+    alert('Erro ao gerar PDF: ' + err.message);
+  } finally {
+    const ov = document.getElementById('pdf-overlay');
+    if(ov) document.body.removeChild(ov);
+  }
+}
+
+/* ===== PROTEÇÃO ANTI-COLA ===== */
+(function () {
+  const CAMPOS_PROTEGIDOS = document.querySelectorAll('textarea.dissertativa, .campo-resposta');
+  const LIMITE_BLOCO = 25;
+
+  function bloquear(e) {
+    e.preventDefault();
+    mostrarToast('Colar não permitido nesta atividade.');
+  }
+
+  CAMPOS_PROTEGIDOS.forEach(function (campo) {
+    ['paste', 'copy', 'cut', 'drop', 'dragover', 'contextmenu'].forEach(function (evt) {
+      campo.addEventListener(evt, bloquear);
+    });
+
+    campo.addEventListener('beforeinput', function (e) {
+      if (e.inputType === 'insertFromPaste' || e.inputType === 'insertFromDrop') {
+        e.preventDefault();
+        mostrarToast('Colar não permitido nesta atividade.');
+      }
+    });
+
+    let valorAnterior = campo.value;
+    campo.addEventListener('input', function (e) {
+      const diferenca = campo.value.length - valorAnterior.length;
+      if (diferenca >= LIMITE_BLOCO && e.inputType !== 'insertReplacementText') {
+        campo.value = valorAnterior;
+        mostrarToast('Colar não permitido nesta atividade.');
+      } else {
+        valorAnterior = campo.value;
+      }
+    });
+  });
+
+  function mostrarToast(mensagem) {
+    let toast = document.getElementById('anti-cola-toast');
+    if (!toast) {
+      toast = document.createElement('div');
+      toast.id = 'anti-cola-toast';
+      toast.style.cssText =
+        'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);' +
+        'background:#333;color:#fff;padding:10px 20px;border-radius:8px;' +
+        'font-size:14px;z-index:9999;opacity:0;transition:opacity .3s;';
+      document.body.appendChild(toast);
+    }
+    toast.textContent = mensagem;
+    toast.style.opacity = '1';
+    clearTimeout(toast._timeout);
+    toast._timeout = setTimeout(function () {
+      toast.style.opacity = '0';
+    }, 2500);
+  }
+})();
+</script>
+
+</body>
+</html>

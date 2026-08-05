@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quem regula a natureza? — Atividade dissertativa (EM13CHS305) | CERO</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+
+  :root{
+    --bg:#f2f1fa;
+    --bg-alt:#e4e2f6;
+    --paper:#ffffff;
+    --ink:#1e1a33;
+    --ink-soft:#544d78;
+    --roxo:#4c3fbd;
+    --roxo-dark:#332a85;
+    --roxo-2:#7b6ee0;
+    --ocre:#b8791b;
+    --ocre-light:#f0dcae;
+    --line:#d8d4ee;
+    --shadow:0 10px 30px rgba(40,28,110,.15);
+    --radius:14px;
+    --font-title:'Playfair Display', serif;
+    --font-body:'Source Serif 4', serif;
+    --font-mono:'JetBrains Mono', monospace;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:var(--font-body);
+    line-height:1.7;
+    -webkit-touch-callout:none;
+    user-select:none;
+  }
+  .selecionavel, main{user-select:text;}
+  .campo-resposta{user-select:text;}
+
+  /* ===== CAPA ===== */
+  #capa{
+    min-height:100vh;
+    display:flex; align-items:center; justify-content:center;
+    position:relative; overflow:hidden;
+    background:linear-gradient(to bottom, #241c5e, #4c3fbd, #7b6ee0);
+    padding:24px;
+  }
+  #capa .grade-centralizada{
+    position:absolute; top:0; bottom:0; left:50%;
+    transform:translateX(-50%); width:100%; max-width:896px;
+    pointer-events:none; z-index:0; opacity:.08;
+    background:
+      repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(255,255,255,.5) 39px, rgba(255,255,255,.5) 40px),
+      repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(255,255,255,.5) 39px, rgba(255,255,255,.5) 40px);
+    background-size:40px 40px;
+  }
+  .capa-card{
+    position:relative; z-index:1;
+    background:var(--paper); border-radius:var(--radius); box-shadow:var(--shadow);
+    max-width:480px; width:100%; padding:36px 32px; text-align:center;
+  }
+  .capa-card .tag{
+    display:inline-block; font-family:var(--font-mono); font-size:.7rem;
+    letter-spacing:.1em; text-transform:uppercase; color:var(--roxo-dark);
+    background:rgba(76,63,189,.1); padding:5px 12px; border-radius:999px; margin-bottom:14px;
+  }
+  .capa-card h1{font-family:var(--font-title); font-size:1.6rem; margin:0 0 10px; color:var(--roxo-dark);}
+  .capa-card p.desc{color:var(--ink-soft); font-size:.94rem; margin:0 0 22px;}
+  .capa-card input{
+    width:100%; padding:12px 14px; border:1px solid var(--line); border-radius:8px;
+    font-family:var(--font-body); font-size:1rem; margin-bottom:14px;
+  }
+  .capa-card button{
+    width:100%; padding:13px; border:none; border-radius:8px;
+    background:var(--roxo); color:#fff; font-weight:600; font-size:1rem; cursor:pointer;
+    font-family:var(--font-body); transition:filter .15s ease;
+  }
+  .capa-card button:hover{filter:brightness(1.08);}
+  .capa-aviso{font-size:.78rem; color:#a8342e; margin-top:8px; display:none;}
+  .capa-nota{
+    font-size:.76rem; color:var(--ink-soft); margin-top:16px;
+    background:var(--bg-alt); border-radius:8px; padding:10px 12px; line-height:1.5;
+  }
+
+  /* ===== APP ===== */
+  #app{display:none;}
+  .sticky-header{
+    position:sticky; top:0; z-index:50;
+    background:var(--roxo-dark); color:#eeeaff;
+    padding:12px 20px; display:flex; align-items:center; justify-content:space-between;
+    flex-wrap:wrap; gap:8px; font-family:var(--font-mono); font-size:.82rem;
+  }
+  .sticky-header .aluno{font-family:var(--font-body); font-weight:600; font-size:.92rem;}
+  .barra-progresso-trilho{
+    flex:1; min-width:120px; height:8px; background:rgba(255,255,255,.2);
+    border-radius:6px; overflow:hidden; margin:0 14px;
+  }
+  .barra-progresso-fill{height:100%; background:var(--ocre); width:0%; transition:width .3s ease;}
+
+  .wrap{max-width:800px; margin:0 auto; padding:32px 24px 60px;}
+
+  header.topo{margin-bottom:24px;}
+  header.topo .hero-tag{
+    display:inline-block; font-family:var(--font-mono); font-size:.72rem;
+    letter-spacing:.1em; text-transform:uppercase; color:var(--roxo-dark);
+    background:rgba(76,63,189,.1); padding:5px 12px; border-radius:999px; margin-bottom:12px;
+  }
+  header.topo h1{font-family:var(--font-title); font-size:clamp(1.5rem,4vw,2rem); margin:0 0 8px; color:var(--ink);}
+  header.topo p.sub{color:var(--ink-soft); margin:0; font-size:.98rem;}
+  .descritor-bar{
+    font-family:var(--font-mono); font-size:.76rem; color:var(--ink-soft);
+    background:var(--paper); border:1px solid var(--line); border-radius:8px;
+    padding:8px 14px; margin-bottom:14px; display:inline-block;
+  }
+  .ficha-id{
+    display:flex; flex-wrap:wrap; gap:10px 26px;
+    background:var(--paper); border:1px solid var(--line); border-radius:10px;
+    padding:12px 16px; margin-top:12px; font-family:var(--font-mono); font-size:.84rem; color:var(--ink);
+  }
+  .ficha-id span b{color:var(--roxo-dark);}
+
+  .instrucoes{
+    background:var(--bg-alt); border-left:3px solid var(--ocre); border-radius:0 10px 10px 0;
+    padding:14px 18px; margin-bottom:26px; font-size:.9rem; color:var(--ink-soft);
+  }
+  .instrucoes b{color:var(--roxo-dark);}
+
+  /* ===== TEXTO DE APOIO ===== */
+  .texto-apoio{
+    background:var(--paper); border:1px solid var(--line); border-radius:var(--radius);
+    box-shadow:var(--shadow); padding:26px 30px; margin:34px 0 20px;
+    border-top:4px solid var(--roxo);
+  }
+  .texto-apoio h2{font-family:var(--font-title); font-size:1.22rem; color:var(--roxo-dark); margin:0 0 4px;}
+  .texto-apoio .fonte-tag{font-family:var(--font-mono); font-size:.72rem; color:var(--ink-soft); margin-bottom:16px; display:block;}
+  .texto-apoio p{margin:0 0 14px; color:var(--ink); font-size:.97rem;}
+  .texto-apoio p:last-of-type{margin-bottom:0;}
+  .texto-apoio b{color:var(--roxo-dark);}
+  .num-topico{
+    display:inline-flex; align-items:center; justify-content:center;
+    min-width:26px; height:26px; padding:0 7px; border-radius:8px; background:var(--roxo);
+    color:#fff; font-family:var(--font-mono); font-size:.74rem; margin-right:9px; vertical-align:2px;
+  }
+
+  /* ===== QUESTOES ===== */
+  .questoes-titulo{
+    font-family:var(--font-title); font-size:1.2rem; color:var(--roxo-dark);
+    margin:0 0 4px; display:flex; align-items:center; gap:10px;
+  }
+  .questao{
+    background:var(--paper); border:1px solid var(--line); border-radius:12px;
+    padding:20px 22px; margin-bottom:16px; border-left:4px solid var(--ocre);
+  }
+  .questao .num-q{
+    display:inline-flex; align-items:center; justify-content:center;
+    width:26px; height:26px; border-radius:50%; background:var(--ocre);
+    color:#fff; font-family:var(--font-mono); font-size:.78rem; margin-right:8px; flex-shrink:0;
+  }
+  .questao .enunciado{font-weight:600; color:var(--ink); margin-bottom:12px; display:flex; align-items:flex-start; flex-wrap:wrap;}
+  .questao .enunciado > span.txt{flex:1; min-width:220px; font-weight:600;}
+  .questao textarea{
+    width:100%; min-height:130px; padding:12px 14px; border:1px solid var(--line); border-radius:8px;
+    font-family:var(--font-body); font-size:.96rem; resize:vertical; color:var(--ink); background:#fcfbff;
+  }
+  .questao textarea:focus{outline:2px solid var(--roxo-2); outline-offset:1px;}
+  .contador-chars{font-family:var(--font-mono); font-size:.72rem; color:var(--ink-soft); margin-top:6px; text-align:right;}
+  .contador-chars.ok{color:var(--roxo);}
+
+  .comentario-prof{
+    display:none; margin-top:14px; padding:14px 16px;
+    background:#efecff; border:1px solid #cfc7f2; border-radius:8px; font-size:.9rem; color:var(--roxo-dark);
+  }
+  .comentario-prof.show{display:block;}
+  .comentario-prof b{display:block; margin-bottom:4px; font-family:var(--font-title); font-size:.92rem;}
+
+  .selo-min{
+    font-family:var(--font-mono); font-size:.68rem; color:var(--ocre);
+    background:#fbf3e2; border:1px solid var(--ocre-light); border-radius:20px;
+    padding:2px 10px; margin-left:8px; white-space:nowrap;
+  }
+
+  /* ===== ALERTA / FINALIZAR ===== */
+  .alerta-incompleto{
+    display:none; background:#fdf4e8; border:1px solid #f0d6ad; color:#8a5510;
+    padding:12px 16px; border-radius:8px; font-size:.9rem; margin-bottom:16px;
+  }
+  .alerta-incompleto.show{display:block;}
+
+  .acoes-finais{display:flex; gap:12px; flex-wrap:wrap; margin-top:10px;}
+  .btn{
+    font-family:var(--font-body); font-weight:600; font-size:.94rem; padding:12px 22px;
+    border-radius:8px; border:none; cursor:pointer; transition:filter .15s ease;
+  }
+  .btn:hover{filter:brightness(1.08);}
+  .btn-primario{background:var(--roxo); color:#fff;}
+  .btn-secundario{background:transparent; color:var(--ink); border:1px solid var(--line);}
+  .btn-pdf{background:var(--ocre); color:#fff;}
+
+  /* ===== POPUP ===== */
+  .popup-overlay{
+    display:none; position:fixed; inset:0; background:rgba(30,20,80,.62);
+    align-items:center; justify-content:center; z-index:200; padding:20px;
+  }
+  .popup-overlay.show{display:flex;}
+  .popup-card{
+    background:var(--paper); border-radius:var(--radius); box-shadow:var(--shadow);
+    max-width:420px; width:100%; padding:32px 28px; text-align:center;
+  }
+  .popup-card .emoji{font-size:2.4rem; margin-bottom:10px;}
+  .popup-card h3{font-family:var(--font-title); margin:0 0 8px; color:var(--roxo-dark);}
+  .popup-card p{color:var(--ink-soft); font-size:.94rem; margin:0 0 20px;}
+
+  footer.rodape{text-align:center; padding:24px; color:var(--ink-soft); font-family:var(--font-mono); font-size:.8rem;}
+
+  @media (max-width:600px){
+    .wrap{padding:24px 16px 50px;}
+    .texto-apoio, .questao{padding:18px 18px;}
+  }
+
+</style>
+</head>
+<body>
+
+<!-- ===== CAPA ===== -->
+<div id="capa">
+  <div class="grade-centralizada"></div>
+  <div class="capa-card">
+    <span class="tag">3ª série · Sociologia · CERO</span>
+    <h1>Quem regula a natureza?</h1>
+    <p class="desc">Sociedade de risco, governança ambiental e justiça. Nove tópicos de revisão e 20 questões dissertativas de análise e inferência. Preencha os dados para começar.</p>
+    <input type="text" id="nome-aluno" placeholder="Seu nome completo">
+    <input type="text" id="turma-aluno" placeholder="Turma (ex.: 3ª A)">
+    <button onclick="iniciarAtividade()">Iniciar atividade</button>
+    <div class="capa-aviso" id="capa-aviso">Digite seu nome para continuar.</div>
+      </div>
+</div>
+
+<!-- ===== APP ===== -->
+<div id="app">
+  <div class="sticky-header">
+    <span class="aluno" id="header-nome"></span>
+    <div class="barra-progresso-trilho"><div class="barra-progresso-fill" id="barra-fill"></div></div>
+    <span id="contador-geral">Concluídas: 0/20</span>
+  </div>
+
+  <div class="wrap">
+    <header class="topo selecionavel">
+      <span class="descritor-bar">Sociologia / 3ª série do Ensino Médio &nbsp;|&nbsp; (EM13CHS305) – Órgãos, acordos e fiscalização ambiental</span>
+      <span class="hero-tag" style="display:block; margin-top:10px;">Atividade dissertativa · nível de proficiência alto</span>
+      <h1>Quem regula a natureza?</h1>
+      <p class="sub">Sociedade de risco, governança ambiental e justiça: o que órgãos, leis e acordos internacionais podem — e não podem — fazer.</p>
+      <div class="ficha-id" id="ficha-id">
+        <span><b>NOME:</b> <span id="ficha-nome"></span></span>
+        <span><b>DATA:</b> <span id="ficha-data"></span></span>
+        <span><b>TURMA:</b> <span id="ficha-turma"></span></span>
+      </div>
+    </header>
+
+    <main>
+           <h2 class="questoes-titulo">Revisão e questões dissertativas</h2>
+
+      <section class="texto-apoio selecionavel">
+        <h2><span class="num-topico">1</span>A natureza como questão social</h2>
+        <span class="fonte-tag">Revisão — Sociologia, 3ª série do Ensino Médio</span>
+        <p>Catástrofes ambientais costumam ser lidas como acaso. A Sociologia desfaz essa leitura: o dano ambiental é <b>produzido socialmente</b> — decidido em conselhos, licenciado por órgãos públicos, financiado por bancos, distribuído de forma desigual pelo território e cobrado, quase sempre, de quem menos participou da decisão. Se o dano vem de decisões, ele pode ser regulado por decisões.</p>
+        <p><b>Ulrich Beck</b> mostrou que a sociedade industrial passou a produzir, junto com a riqueza, riscos de alta consequência e irreversíveis. Esses riscos são <i>invisíveis</i> (dependem de laudos e de especialistas), <i>globais</i> (não param na fronteira de quem os produziu) e vêm de dentro do próprio progresso. A isso ele chama <b>modernização reflexiva</b>: a sociedade precisa se voltar sobre si mesma e julgar as consequências das decisões que tomou.</p>
+        <p><b>Enrique Leff</b> acrescenta que a crise ambiental não é um desarranjo econômico corrigível com tecnologia mais eficiente: é uma <b>crise civilizatória</b>, nascida de valores que organizam a vida em torno do progresso e da acumulação. Ele propõe substituir a racionalidade de mercado por uma <b>racionalidade ambiental</b>, apoiada no saber ambiental.</p>
+      </section>
+
+      <div class="questao dissertativa-box" data-questao="1" data-topico="1">
+        <div class="enunciado"><span class="num-q">1</span><span class="txt">Explique por que a Sociologia afirma que o dano ambiental é <b>socialmente produzido</b>, e não obra do acaso. Em seguida, mostre por que essa afirmação é o que justifica a existência de órgãos de regulação e fiscalização. <span class="selo-min">mín. 220 caracteres</span></span></div>
+        <textarea id="resp-1" class="campo-resposta dissertativa" data-min="220" placeholder="Escreva sua resposta aqui, com suas próprias palavras..."></textarea>
+        <div class="contador-chars">0 caracteres (mínimo 220)</div>
+        <div class="comentario-prof">
+          <b>Comentário do professor</b>
+          Espera-se que o aluno explique que o dano é decidido em conselhos, licenciado por órgãos públicos, financiado por bancos e distribuído desigualmente pelo território, recaindo sobre quem menos participou da decisão. Deve concluir que, se o dano vem de decisões, ele pode ser regulado por decisões — e é isso que justifica a existência de órgãos como o Ibama e de acordos internacionais.
+        </div>
+      </div>
+
+      <div class="questao dissertativa-box" data-questao="2" data-topico="1">
+        <div class="enunciado"><span class="num-q">2</span><span class="txt">Ulrich Beck afirma que os riscos da sociedade contemporânea são invisíveis, globais e produzidos pela própria modernização. Escolha <b>dois</b> desses traços e explique, para cada um, uma exigência concreta que ele impõe às instituições ambientais. <span class="selo-min">mín. 240 caracteres</span></span></div>
+        <textarea id="resp-2" class="campo-resposta dissertativa" data-min="240" placeholder="Escreva sua resposta aqui, com suas próprias palavras..."></textarea>
+        <div class="contador-chars">0 caracteres (mínimo 240)</div>
+        <div class="comentario-prof">
+          <b>Comentário do professor</b>
+          Espera-se que o aluno relacione a invisibilidade à necessidade de laudos, medição técnica e corpo de especialistas (sem os quais o risco sequer é percebido); a globalidade à necessidade de cooperação internacional, já que o risco não para na fronteira de quem o produziu; e a origem interna à modernização à necessidade de a sociedade julgar as consequências de suas próprias decisões (modernização reflexiva), submetendo obras e tecnologias a licenciamento e revisão.
+        </div>
+      </div>
+
+      <div class="questao dissertativa-box" data-questao="3" data-topico="1">
+        <div class="enunciado"><span class="num-q">3</span><span class="txt">Uma empresa anuncia que resolverá seus impactos apenas trocando equipamentos por outros mais eficientes. Redija a crítica que Enrique Leff faria a esse anúncio, empregando as noções de <b>crise civilizatória</b> e <b>racionalidade ambiental</b>. <span class="selo-min">mín. 200 caracteres</span></span></div>
+        <textarea id="resp-3" class="campo-resposta dissertativa" data-min="200" placeholder="Escreva sua resposta aqui, com suas próprias palavras..."></textarea>
+        <div class="contador-chars">0 caracteres (mínimo 200)</div>
+        <div class="comentario-prof">
+          <b>Comentário do professor</b>
+          Espera-se que o aluno explique que, para Leff, a crise não é um desarranjo econômico corrigível com tecnologia mais eficiente: é civilizatória, nascida de valores que organizam a vida em torno do progresso e da acumulação e que tratam a natureza como estoque. A saída proposta é substituir a racionalidade de mercado pela racionalidade ambiental, apoiada no saber ambiental, que integra ecologia, economia, cultura e política.
+        </div>
+      </div>
+
+      <section class="texto-apoio selecionavel">
+        <h2><span class="num-topico">2</span>Antropoceno ou Capitaloceno: quem é o sujeito da degradação</h2>
+        <span class="fonte-tag">Revisão — Sociologia, 3ª série do Ensino Médio</span>
+        <p>O termo <b>Antropoceno</b> nomeia uma nova era geológica marcada pelo impacto humano decisivo. Não há consenso sobre seu início: máquina a vapor no século XVIII, agricultura na Antiguidade ou a difusão do plástico no século XX.</p>
+        <p>Sociologicamente, a discussão decisiva não é a data: é o <b>sujeito</b>. Dizer que “o ser humano” degradou o planeta coloca no mesmo balanço quem emitiu e quem foi atingido, quem lucrou e quem perdeu o rio. <b>Jason Moore</b> e <b>Donna Haraway</b> propõem o termo <b>Capitaloceno</b>: o agente não é a humanidade em geral, mas uma organização social específica, com sua lógica de acumulação ilimitada.</p>
+        <p><b>Ailton Krenak</b> acrescenta que existe uma pluralidade de modos de habitar a Terra, e que a ideia de um “humano” único já é parte do problema. A disputa tem efeito prático: se o problema é “a humanidade”, a solução vira individual (reciclar, consumir menos); se é um modelo econômico, ela exige norma, fiscalização e responsabilização de agentes concretos.</p>
+      </section>
+
+      <div class="questao dissertativa-box" data-questao="4" data-topico="2">
+        <div class="enunciado"><span class="num-q">4</span><span class="txt">Explique a diferença entre <b>Antropoceno</b> e <b>Capitaloceno</b> e defenda por que, do ponto de vista sociológico, a disputa decisiva não é sobre a data de início da nova era, mas sobre o sujeito da degradação. <span class="selo-min">mín. 240 caracteres</span></span></div>
+        <textarea id="resp-4" class="campo-resposta dissertativa" data-min="240" placeholder="Escreva sua resposta aqui, com suas próprias palavras..."></textarea>
+        <div class="contador-chars">0 caracteres (mínimo 240)</div>
+        <div class="comentario-prof">
+          <b>Comentário do professor</b>
+          Espera-se que o aluno defina Antropoceno como a proposta de era geológica marcada pelo impacto humano decisivo (sem consenso sobre o início) e Capitaloceno, de Moore e Haraway, como a atribuição da crise à dinâmica histórica do capitalismo. Deve argumentar que dizer 'o ser humano' coloca no mesmo balanço quem lucrou e quem perdeu o rio, quem emitiu e quem foi atingido — por isso o sujeito importa mais que a data.
+        </div>
+      </div>
+
+      <div class="questao dissertativa-box" data-questao="5" data-topico="2">
+        <div class="enunciado"><span class="num-q">5</span><span class="txt">Mostre como a escolha entre atribuir a crise à “humanidade” ou a um modelo econômico determinado muda o <b>tipo de solução</b> proposta. Ao final, explique o que Ailton Krenak acrescenta a esse debate. <span class="selo-min">mín. 200 caracteres</span></span></div>
+        <textarea id="resp-5" class="campo-resposta dissertativa" data-min="200" placeholder="Escreva sua resposta aqui, com suas próprias palavras..."></textarea>
+        <div class="contador-chars">0 caracteres (mínimo 200)</div>
+        <div class="comentario-prof">
+          <b>Comentário do professor</b>
+          Espera-se que o aluno explique que, se o problema é 'a humanidade', a solução tende ao plano individual (reciclar, consumir menos, apagar a luz); se o problema é um modelo econômico, a solução exige norma, fiscalização e responsabilização de agentes concretos — empresas, cadeias produtivas e Estados. Sobre Krenak, deve registrar que existe uma pluralidade de modos de habitar a Terra e que a ideia de um 'humano' único já é parte do problema, e não do diagnóstico.
+        </div>
+      </div>
+
+      <section class="texto-apoio selecionavel">
+        <h2><span class="num-topico">3</span>Do movimento social à norma jurídica</h2>
+        <span class="fonte-tag">Revisão — Sociologia, 3ª série do Ensino Médio</span>
+        <p>Nenhum órgão ambiental nasceu de geração espontânea: foi a pressão organizada do movimento ambientalista, somada a desastres de grande repercussão, que empurrou Estados a legislar.</p>
+        <p>Duas vertentes clássicas se opõem. O <b>preservacionismo</b> entende que toda interferência humana produz dano e defende a natureza intocada — daí as unidades de <b>proteção integral</b>, de uso restrito à pesquisa, à educação e ao turismo ecológico. O <b>conservacionismo</b> entende que o ser humano é parte da natureza — daí as unidades de <b>uso sustentável</b>, que admitem populações e atividades como o extrativismo.</p>
+        <p>No Brasil, a síntese ganhou forma no <b>socioambientalismo</b>, que vincula proteção da natureza a direitos territoriais. <b>Chico Mendes</b> não reivindicava a propriedade individual da terra, mas a garantia de que os seringueiros continuassem vivendo da floresta em pé; sua luta contribuiu para as reservas extrativistas, hoje geridas pelo ICMBio. É o que a Sociologia chama de <b>institucionalização de um movimento social</b>. Defender a norma em território de conflito segue sendo atividade de risco, como mostram os assassinatos de lideranças e o caso de Bruno Pereira e Dom Phillips, em 2022.</p>
+      </section>
+
+      <div class="questao dissertativa-box" data-questao="6" data-topico="3">
+        <div class="enunciado"><span class="num-q">6</span><span class="txt">Diferencie <b>preservacionismo</b> e <b>conservacionismo</b> quanto à premissa sobre a presença humana e quanto ao tipo de unidade de conservação que cada vertente produz. Dê um exemplo de atividade compatível com cada tipo. <span class="selo-min">mín. 220 caracteres</span></span></div>
+        <textarea id="resp-6" class="campo-resposta dissertativa" data-min="220" placeholder="Escreva sua resposta aqui, com suas próprias palavras..."></textarea>
+        <div class="contador-chars">0 caracteres (mínimo 220)</div>
+        <div class="comentario-prof">
+          <b>Comentário do professor</b>
+          Espera-se que o aluno explique que o preservacionismo entende toda interferência humana como dano e defende a natureza intocada, produzindo unidades de proteção integral, de uso restrito à pesquisa, à educação e ao turismo ecológico; e que o conservacionismo entende o ser humano como parte da natureza, produzindo unidades de uso sustentável, que admitem populações e atividades como a coleta de látex e de frutos.
+        </div>
+      </div>
+
+      <div class="questao dissertativa-box" data-questao="7" data-topico="3">
+        <div class="enunciado"><span class="num-q">7</span><span class="txt">A trajetória que vai da luta dos seringueiros do Acre até a criação das reservas extrativistas é usada como exemplo de <b>institucionalização de um movimento social</b>. Explique o que significa essa expressão e aplique-a ao caso de Chico Mendes. <span class="selo-min">mín. 240 caracteres</span></span></div>
+        <textarea id="resp-7" class="campo-resposta dissertativa" data-min="240" placeholder="Escreva sua resposta aqui, com suas próprias palavras..."></textarea>
+        <div class="contador-chars">0 caracteres (mínimo 240)</div>
+        <div class="comentario-prof">
+          <b>Comentário do professor</b>
+          Espera-se que o aluno explique institucionalização como o processo pelo qual uma reivindicação de baixo se converte em categoria jurídica, em órgão público e em orçamento. No caso, Chico Mendes não pedia a propriedade individual da terra, mas a garantia de continuar vivendo do trabalho na floresta em pé; sua luta contribuiu para a Aliança dos Povos da Floresta e, depois, para as reservas extrativistas, hoje geridas pelo ICMBio, órgão que leva o seu nome.
+        </div>
+      </div>
+
+      <section class="texto-apoio selecionavel">
+        <h2><span class="num-topico">4</span>A arquitetura internacional: organismos e acordos</h2>
+        <span class="fonte-tag">Revisão — Sociologia, 3ª série do Ensino Médio</span>
+        <p>Como não existe governo mundial, a regulação internacional se apoia em organizações multilaterais e em acordos entre Estados soberanos. Marcos: FAO e UICN (1945-1948), Clube de Roma (1968), <b>Estocolmo</b> (1972), Relatório Brundtland (1987), <b>Rio-92</b> (Agenda 21, convenções do clima e da biodiversidade, princípio das “responsabilidades comuns, mas diferenciadas”), COPs desde 1995, ODS em 2015, Rio+10 e Rio+20.</p>
+        <p>As competências são distintas: <b>ONU/Pnuma</b> coordena agendas e apoia políticas, mas não legisla sobre o território de um país nem multa empresas; <b>convenções e COPs</b> fixam metas negociadas, mas não obrigam quem não ratificou; o <b>IPCC</b> sintetiza a ciência do clima, mas não define política nem fiscaliza; a <b>FAO</b> orienta usos do solo e a segurança alimentar, mas não embarga obras; <b>UICN e WWF</b> classificam espécies e financiam projetos, com influência técnica e reputacional.</p>
+        <p>Predomina a <b>soft law</b>: declarações e recomendações orientam a conduta dos Estados sem força coercitiva direta. Se falta coerção, o que faz um acordo funcionar? Mecanismos sociais de pressão — reputação internacional, condicionalidade de crédito e investimento, ação de ONGs e cobertura da imprensa.</p>
+      </section>
+
+      <div class="questao dissertativa-box" data-questao="8" data-topico="4">
+        <div class="enunciado"><span class="num-q">8</span><span class="txt">Defina <b>soft law</b> e explique, com base nela, por que um país pode descumprir metas anunciadas em uma declaração internacional sem sofrer sanção jurídica direta. Use a Rio-92 como exemplo. <span class="selo-min">mín. 220 caracteres</span></span></div>
+        <textarea id="resp-8" class="campo-resposta dissertativa" data-min="220" placeholder="Escreva sua resposta aqui, com suas próprias palavras..."></textarea>
+        <div class="contador-chars">0 caracteres (mínimo 220)</div>
+        <div class="comentario-prof">
+          <b>Comentário do professor</b>
+          Espera-se que o aluno defina soft law como o conjunto de declarações, cartas e recomendações internacionais que orientam a conduta dos Estados sem força coercitiva direta, e explique que a ausência de sanção não é falha de aplicação, mas característica do instrumento. A Rio-92 é o exemplo pedido: suas decisões não tinham força de lei e cumpriam a função de orientar as práticas dos países participantes.
+        </div>
+      </div>
+
+      <div class="questao dissertativa-box" data-questao="9" data-topico="4">
+        <div class="enunciado"><span class="num-q">9</span><span class="txt">Se falta coerção ao direito internacional do meio ambiente, por que os acordos ainda assim produzem efeitos? Cite e explique <b>dois</b> mecanismos sociais de pressão que sustentam sua eficácia. <span class="selo-min">mín. 200 caracteres</span></span></div>
+        <textarea id="resp-9" class="campo-resposta dissertativa" data-min="200" placeholder="Escreva sua resposta aqui, com suas próprias palavras..."></textarea>
+        <div class="contador-chars">0 caracteres (mínimo 200)</div>
+        <div class="comentario-prof">
+          <b>Comentário do professor</b>
+          Espera-se que o aluno cite entre reputação internacional, condicionalidade de crédito e de investimento, ação de ONGs, cobertura da imprensa e mobilização interna, explicando que perder reputação ou acesso a financiamento tem custo político e econômico real. A conclusão esperada é que a pressão social integra o próprio mecanismo regulatório, não sendo um complemento externo a ele.
+        </div>
+      </div>
+
+      <div class="questao dissertativa-box" data-questao="10" data-topico="4">
+        <div class="enunciado"><span class="num-q">10</span><span class="txt">Um vereador propõe acionar o IPCC para fiscalizar as emissões de uma indústria da cidade. Explique por que a proposta é inviável e, para corrigi-la, indique qual instância brasileira teria essa competência e com base em qual atribuição. <span class="selo-min">mín. 240 caracteres</span></span></div>
+        <textarea id="resp-10" class="campo-resposta dissertativa" data-min="240" placeholder="Escreva sua resposta aqui, com suas próprias palavras..."></textarea>
+        <div class="contador-chars">0 caracteres (mínimo 240)</div>
+        <div class="comentario-prof">
+          <b>Comentário do professor</b>
+          Espera-se que o aluno explique que o IPCC é um painel científico intergovernamental: sintetiza a produção científica sobre o clima e dá base técnica às negociações, mas não define política pública nem fiscaliza emissões. A correção esperada aponta o órgão ambiental competente conforme o porte e a localização do empreendimento — o Ibama, na esfera federal, ou o órgão estadual integrante do Sisnama —, no exercício do poder de polícia ambiental.
+        </div>
+      </div>
+
+      <section class="texto-apoio selecionavel">
+        <h2><span class="num-topico">5</span>O aparato brasileiro: competências legais e instrumentos</h2>
+        <span class="fonte-tag">Revisão — Sociologia, 3ª série do Ensino Médio</span>
+        <p>A pauta ambiental entrou na agenda pública brasileira nos anos 1980, no mesmo movimento da redemocratização — o que ajuda a explicar por que a Constituição de 1988 trata o meio ambiente como direito de todos e bem de uso comum do povo.</p>
+        <p>A <b>Lei n. 6.938/1981</b> institui a Política Nacional do Meio Ambiente e o <b>Sisnama</b>, que articula União, estados e municípios. Repare nos verbos: o <b>Conama</b> normatiza (suas resoluções têm força normativa, inclusive a que define quando se exige estudo de impacto); o <b>Ministério do Meio Ambiente</b> formula; o <b>Ibama</b>, criado em 1989, fiscaliza e pune, com poder de polícia ambiental; o <b>ICMBio</b>, criado em 2007, gere unidades de conservação federais; o <b>SNUC</b> (2000) organiza as UCs em proteção integral e uso sustentável.</p>
+        <p>Os instrumentos: <b>licenciamento</b> em etapas (licença prévia, de instalação e de operação), com condicionantes fiscalizáveis; <b>EIA/Rima</b>, submetido a audiência pública — momento em que a decisão técnica se expõe ao debate coletivo e em que aparecem as assimetrias, já que quem tem consultoria, advogado e tempo participa mais; e <b>sanções</b> (advertência, multa, embargo, apreensão, suspensão), cuja eficácia depende de orçamento, servidores e estabilidade institucional.</p>
+      </section>
+
+      <div class="questao dissertativa-box" data-questao="11" data-topico="5">
+        <div class="enunciado"><span class="num-q">11</span><span class="txt">Escreva um parágrafo distinguindo as atribuições de <b>Conama</b>, <b>Ministério do Meio Ambiente</b>, <b>Ibama</b> e <b>ICMBio</b>, usando para cada um o verbo que lhe corresponde. Explique por que confundir esses verbos compromete a análise de um caso concreto. <span class="selo-min">mín. 260 caracteres</span></span></div>
+        <textarea id="resp-11" class="campo-resposta dissertativa" data-min="260" placeholder="Escreva sua resposta aqui, com suas próprias palavras..."></textarea>
+        <div class="contador-chars">0 caracteres (mínimo 260)</div>
+        <div class="comentario-prof">
+          <b>Comentário do professor</b>
+          Espera-se que o aluno associe: o Conama normatiza (órgão consultivo e deliberativo do Sisnama, cujas resoluções têm força normativa, inclusive a que define quando se exige estudo de impacto); o Ministério formula a política nacional; o Ibama fiscaliza e pune, com poder de polícia ambiental; o ICMBio gere as unidades de conservação federais. Deve concluir que confundir os verbos leva a atribuir responsabilidade ao órgão errado e a exigir de uma instituição aquilo que a lei não lhe deu.
+        </div>
+      </div>
+
+      <div class="questao dissertativa-box" data-questao="12" data-topico="5">
+        <div class="enunciado"><span class="num-q">12</span><span class="txt">Descreva as etapas do <b>licenciamento ambiental</b> e explique o que são condicionantes. Em seguida, mostre por que a eficácia das sanções ambientais é uma variável política, e não apenas técnica. <span class="selo-min">mín. 220 caracteres</span></span></div>
+        <textarea id="resp-12" class="campo-resposta dissertativa" data-min="220" placeholder="Escreva sua resposta aqui, com suas próprias palavras..."></textarea>
+        <div class="contador-chars">0 caracteres (mínimo 220)</div>
+        <div class="comentario-prof">
+          <b>Comentário do professor</b>
+          Espera-se que o aluno descreva as etapas — licença prévia (viabilidade), de instalação e de operação —, explicando que cada etapa impõe condicionantes fiscalizáveis depois. Sobre as sanções (advertência, multa, embargo, apreensão e suspensão), deve argumentar que sua eficácia depende de orçamento, número de servidores e estabilidade institucional, variáveis decididas politicamente, e não de um problema de conhecimento técnico.
+        </div>
+      </div>
+
+      <div class="questao dissertativa-box" data-questao="13" data-topico="5">
+        <div class="enunciado"><span class="num-q">13</span><span class="txt">A audiência pública do EIA/Rima é apresentada como o momento em que a decisão técnica se expõe ao debate coletivo. Explique essa função e, em seguida, aponte as <b>assimetrias</b> que o mesmo momento revela. <span class="selo-min">mín. 220 caracteres</span></span></div>
+        <textarea id="resp-13" class="campo-resposta dissertativa" data-min="220" placeholder="Escreva sua resposta aqui, com suas próprias palavras..."></textarea>
+        <div class="contador-chars">0 caracteres (mínimo 220)</div>
+        <div class="comentario-prof">
+          <b>Comentário do professor</b>
+          Espera-se que o aluno explique que o EIA/Rima exige um estudo técnico e um relatório em linguagem acessível, submetido a audiência pública, obrigando a decisão técnica a se expor ao debate coletivo. Deve, porém, apontar que a abertura formal não garante participação igual: quem dispõe de consultoria, advogado e tempo participa mais — reconhecimento que permite criticar o instrumento sem negar sua importância.
+        </div>
+      </div>
+
+      <section class="texto-apoio selecionavel">
+        <h2><span class="num-topico">6</span>Quando a regulação falha: sociologia dos desastres</h2>
+        <span class="fonte-tag">Revisão — Sociologia, 3ª série do Ensino Médio</span>
+        <p>O rompimento das barragens de rejeitos em <b>Mariana</b> (2015) e em <b>Brumadinho</b> (2019) tornou-se caso de estudo obrigatório. Em Mariana, a lama destruiu o distrito de Bento Rodrigues, deixou mais de vinte mortos e desaparecidos e atingiu o Rio Doce, interrompendo o abastecimento em cidades de Minas Gerais e do Espírito Santo. Entre os atingidos estão comunidades do povo indígena krenak.</p>
+        <p>A socióloga <b>Norma Valencio</b> recusa a palavra “tragédia”: o desastre é, antes de tudo, a constatação pública de uma <b>vulnerabilidade</b> na relação entre Estado e sociedade diante de uma ameaça que não se conseguiu impedir nem minorar. Decretar situação de emergência é sinalizar incapacidade institucional.</p>
+        <p>Cada desastre funciona como um <b>teste de estresse</b> do sistema regulatório: permite perguntar quem licenciou, com base em qual estudo, quem deveria fiscalizar, com quantos servidores, e o que aconteceu com as condicionantes impostas na licença.</p>
+      </section>
+
+      <div class="questao dissertativa-box" data-questao="14" data-topico="6">
+        <div class="enunciado"><span class="num-q">14</span><span class="txt">Um jornal descreve o rompimento de uma barragem de rejeitos como “tragédia imprevisível”. Reescreva essa leitura a partir da proposta de Norma Valencio e explique o que muda, em termos de responsabilização, ao substituir “acidente” por <b>vulnerabilidade institucional</b>. <span class="selo-min">mín. 240 caracteres</span></span></div>
+        <textarea id="resp-14" class="campo-resposta dissertativa" data-min="240" placeholder="Escreva sua resposta aqui, com suas próprias palavras..."></textarea>
+        <div class="contador-chars">0 caracteres (mínimo 240)</div>
+        <div class="comentario-prof">
+          <b>Comentário do professor</b>
+          Espera-se que o aluno explique que, para Valencio, o desastre é a constatação pública de uma vulnerabilidade na relação entre Estado e sociedade diante de uma ameaça que não se conseguiu impedir nem minorar, e que decretar situação de emergência sinaliza incapacidade institucional. A mudança de chave permite responsabilizar decisões de licenciamento, de fiscalização e de orçamento, em vez de culpar a natureza ou o acaso.
+        </div>
+      </div>
+
+      <div class="questao dissertativa-box" data-questao="15" data-topico="6">
+        <div class="enunciado"><span class="num-q">15</span><span class="txt">Explique o que significa tratar um desastre como <b>teste de estresse</b> do sistema regulatório e formule <b>três</b> perguntas que uma investigação assim deveria responder, justificando por que cada uma é sociológica. <span class="selo-min">mín. 220 caracteres</span></span></div>
+        <textarea id="resp-15" class="campo-resposta dissertativa" data-min="220" placeholder="Escreva sua resposta aqui, com suas próprias palavras..."></textarea>
+        <div class="contador-chars">0 caracteres (mínimo 220)</div>
+        <div class="comentario-prof">
+          <b>Comentário do professor</b>
+          Espera-se que o aluno explique que o desastre revela o funcionamento real das instituições e formule perguntas do tipo: quem licenciou e com base em qual estudo; quem deveria fiscalizar e com quantos servidores; o que aconteceu com as condicionantes impostas na licença. A justificativa esperada é que essas perguntas interrogam decisões e capacidades institucionais, e não apenas a extensão física do dano.
+        </div>
+      </div>
+
+      <section class="texto-apoio selecionavel">
+        <h2><span class="num-topico">7</span>Justiça ambiental e racismo ambiental</h2>
+        <span class="fonte-tag">Revisão — Sociologia, 3ª série do Ensino Médio</span>
+        <p>A poluição não é democrática. Moradias em encostas, em várzeas inundáveis, perto de rodovias, fábricas e aterros, sem saneamento, concentram os efeitos do dano sobre as populações de menor renda.</p>
+        <p>O princípio da <b>justiça ambiental</b> sustenta que nenhum grupo deve suportar parcela desproporcional dos impactos; nasceu nos EUA, entre 1970 e 1980, no interior dos movimentos por direitos civis. Seu oposto, a <b>injustiça ambiental</b>, é a condição de desigualdade sustentada por mecanismos sociopolíticos.</p>
+        <p>A expressão <b>racismo ambiental</b> foi formulada em 1981 por <b>Benjamin Chavis Jr.</b> O sociólogo <b>Robert Bullard</b> demonstrou que aterros e incineradores em Houston não eram instalados por critério técnico, mas em bairros de maioria negra — os territórios que ele chama de <b>zonas de sacrifício</b>. No Brasil, <b>Selene Herculano</b> e <b>Tania Pacheco</b> adaptaram o conceito; Pacheco insiste que o racismo ambiental não depende de intenção discriminatória: basta que o resultado seja sistematicamente desigual. Em Mariana, 84,5% das vítimas imediatas eram negras. Já <b>Malcom Ferdinand</b> propõe uma <b>ecologia decolonial</b>, que recusa separar a história colonial da história ambiental do mundo.</p>
+      </section>
+
+      <div class="questao dissertativa-box" data-questao="16" data-topico="7">
+        <div class="enunciado"><span class="num-q">16</span><span class="txt">Defina <b>justiça ambiental</b> e <b>injustiça ambiental</b> e explique, com exemplos de localização de moradias e de equipamentos urbanos, por que se afirma que “a poluição não é democrática”. <span class="selo-min">mín. 220 caracteres</span></span></div>
+        <textarea id="resp-16" class="campo-resposta dissertativa" data-min="220" placeholder="Escreva sua resposta aqui, com suas próprias palavras..."></textarea>
+        <div class="contador-chars">0 caracteres (mínimo 220)</div>
+        <div class="comentario-prof">
+          <b>Comentário do professor</b>
+          Espera-se que o aluno defina justiça ambiental como o princípio de que nenhum grupo — com recortes de classe, raça, etnia ou gênero — deve suportar parcela desproporcional dos impactos, e injustiça ambiental como a condição de desigualdade sustentada por mecanismos sociopolíticos. Os exemplos esperados envolvem moradias em encostas e várzeas inundáveis, próximas a rodovias, ferrovias, fábricas poluentes e aterros, sem saneamento.
+        </div>
+      </div>
+
+      <div class="questao dissertativa-box" data-questao="17" data-topico="7">
+        <div class="enunciado"><span class="num-q">17</span><span class="txt">Uma empresa alega que não houve racismo ambiental porque não houve intenção de prejudicar a população negra do entorno. Responda a essa defesa mobilizando a pesquisa de <b>Robert Bullard</b> e a formulação de <b>Tania Pacheco</b>. <span class="selo-min">mín. 240 caracteres</span></span></div>
+        <textarea id="resp-17" class="campo-resposta dissertativa" data-min="240" placeholder="Escreva sua resposta aqui, com suas próprias palavras..."></textarea>
+        <div class="contador-chars">0 caracteres (mínimo 240)</div>
+        <div class="comentario-prof">
+          <b>Comentário do professor</b>
+          Espera-se que o aluno recorra a Bullard, que demonstrou em Houston que aterros e incineradores não eram instalados por critério técnico, mas em bairros de maioria negra — as zonas de sacrifício —, e a Pacheco, para quem o racismo ambiental não depende de intenção discriminatória: basta que o resultado da distribuição dos danos seja sistematicamente desigual. O dado de Mariana (84,5% das vítimas imediatas eram negras) pode ser usado como evidência.
+        </div>
+      </div>
+
+      <div class="questao dissertativa-box" data-questao="18" data-topico="7">
+        <div class="enunciado"><span class="num-q">18</span><span class="txt">Explique a proposta de <b>ecologia decolonial</b> de Malcom Ferdinand e mostre o que ela exige que o movimento ambientalista incorpore às suas pautas. <span class="selo-min">mín. 200 caracteres</span></span></div>
+        <textarea id="resp-18" class="campo-resposta dissertativa" data-min="200" placeholder="Escreva sua resposta aqui, com suas próprias palavras..."></textarea>
+        <div class="contador-chars">0 caracteres (mínimo 200)</div>
+        <div class="comentario-prof">
+          <b>Comentário do professor</b>
+          Espera-se que o aluno explique que Ferdinand recusa separar a história colonial da história ambiental do mundo: a expansão europeia iniciada no fim do século XV, sustentada pelo colonialismo e pela escravização de povos ameríndios, asiáticos e africanos, é inseparável da destruição ambiental que se seguiu. A exigência é que o ambientalismo incorpore as colonizações históricas e o racismo estrutural contemporâneo às suas pautas.
+        </div>
+      </div>
+
+      <section class="texto-apoio selecionavel">
+        <h2><span class="num-topico">8</span>Recorte de Goiás: o Cerrado sob regulação</h2>
+        <span class="fonte-tag">Revisão — Sociologia, 3ª série do Ensino Médio</span>
+        <p>Berço das principais bacias hidrográficas do país, o Cerrado goiano convive com a expansão de lavouras mecanizadas, pastagens e mineração — e com um regime de proteção historicamente mais frouxo que o aplicado à Amazônia Legal. O resultado é uma <b>assimetria regulatória</b> visível: percentuais de reserva legal menores, menor visibilidade internacional e menor pressão reputacional sobre quem desmata.</p>
+        <p>No estado, o Sisnama se materializa no órgão ambiental estadual, que licencia e fiscaliza empreendimentos de impacto local e regional, e no conselho estadual de meio ambiente, que edita normas complementares às do Conama. Na esfera federal, o ICMBio administra unidades como o <b>Parque Nacional da Chapada dos Veadeiros</b>, cujos limites foram redefinidos diversas vezes — cada redefinição resultado de disputa entre conservação, turismo, produção agropecuária e comunidades locais, como as do território quilombola Kalunga.</p>
+      </section>
+
+      <div class="questao dissertativa-box" data-questao="19" data-topico="8">
+        <div class="enunciado"><span class="num-q">19</span><span class="txt">Por que uma queimada na Amazônia vira notícia internacional e uma supressão equivalente de vegetação no Cerrado raramente vira? Explique a <b>assimetria regulatória</b> entre os dois biomas e o que essa diferença revela sobre o papel da pressão social na fiscalização. <span class="selo-min">mín. 240 caracteres</span></span></div>
+        <textarea id="resp-19" class="campo-resposta dissertativa" data-min="240" placeholder="Escreva sua resposta aqui, com suas próprias palavras..."></textarea>
+        <div class="contador-chars">0 caracteres (mínimo 240)</div>
+        <div class="comentario-prof">
+          <b>Comentário do professor</b>
+          Espera-se que o aluno aponte que o Cerrado convive com um regime de proteção historicamente mais frouxo que o da Amazônia Legal — percentuais de reserva legal menores, menor visibilidade internacional e menor pressão reputacional sobre quem desmata. A conclusão esperada é que a fiscalização depende também da pressão social, e não apenas da norma escrita, na mesma lógica que sustenta os acordos internacionais sem coerção.
+        </div>
+      </div>
+
+      <section class="texto-apoio selecionavel">
+        <h2><span class="num-topico">9</span>Roteiro sociológico para analisar um órgão ou acordo</h2>
+        <span class="fonte-tag">Revisão — Sociologia, 3ª série do Ensino Médio</span>
+        <p>Sete passos para investigar qualquer instituição ambiental: <b>origem</b> (que conflito ou desastre a antecedeu, que grupos pressionaram); <b>base legal</b> (que norma a instituiu e se ela normatiza, formula, licencia, fiscaliza ou gere áreas); <b>escala e competência</b> (municipal, estadual, federal ou internacional, e sobre quem tem poder); <b>instrumentos</b> (licença, estudo de impacto, multa, embargo, meta negociada, financiamento); <b>capacidade real</b> (orçamento, servidores e autonomia — a distância entre a norma e a prática); <b>distribuição dos efeitos</b> (quem é protegido, quem segue exposto, há zonas de sacrifício); e <b>participação</b> (quem tem assento e voz, e quem é apenas objeto das decisões).</p>
+      </section>
+
+      <div class="questao dissertativa-box" data-questao="20" data-topico="9">
+        <div class="enunciado"><span class="num-q">20</span><span class="txt">Escolha um órgão ou acordo ambiental estudado neste material e analise-o aplicando pelo menos <b>quatro</b> passos do roteiro sociológico (origem, base legal, escala e competência, instrumentos, capacidade real, distribuição dos efeitos e participação). Identifique cada passo que estiver usando. <span class="selo-min">mín. 260 caracteres</span></span></div>
+        <textarea id="resp-20" class="campo-resposta dissertativa" data-min="260" placeholder="Escreva sua resposta aqui, com suas próprias palavras..."></textarea>
+        <div class="contador-chars">0 caracteres (mínimo 260)</div>
+        <div class="comentario-prof">
+          <b>Comentário do professor</b>
+          Espera-se uma análise que identifique explicitamente os passos escolhidos: origem (o conflito ou desastre que antecedeu a criação e os grupos que pressionaram); base legal (a norma instituidora e se ela normatiza, formula, licencia, fiscaliza ou gere áreas); escala e competência; instrumentos disponíveis; capacidade real (orçamento, servidores e autonomia — a distância entre a norma e a prática); distribuição dos efeitos, com atenção a zonas de sacrifício; e participação, indicando quem tem assento e voz e quem é apenas objeto das decisões.
+        </div>
+      </div>
+
+
+      <div class="alerta-incompleto" id="alerta-incompleto"></div>
+
+      <div class="acoes-finais">
+        <button class="btn btn-primario" onclick="finalizarAtividade()">Finalizar e entregar</button>
+        <button class="btn btn-secundario" onclick="refazerAtividade()">Refazer</button>
+        <button class="btn btn-pdf" onclick="exportarPDF()">Exportar em PDF</button>
+      </div>
+    </main>
+  </div>
+
+  <footer class="rodape">Colégio Estadual Rodolfo de Oliveira · CERO · 2026 · Prof. Claudio</footer>
+</div>
+
+<!-- ===== POPUP ===== -->
+<div class="popup-overlay" id="popup-overlay">
+  <div class="popup-card">
+    <div class="emoji">📝</div>
+    <h3>Respostas entregues!</h3>
+    <p id="popup-nota" style="font-family:var(--font-mono); font-weight:700; color:var(--roxo-dark); font-size:1rem; margin:0 0 12px;"></p>
+    <p>Os comentários do professor já estão abaixo de cada questão. Compare o que você escreveu com o que era esperado e depois exporte o PDF para entregar.</p>
+    <button class="btn btn-primario" onclick="fecharPopup()">Continuar</button>
+  </div>
+</div>
+
+<script>
+
+/* ===== GATE DE NOME ===== */
+function iniciarAtividade(){
+  const nome = document.getElementById('nome-aluno').value.trim();
+  const turma = document.getElementById('turma-aluno').value.trim();
+  const aviso = document.getElementById('capa-aviso');
+  if(!nome){ aviso.style.display = 'block'; return; }
+  aviso.style.display = 'none';
+  const hoje = new Date();
+  const dataFormatada = String(hoje.getDate()).padStart(2,'0') + '/' + String(hoje.getMonth()+1).padStart(2,'0') + '/' + hoje.getFullYear();
+  document.getElementById('header-nome').textContent = nome;
+  document.getElementById('ficha-nome').textContent = nome;
+  document.getElementById('ficha-data').textContent = dataFormatada;
+  document.getElementById('ficha-turma').textContent = turma || '—';
+  document.getElementById('capa').style.display = 'none';
+  document.getElementById('app').style.display = 'block';
+  window.scrollTo(0,0);
+}
+
+/* ===== CONTADOR E PROGRESSO ===== */
+const textareas = document.querySelectorAll('textarea.dissertativa');
+const TOTAL_Q = textareas.length;
+let corrigido = false;
+
+function atualizarProgresso(){
+  let respondidas = 0;
+  textareas.forEach(function(t){
+    const min = parseInt(t.dataset.min, 10);
+    if(t.value.trim().length >= min) respondidas++;
+  });
+  document.getElementById('contador-geral').textContent = 'Concluídas: ' + respondidas + '/' + TOTAL_Q;
+  document.getElementById('barra-fill').style.width = (respondidas / TOTAL_Q * 100) + '%';
+}
+
+textareas.forEach(function(t){
+  const contadorEl = t.parentElement.querySelector('.contador-chars');
+  const min = parseInt(t.dataset.min, 10);
+  t.addEventListener('input', function(){
+    const n = t.value.length;
+    contadorEl.textContent = n + ' caracteres (mínimo ' + min + ')';
+    contadorEl.classList.toggle('ok', t.value.trim().length >= min);
+    atualizarProgresso();
+  });
+});
+
+/* ===== FINALIZAR ===== */
+function finalizarAtividade(){
+  let faltando = [];
+  textareas.forEach(function(t){
+    const min = parseInt(t.dataset.min, 10);
+    const num = t.id.replace('resp-','');
+    if(t.value.trim().length < min) faltando.push(num);
+  });
+
+  const alerta = document.getElementById('alerta-incompleto');
+  if(faltando.length){
+    alerta.textContent = 'Ainda faltam questões abaixo do mínimo de caracteres: ' + faltando.join(', ') + '. Complete as respostas antes de finalizar.';
+    alerta.classList.add('show');
+    alerta.scrollIntoView({behavior:'smooth', block:'center'});
+    return;
+  }
+  alerta.classList.remove('show');
+
+  document.querySelectorAll('.comentario-prof').forEach(function(c){ c.classList.add('show'); });
+  textareas.forEach(function(t){ t.readOnly = true; });
+  corrigido = true;
+
+  let totalChars = 0;
+  textareas.forEach(function(t){ totalChars += t.value.trim().length; });
+  document.getElementById('popup-nota').textContent = TOTAL_Q + ' respostas entregues · ' + totalChars + ' caracteres escritos';
+  document.getElementById('popup-overlay').classList.add('show');
+}
+
+function fecharPopup(){ document.getElementById('popup-overlay').classList.remove('show'); }
+
+function refazerAtividade(){
+  textareas.forEach(function(t){
+    t.value = '';
+    t.readOnly = false;
+    const c = t.parentElement.querySelector('.contador-chars');
+    c.textContent = '0 caracteres (mínimo ' + t.dataset.min + ')';
+    c.classList.remove('ok');
+  });
+  document.querySelectorAll('.comentario-prof').forEach(function(c){ c.classList.remove('show'); });
+  corrigido = false;
+  document.getElementById('alerta-incompleto').classList.remove('show');
+  atualizarProgresso();
+  window.scrollTo(0,0);
+}
+
+/* ===== EXPORTAR PDF ===== */
+const QUESTOES_PDF = [{"num": "1", "topico": "A natureza como questão social", "enunc": "Explique por que a Sociologia afirma que o dano ambiental é socialmente produzido, e não obra do acaso. Em seguida, mostre por que essa afirmação é o que justifica a existência de órgãos de regulação e fiscalização.", "id": "resp-1", "coment": "Espera-se que o aluno explique que o dano é decidido em conselhos, licenciado por órgãos públicos, financiado por bancos e distribuído desigualmente pelo território, recaindo sobre quem menos participou da decisão. Deve concluir que, se o dano vem de decisões, ele pode ser regulado por decisões — e é isso que justifica a existência de órgãos como o Ibama e de acordos internacionais."}, {"num": "2", "topico": "A natureza como questão social", "enunc": "Ulrich Beck afirma que os riscos da sociedade contemporânea são invisíveis, globais e produzidos pela própria modernização. Escolha dois desses traços e explique, para cada um, uma exigência concreta que ele impõe às instituições ambientais.", "id": "resp-2", "coment": "Espera-se que o aluno relacione a invisibilidade à necessidade de laudos, medição técnica e corpo de especialistas (sem os quais o risco sequer é percebido); a globalidade à necessidade de cooperação internacional, já que o risco não para na fronteira de quem o produziu; e a origem interna à modernização à necessidade de a sociedade julgar as consequências de suas próprias decisões (modernização reflexiva), submetendo obras e tecnologias a licenciamento e revisão."}, {"num": "3", "topico": "A natureza como questão social", "enunc": "Uma empresa anuncia que resolverá seus impactos apenas trocando equipamentos por outros mais eficientes. Redija a crítica que Enrique Leff faria a esse anúncio, empregando as noções de crise civilizatória e racionalidade ambiental.", "id": "resp-3", "coment": "Espera-se que o aluno explique que, para Leff, a crise não é um desarranjo econômico corrigível com tecnologia mais eficiente: é civilizatória, nascida de valores que organizam a vida em torno do progresso e da acumulação e que tratam a natureza como estoque. A saída proposta é substituir a racionalidade de mercado pela racionalidade ambiental, apoiada no saber ambiental, que integra ecologia, economia, cultura e política."}, {"num": "4", "topico": "Antropoceno ou Capitaloceno: quem é o sujeito da degradação", "enunc": "Explique a diferença entre Antropoceno e Capitaloceno e defenda por que, do ponto de vista sociológico, a disputa decisiva não é sobre a data de início da nova era, mas sobre o sujeito da degradação.", "id": "resp-4", "coment": "Espera-se que o aluno defina Antropoceno como a proposta de era geológica marcada pelo impacto humano decisivo (sem consenso sobre o início) e Capitaloceno, de Moore e Haraway, como a atribuição da crise à dinâmica histórica do capitalismo. Deve argumentar que dizer 'o ser humano' coloca no mesmo balanço quem lucrou e quem perdeu o rio, quem emitiu e quem foi atingido — por isso o sujeito importa mais que a data."}, {"num": "5", "topico": "Antropoceno ou Capitaloceno: quem é o sujeito da degradação", "enunc": "Mostre como a escolha entre atribuir a crise à “humanidade” ou a um modelo econômico determinado muda o tipo de solução proposta. Ao final, explique o que Ailton Krenak acrescenta a esse debate.", "id": "resp-5", "coment": "Espera-se que o aluno explique que, se o problema é 'a humanidade', a solução tende ao plano individual (reciclar, consumir menos, apagar a luz); se o problema é um modelo econômico, a solução exige norma, fiscalização e responsabilização de agentes concretos — empresas, cadeias produtivas e Estados. Sobre Krenak, deve registrar que existe uma pluralidade de modos de habitar a Terra e que a ideia de um 'humano' único já é parte do problema, e não do diagnóstico."}, {"num": "6", "topico": "Do movimento social à norma jurídica", "enunc": "Diferencie preservacionismo e conservacionismo quanto à premissa sobre a presença humana e quanto ao tipo de unidade de conservação que cada vertente produz. Dê um exemplo de atividade compatível com cada tipo.", "id": "resp-6", "coment": "Espera-se que o aluno explique que o preservacionismo entende toda interferência humana como dano e defende a natureza intocada, produzindo unidades de proteção integral, de uso restrito à pesquisa, à educação e ao turismo ecológico; e que o conservacionismo entende o ser humano como parte da natureza, produzindo unidades de uso sustentável, que admitem populações e atividades como a coleta de látex e de frutos."}, {"num": "7", "topico": "Do movimento social à norma jurídica", "enunc": "A trajetória que vai da luta dos seringueiros do Acre até a criação das reservas extrativistas é usada como exemplo de institucionalização de um movimento social. Explique o que significa essa expressão e aplique-a ao caso de Chico Mendes.", "id": "resp-7", "coment": "Espera-se que o aluno explique institucionalização como o processo pelo qual uma reivindicação de baixo se converte em categoria jurídica, em órgão público e em orçamento. No caso, Chico Mendes não pedia a propriedade individual da terra, mas a garantia de continuar vivendo do trabalho na floresta em pé; sua luta contribuiu para a Aliança dos Povos da Floresta e, depois, para as reservas extrativistas, hoje geridas pelo ICMBio, órgão que leva o seu nome."}, {"num": "8", "topico": "A arquitetura internacional: organismos e acordos", "enunc": "Defina soft law e explique, com base nela, por que um país pode descumprir metas anunciadas em uma declaração internacional sem sofrer sanção jurídica direta. Use a Rio-92 como exemplo.", "id": "resp-8", "coment": "Espera-se que o aluno defina soft law como o conjunto de declarações, cartas e recomendações internacionais que orientam a conduta dos Estados sem força coercitiva direta, e explique que a ausência de sanção não é falha de aplicação, mas característica do instrumento. A Rio-92 é o exemplo pedido: suas decisões não tinham força de lei e cumpriam a função de orientar as práticas dos países participantes."}, {"num": "9", "topico": "A arquitetura internacional: organismos e acordos", "enunc": "Se falta coerção ao direito internacional do meio ambiente, por que os acordos ainda assim produzem efeitos? Cite e explique dois mecanismos sociais de pressão que sustentam sua eficácia.", "id": "resp-9", "coment": "Espera-se que o aluno cite entre reputação internacional, condicionalidade de crédito e de investimento, ação de ONGs, cobertura da imprensa e mobilização interna, explicando que perder reputação ou acesso a financiamento tem custo político e econômico real. A conclusão esperada é que a pressão social integra o próprio mecanismo regulatório, não sendo um complemento externo a ele."}, {"num": "10", "topico": "A arquitetura internacional: organismos e acordos", "enunc": "Um vereador propõe acionar o IPCC para fiscalizar as emissões de uma indústria da cidade. Explique por que a proposta é inviável e, para corrigi-la, indique qual instância brasileira teria essa competência e com base em qual atribuição.", "id": "resp-10", "coment": "Espera-se que o aluno explique que o IPCC é um painel científico intergovernamental: sintetiza a produção científica sobre o clima e dá base técnica às negociações, mas não define política pública nem fiscaliza emissões. A correção esperada aponta o órgão ambiental competente conforme o porte e a localização do empreendimento — o Ibama, na esfera federal, ou o órgão estadual integrante do Sisnama —, no exercício do poder de polícia ambiental."}, {"num": "11", "topico": "O aparato brasileiro: competências legais e instrumentos", "enunc": "Escreva um parágrafo distinguindo as atribuições de Conama, Ministério do Meio Ambiente, Ibama e ICMBio, usando para cada um o verbo que lhe corresponde. Explique por que confundir esses verbos compromete a análise de um caso concreto.", "id": "resp-11", "coment": "Espera-se que o aluno associe: o Conama normatiza (órgão consultivo e deliberativo do Sisnama, cujas resoluções têm força normativa, inclusive a que define quando se exige estudo de impacto); o Ministério formula a política nacional; o Ibama fiscaliza e pune, com poder de polícia ambiental; o ICMBio gere as unidades de conservação federais. Deve concluir que confundir os verbos leva a atribuir responsabilidade ao órgão errado e a exigir de uma instituição aquilo que a lei não lhe deu."}, {"num": "12", "topico": "O aparato brasileiro: competências legais e instrumentos", "enunc": "Descreva as etapas do licenciamento ambiental e explique o que são condicionantes. Em seguida, mostre por que a eficácia das sanções ambientais é uma variável política, e não apenas técnica.", "id": "resp-12", "coment": "Espera-se que o aluno descreva as etapas — licença prévia (viabilidade), de instalação e de operação —, explicando que cada etapa impõe condicionantes fiscalizáveis depois. Sobre as sanções (advertência, multa, embargo, apreensão e suspensão), deve argumentar que sua eficácia depende de orçamento, número de servidores e estabilidade institucional, variáveis decididas politicamente, e não de um problema de conhecimento técnico."}, {"num": "13", "topico": "O aparato brasileiro: competências legais e instrumentos", "enunc": "A audiência pública do EIA/Rima é apresentada como o momento em que a decisão técnica se expõe ao debate coletivo. Explique essa função e, em seguida, aponte as assimetrias que o mesmo momento revela.", "id": "resp-13", "coment": "Espera-se que o aluno explique que o EIA/Rima exige um estudo técnico e um relatório em linguagem acessível, submetido a audiência pública, obrigando a decisão técnica a se expor ao debate coletivo. Deve, porém, apontar que a abertura formal não garante participação igual: quem dispõe de consultoria, advogado e tempo participa mais — reconhecimento que permite criticar o instrumento sem negar sua importância."}, {"num": "14", "topico": "Quando a regulação falha: sociologia dos desastres", "enunc": "Um jornal descreve o rompimento de uma barragem de rejeitos como “tragédia imprevisível”. Reescreva essa leitura a partir da proposta de Norma Valencio e explique o que muda, em termos de responsabilização, ao substituir “acidente” por vulnerabilidade institucional.", "id": "resp-14", "coment": "Espera-se que o aluno explique que, para Valencio, o desastre é a constatação pública de uma vulnerabilidade na relação entre Estado e sociedade diante de uma ameaça que não se conseguiu impedir nem minorar, e que decretar situação de emergência sinaliza incapacidade institucional. A mudança de chave permite responsabilizar decisões de licenciamento, de fiscalização e de orçamento, em vez de culpar a natureza ou o acaso."}, {"num": "15", "topico": "Quando a regulação falha: sociologia dos desastres", "enunc": "Explique o que significa tratar um desastre como teste de estresse do sistema regulatório e formule três perguntas que uma investigação assim deveria responder, justificando por que cada uma é sociológica.", "id": "resp-15", "coment": "Espera-se que o aluno explique que o desastre revela o funcionamento real das instituições e formule perguntas do tipo: quem licenciou e com base em qual estudo; quem deveria fiscalizar e com quantos servidores; o que aconteceu com as condicionantes impostas na licença. A justificativa esperada é que essas perguntas interrogam decisões e capacidades institucionais, e não apenas a extensão física do dano."}, {"num": "16", "topico": "Justiça ambiental e racismo ambiental", "enunc": "Defina justiça ambiental e injustiça ambiental e explique, com exemplos de localização de moradias e de equipamentos urbanos, por que se afirma que “a poluição não é democrática”.", "id": "resp-16", "coment": "Espera-se que o aluno defina justiça ambiental como o princípio de que nenhum grupo — com recortes de classe, raça, etnia ou gênero — deve suportar parcela desproporcional dos impactos, e injustiça ambiental como a condição de desigualdade sustentada por mecanismos sociopolíticos. Os exemplos esperados envolvem moradias em encostas e várzeas inundáveis, próximas a rodovias, ferrovias, fábricas poluentes e aterros, sem saneamento."}, {"num": "17", "topico": "Justiça ambiental e racismo ambiental", "enunc": "Uma empresa alega que não houve racismo ambiental porque não houve intenção de prejudicar a população negra do entorno. Responda a essa defesa mobilizando a pesquisa de Robert Bullard e a formulação de Tania Pacheco.", "id": "resp-17", "coment": "Espera-se que o aluno recorra a Bullard, que demonstrou em Houston que aterros e incineradores não eram instalados por critério técnico, mas em bairros de maioria negra — as zonas de sacrifício —, e a Pacheco, para quem o racismo ambiental não depende de intenção discriminatória: basta que o resultado da distribuição dos danos seja sistematicamente desigual. O dado de Mariana (84,5% das vítimas imediatas eram negras) pode ser usado como evidência."}, {"num": "18", "topico": "Justiça ambiental e racismo ambiental", "enunc": "Explique a proposta de ecologia decolonial de Malcom Ferdinand e mostre o que ela exige que o movimento ambientalista incorpore às suas pautas.", "id": "resp-18", "coment": "Espera-se que o aluno explique que Ferdinand recusa separar a história colonial da história ambiental do mundo: a expansão europeia iniciada no fim do século XV, sustentada pelo colonialismo e pela escravização de povos ameríndios, asiáticos e africanos, é inseparável da destruição ambiental que se seguiu. A exigência é que o ambientalismo incorpore as colonizações históricas e o racismo estrutural contemporâneo às suas pautas."}, {"num": "19", "topico": "Recorte de Goiás: o Cerrado sob regulação", "enunc": "Por que uma queimada na Amazônia vira notícia internacional e uma supressão equivalente de vegetação no Cerrado raramente vira? Explique a assimetria regulatória entre os dois biomas e o que essa diferença revela sobre o papel da pressão social na fiscalização.", "id": "resp-19", "coment": "Espera-se que o aluno aponte que o Cerrado convive com um regime de proteção historicamente mais frouxo que o da Amazônia Legal — percentuais de reserva legal menores, menor visibilidade internacional e menor pressão reputacional sobre quem desmata. A conclusão esperada é que a fiscalização depende também da pressão social, e não apenas da norma escrita, na mesma lógica que sustenta os acordos internacionais sem coerção."}, {"num": "20", "topico": "Roteiro sociológico para analisar um órgão ou acordo", "enunc": "Escolha um órgão ou acordo ambiental estudado neste material e analise-o aplicando pelo menos quatro passos do roteiro sociológico (origem, base legal, escala e competência, instrumentos, capacidade real, distribuição dos efeitos e participação). Identifique cada passo que estiver usando.", "id": "resp-20", "coment": "Espera-se uma análise que identifique explicitamente os passos escolhidos: origem (o conflito ou desastre que antecedeu a criação e os grupos que pressionaram); base legal (a norma instituidora e se ela normatiza, formula, licencia, fiscaliza ou gere áreas); escala e competência; instrumentos disponíveis; capacidade real (orçamento, servidores e autonomia — a distância entre a norma e a prática); distribuição dos efeitos, com atenção a zonas de sacrifício; e participação, indicando quem tem assento e voz e quem é apenas objeto das decisões."}];
+
+function sleep(ms){ return new Promise(function(r){ setTimeout(r, ms); }); }
+
+function esc(str){
+  const d = document.createElement('div');
+  d.textContent = str || '';
+  return d.innerHTML.replace(/\n/g, '<br>');
+}
+
+async function exportarPDF(){
+  const overlay = document.createElement('div');
+  overlay.id = 'pdf-overlay';
+  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(30,20,80,.62);display:flex;align-items:center;justify-content:center;z-index:999;';
+  overlay.innerHTML =
+    '<div style="background:#fff;border-radius:14px;padding:32px 36px;text-align:center;max-width:300px;box-shadow:0 10px 30px rgba(40,28,110,.3);font-family:\'Source Serif 4\',serif;">' +
+      '<div style="font-size:2rem;margin-bottom:8px;">📄</div>' +
+      '<h4 style="margin:0 0 4px;color:#332a85;font-family:\'Playfair Display\',serif;">Gerando PDF…</h4>' +
+      '<p style="margin:0 0 14px;color:#544d78;font-size:.86rem;">Aguarde alguns instantes.</p>' +
+      '<div style="background:#e4e2f6;border-radius:6px;overflow:hidden;height:8px;">' +
+        '<div id="pdf-prog" style="height:100%;width:0%;background:#4c3fbd;transition:width .2s ease;"></div>' +
+      '</div>' +
+      '<div id="pdf-prog-txt" style="margin-top:8px;font-family:\'JetBrains Mono\',monospace;font-size:.74rem;color:#544d78;">0%</div>' +
+    '</div>';
+  document.body.appendChild(overlay);
+  await sleep(80);
+  function setP(pct, msg){
+    const pp = document.getElementById('pdf-prog'), pt = document.getElementById('pdf-prog-txt');
+    if(pp) pp.style.width = pct + '%';
+    if(pt) pt.textContent = msg || (pct + '%');
+  }
+
+  try{
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF({orientation:'portrait', unit:'px', format:'a4', hotfixes:['px_scaling']});
+    const PW = pdf.internal.pageSize.getWidth(), PH = pdf.internal.pageSize.getHeight();
+    const ML = 28, CW = PW - ML*2;
+    let y = ML;
+
+    async function addImg(el){
+      const canvas = await html2canvas(el, {scale:2, useCORS:true, logging:false, backgroundColor:'#ffffff', scrollX:0, scrollY:0, windowWidth:860});
+      const imgW = CW, imgH = (canvas.height / canvas.width) * imgW;
+      const dataUrl = canvas.toDataURL('image/jpeg', .92), avail = PH - ML*2;
+      if(imgH <= avail){
+        if(y + imgH > PH - ML){ pdf.addPage(); y = ML; }
+        pdf.addImage(dataUrl, 'JPEG', ML, y, imgW, imgH);
+        y += imgH + 8;
+      } else {
+        const pxPerPdfPt = canvas.width / imgW;
+        let srcY = 0;
+        while(srcY < canvas.height){
+          const availPt = PH - y - ML, sliceH_pt = Math.min(availPt, avail);
+          const sliceH_px = Math.round(sliceH_pt * pxPerPdfPt), actualH_px = Math.min(sliceH_px, canvas.height - srcY);
+          const tmp = document.createElement('canvas');
+          tmp.width = canvas.width; tmp.height = actualH_px;
+          tmp.getContext('2d').drawImage(canvas, 0, srcY, canvas.width, actualH_px, 0, 0, canvas.width, actualH_px);
+          const sliceUrl = tmp.toDataURL('image/jpeg', .92), slicePt = (actualH_px / canvas.width) * imgW;
+          pdf.addImage(sliceUrl, 'JPEG', ML, y, imgW, slicePt);
+          srcY += actualH_px; y += slicePt;
+          if(srcY < canvas.height){ pdf.addPage(); y = ML; }
+        }
+        y += 8;
+      }
+    }
+
+    async function band(tag, txt){
+      const b = document.createElement('div');
+      b.style.cssText = 'width:860px;font-family:Arial,sans-serif;position:absolute;left:-9999px;top:0';
+      b.innerHTML = '<div style="background:linear-gradient(90deg,#4c3fbd,#332a85);border-radius:8px;padding:12px 22px;display:flex;align-items:center;gap:12px">' +
+        '<span style="background:rgba(255,255,255,.2);color:#fff;font-weight:700;font-size:12px;letter-spacing:1px;border-radius:20px;padding:3px 12px">' + tag + '</span>' +
+        '<span style="color:#fff;font-size:15px;font-weight:700">' + txt + '</span></div>';
+      document.body.appendChild(b);
+      await sleep(20);
+      await addImg(b);
+      document.body.removeChild(b);
+    }
+
+    const nome = document.getElementById('header-nome').textContent || 'Aluno(a)';
+    const turma = document.getElementById('ficha-turma').textContent || '—';
+    let concluidas = 0, totalChars = 0;
+    textareas.forEach(function(t){
+      const min = parseInt(t.dataset.min, 10);
+      totalChars += t.value.trim().length;
+      if(t.value.trim().length >= min) concluidas++;
+    });
+    const now = new Date();
+    const dtStr = now.toLocaleDateString('pt-BR') + ' às ' + now.toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'});
+
+    setP(5, 'Preparando capa…'); await sleep(40);
+    const coverEl = document.createElement('div');
+    coverEl.style.cssText = 'width:860px;font-family:Arial,sans-serif;overflow:hidden;position:absolute;left:-9999px;top:0';
+    coverEl.innerHTML =
+      '<div style="background:linear-gradient(135deg,#241c5e 0%,#4c3fbd 60%,#7b6ee0 100%);padding:32px 48px 28px;color:white">' +
+        '<div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;opacity:.75;font-weight:700;margin-bottom:6px">Sociologia · 3ª série do Ensino Médio · EM13CHS305</div>' +
+        '<div style="font-size:26px;font-weight:900;line-height:1.2;margin-bottom:5px">Quem regula a natureza?</div>' +
+        '<div style="font-size:13px;opacity:.85;font-style:italic">Sociedade de risco, governança ambiental e justiça · 20 questões dissertativas</div>' +
+      '</div>' +
+      '<div style="background:#f2f1fa;padding:22px 48px 26px;border-bottom:3px solid #b8791b">' +
+        '<div style="font-size:9px;text-transform:uppercase;letter-spacing:2px;color:#4c3fbd;font-weight:700;margin-bottom:5px">Aluno(a)</div>' +
+        '<div style="font-size:20px;font-weight:700;color:#1e1a33;border-bottom:2.5px solid #4c3fbd;padding-bottom:6px;display:inline-block;margin-bottom:16px">' + esc(nome) + '</div>' +
+        '<div style="display:flex;gap:12px;flex-wrap:wrap">' +
+          '<div style="background:white;border-radius:8px;padding:12px 18px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.07);min-width:84px">' +
+            '<div style="font-size:22px;font-weight:900;color:#4c3fbd">' + esc(turma) + '</div>' +
+            '<div style="font-size:9px;text-transform:uppercase;letter-spacing:1px;color:#888;margin-top:2px">Turma</div></div>' +
+          '<div style="background:white;border-radius:8px;padding:12px 18px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.07);min-width:84px">' +
+            '<div style="font-size:22px;font-weight:900;color:#b8791b">' + concluidas + '/20</div>' +
+            '<div style="font-size:9px;text-transform:uppercase;letter-spacing:1px;color:#888;margin-top:2px">Concluídas</div></div>' +
+          '<div style="background:white;border-radius:8px;padding:12px 18px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.07);min-width:84px">' +
+            '<div style="font-size:22px;font-weight:900;color:#4c3fbd">' + totalChars + '</div>' +
+            '<div style="font-size:9px;text-transform:uppercase;letter-spacing:1px;color:#888;margin-top:2px">Caracteres</div></div>' +
+          '<div style="background:white;border-radius:8px;padding:12px 18px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.07);min-width:140px">' +
+            '<div style="font-size:13px;font-weight:700;color:#333">' + dtStr + '</div>' +
+            '<div style="font-size:9px;text-transform:uppercase;letter-spacing:1px;color:#888;margin-top:2px">Gerado em</div></div>' +
+        '</div>' +
+        '<div style="font-size:9px;color:#aaa;margin-top:14px">Colégio Estadual Rodolfo de Oliveira · CERO · Goiás · 2026</div>' +
+      '</div>';
+    document.body.appendChild(coverEl); await sleep(60); await addImg(coverEl); document.body.removeChild(coverEl);
+
+    setP(12, 'Preparando questões…'); await sleep(20);
+    await band('DISSERTATIVAS', 'Respostas do aluno e orientações de correção');
+
+    for(let i=0; i<QUESTOES_PDF.length; i++){
+      const q = QUESTOES_PDF[i];
+      setP(12 + Math.round(i/QUESTOES_PDF.length*80), 'Questão ' + q.num + '/20…'); await sleep(10);
+
+      const campo = document.getElementById(q.id);
+      const valor = campo ? campo.value : '';
+      const respostaHTML =
+        '<div style="background:#f4f2ff;border:1.5px solid #cfc7f2;border-radius:8px;padding:12px 15px;min-height:40px">' +
+          '<div style="font-size:12px;color:#1e1a33;line-height:1.75;white-space:pre-wrap">' + (esc(valor) || '<span style="color:#aaa">(sem resposta)</span>') + '</div>' +
+        '</div>';
+
+      const qEl = document.createElement('div');
+      qEl.style.cssText = 'width:860px;font-family:Arial,sans-serif;background:white;overflow:hidden;border:1px solid #d8d4ee;border-radius:10px;position:absolute;left:-9999px;top:0';
+      qEl.innerHTML =
+        '<div style="background:linear-gradient(90deg,#4c3fbd,#332a85);padding:10px 22px;display:flex;justify-content:space-between;align-items:center">' +
+          '<span style="color:white;font-weight:700;font-size:13px;letter-spacing:.8px">QUESTÃO ' + q.num + '</span>' +
+          '<span style="background:rgba(255,255,255,.18);color:rgba(255,255,255,.95);font-size:11px;padding:3px 12px;border-radius:20px;font-weight:600">' + esc(q.topico) + '</span></div>' +
+        '<div style="padding:18px 24px 16px;background:#fdfdff">' +
+          '<div style="font-size:13px;font-weight:700;color:#1e1a33;line-height:1.6;margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid #eee">' + esc(q.enunc) + '</div>' +
+          '<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">' +
+            '<div style="width:4px;height:15px;background:#4c3fbd;border-radius:2px"></div>' +
+            '<div style="font-size:10px;font-weight:700;color:#4c3fbd;text-transform:uppercase;letter-spacing:1.5px">Resposta do Aluno(a)</div></div>' +
+          respostaHTML +
+          '<div style="display:flex;align-items:center;gap:8px;margin:12px 0 7px">' +
+            '<div style="width:4px;height:15px;background:#b8791b;border-radius:2px"></div>' +
+            '<div style="font-size:10px;font-weight:700;color:#8a5a10;text-transform:uppercase;letter-spacing:1.5px">Comentário do Professor</div></div>' +
+          '<div style="background:#fbf3e2;border:1.5px solid #f0dcae;border-radius:8px;padding:13px 16px">' +
+            '<div style="font-size:12px;color:#5a3f10;line-height:1.8">' + esc(q.coment) + '</div></div>' +
+        '</div>';
+      document.body.appendChild(qEl); await sleep(10); await addImg(qEl); document.body.removeChild(qEl);
+    }
+
+    setP(94, 'Finalizando…'); await sleep(30);
+    const totalPages = pdf.getNumberOfPages();
+    for(let p=1; p<=totalPages; p++){
+      pdf.setPage(p);
+      const fEl = document.createElement('div');
+      fEl.style.cssText = 'width:' + Math.round(CW) + 'px;height:22px;background:#f2f1fa;display:flex;align-items:center;justify-content:space-between;padding:0 28px;font-size:10px;color:#888;font-family:Arial,sans-serif;position:absolute;left:-9999px;top:0';
+      fEl.innerHTML = '<span>Quem regula a natureza? · Dissertativas · ' + esc(nome) + '</span><span>Página ' + p + ' de ' + totalPages + '</span>';
+      document.body.appendChild(fEl);
+      const fc = await html2canvas(fEl, {scale:2, logging:false, backgroundColor:'#f2f1fa'});
+      document.body.removeChild(fEl);
+      const fUrl = fc.toDataURL('image/jpeg', .9), fH = (fc.height / fc.width) * CW;
+      pdf.setFillColor(242,241,250); pdf.rect(ML, PH-fH, CW, fH, 'F');
+      pdf.addImage(fUrl, 'JPEG', ML, PH-fH, CW, fH);
+    }
+
+    setP(100, 'Salvando…'); await sleep(200);
+    const safeName = nome.replace(/[^a-zA-Z0-9_\-]/g, '_');
+    pdf.save('Dissertativas_EM13CHS305_' + safeName + '.pdf');
+
+  } catch(err){
+    console.error(err);
+    alert('Erro ao gerar PDF: ' + err.message);
+  } finally {
+    const ov = document.getElementById('pdf-overlay');
+    if(ov) document.body.removeChild(ov);
+  }
+}
+
+/* ===== PROTEÇÃO ANTI-COLA ===== */
+(function () {
+  const CAMPOS_PROTEGIDOS = document.querySelectorAll('textarea.dissertativa, .campo-resposta');
+  const LIMITE_BLOCO = 25;
+
+  function bloquear(e) {
+    e.preventDefault();
+    mostrarToast('Colar não permitido nesta atividade.');
+  }
+
+  CAMPOS_PROTEGIDOS.forEach(function (campo) {
+    ['paste', 'copy', 'cut', 'drop', 'dragover', 'contextmenu'].forEach(function (evt) {
+      campo.addEventListener(evt, bloquear);
+    });
+
+    campo.addEventListener('beforeinput', function (e) {
+      if (e.inputType === 'insertFromPaste' || e.inputType === 'insertFromDrop') {
+        e.preventDefault();
+        mostrarToast('Colar não permitido nesta atividade.');
+      }
+    });
+
+    let valorAnterior = campo.value;
+    campo.addEventListener('input', function (e) {
+      const diferenca = campo.value.length - valorAnterior.length;
+      if (diferenca >= LIMITE_BLOCO && e.inputType !== 'insertReplacementText') {
+        campo.value = valorAnterior;
+        mostrarToast('Colar não permitido nesta atividade.');
+        const c = campo.parentElement.querySelector('.contador-chars');
+        if (c) {
+          c.textContent = campo.value.length + ' caracteres (mínimo ' + campo.dataset.min + ')';
+          c.classList.toggle('ok', campo.value.trim().length >= parseInt(campo.dataset.min, 10));
+        }
+        atualizarProgresso();
+      } else {
+        valorAnterior = campo.value;
+      }
+    });
+  });
+
+  function mostrarToast(mensagem) {
+    let toast = document.getElementById('anti-cola-toast');
+    if (!toast) {
+      toast = document.createElement('div');
+      toast.id = 'anti-cola-toast';
+      toast.style.cssText =
+        'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);' +
+        'background:#332a85;color:#fff;padding:10px 20px;border-radius:8px;' +
+        'font-size:14px;z-index:9999;opacity:0;transition:opacity .3s;' +
+        'font-family:\'Source Serif 4\',serif;box-shadow:0 6px 18px rgba(30,20,80,.35);';
+      document.body.appendChild(toast);
+    }
+    toast.textContent = mensagem;
+    toast.style.opacity = '1';
+    clearTimeout(toast._timeout);
+    toast._timeout = setTimeout(function () { toast.style.opacity = '0'; }, 2500);
+  }
+})();
+
+</script>
+
+</body>
+</html>
