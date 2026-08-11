@@ -997,7 +997,7 @@ async function exportarPDF(){
           '<div style="margin-top:10px;background:#fbf3ea;border:1.5px solid #f2d5ce;border-radius:6px;padding:10px 14px">' +
             '<div style="font-size:12px;color:#68331e;line-height:1.6">' + esc(gabTxt) + '</div></div>' +
         '</div>';
-      document.body.appendChild(qEl); await sleep(10); await addImg(qEl); documentbody.removeChild(qEl);
+      document.body.appendChild(qEl); await sleep(10); await addImg(qEl); document.body.removeChild(qEl);
       oi++;
     }
 
