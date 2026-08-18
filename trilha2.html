@@ -1630,4 +1630,87 @@ var GALERIA_IG = [
   var btnProx=box.querySelector('.ig-seta.prox');
   var total=slides.length;
 
-  for(var i=0;i<total;i++
+  for(var i=0;i<total;i++){
+    var b=d.createElement('button');
+    if(i===0) b.className='on';
+    b.setAttribute('aria-label','Ir para imagem '+(i+1));
+    (function(idx){ b.addEventListener('click', function(){ ir(idx); }); })(i);
+    pags.appendChild(b);
+  }
+  var pontos=pags.querySelectorAll('button');
+
+  function atualizar(){
+    var idx=Math.round(trilho.scrollLeft/trilho.clientWidth);
+    idx=Math.max(0,Math.min(total-1,idx));
+    pontos.forEach(function(p,j){ p.className = (j===idx) ? 'on' : ''; });
+    if(contador) contador.textContent = idx+1;
+  }
+  function ir(idx){
+    idx=(idx+total)%total;
+    trilho.scrollTo({left: idx*trilho.clientWidth, behavior:'smooth'});
+  }
+  var t;
+  trilho.addEventListener('scroll', function(){
+    clearTimeout(t); t=setTimeout(atualizar,80);
+  }, {passive:true});
+  btnAnt.addEventListener('click', function(){
+    ir(Math.round(trilho.scrollLeft/trilho.clientWidth)-1);
+  });
+  btnProx.addEventListener('click', function(){
+    ir(Math.round(trilho.scrollLeft/trilho.clientWidth)+1);
+  });
+  window.addEventListener('resize', atualizar);
+
+  slides.forEach(function(sl, j){
+    var im = sl.querySelector('img');
+    if(!im) return;
+    im.setAttribute('role','button');
+    im.setAttribute('tabindex','0');
+    im.setAttribute('title','Clique para ampliar com zoom');
+    im.addEventListener('click', function(){
+      if(window.abrirVisualizador) window.abrirVisualizador(GALERIA_IG, j);
+    });
+    im.addEventListener('keydown', function(e){
+      if(e.key==='Enter' || e.key===' '){
+        e.preventDefault();
+        if(window.abrirVisualizador) window.abrirVisualizador(GALERIA_IG, j);
+      }
+    });
+  });
+})();
+</script>
+
+<script>
+(function(){
+  function ativarConceito(){
+    const boxes=[...document.querySelectorAll('.termo-box')];
+    const box=boxes.find(el=>{const r=el.querySelector('.rot');return r && /C\. Wright Mills/i.test(r.textContent);});
+    if(!box) return;
+    box.setAttribute('tabindex','0');
+    box.setAttribute('role','button');
+    box.setAttribute('aria-label','Ampliar conceito-chave de C. Wright Mills');
+    function abrir(){
+      let fundo=document.getElementById('conceitoZoomFundo');
+      if(!fundo){
+        fundo=document.createElement('div');
+        fundo.id='conceitoZoomFundo';
+        fundo.className='conceito-fundo';
+        fundo.innerHTML='<div class="termo-box-clone" role="dialog" aria-modal="true" aria-label="Conceito-chave de C. Wright Mills"><button class="fechar-conceito" type="button" aria-label="Fechar">×</button><div class="conteudo-conceito"></div></div>';
+        document.body.appendChild(fundo);
+        fundo.querySelector('.fechar-conceito').addEventListener('click',fechar);
+        fundo.addEventListener('click',e=>{if(e.target===fundo) fechar();});
+      }
+      fundo.querySelector('.conteudo-conceito').innerHTML=box.innerHTML;
+      fundo.classList.add('ativo');
+      document.body.style.overflow='hidden';
+    }
+    function fechar(){const fundo=document.getElementById('conceitoZoomFundo');if(fundo){fundo.classList.remove('ativo');document.body.style.overflow='';}}
+    box.addEventListener('click',abrir);
+    box.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();abrir();}});
+    document.addEventListener('keydown',e=>{if(e.key==='Escape') fechar();});
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',ativarConceito); else ativarConceito();
+})();
+</script>
+</body>
+</html>
