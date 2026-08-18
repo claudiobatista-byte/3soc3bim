@@ -692,7 +692,7 @@ body { overflow-x: hidden; }
   h2.secao{font-size:1.30rem;line-height:1.25;padding-bottom:8px;}
   h2.secao .num{width:27px;height:27px;line-height:27px;margin-right:8px;font-size:.78rem;}
   h3{font-size:1.08rem;margin-top:20px;}
-  p{text-align:left;}
+  p{text-align:justify;text-justify:inter-word;}
   .lead{font-size:1rem;}
   .objetivos{padding:17px 16px;margin-top:24px;}
   .atv-box{padding:14px 14px 16px;}
@@ -713,6 +713,17 @@ body { overflow-x: hidden; }
     transition:none !important;
     animation:none !important;
   }
+}
+
+
+/* Texto corrido justificado — PC e celular */
+main p,
+.texto-apoio p,
+.objetivos li,
+.tabela-wrap td,
+.tabela-wrap th {
+  text-align: justify;
+  text-justify: inter-word;
 }
 
 </style>
