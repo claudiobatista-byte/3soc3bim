@@ -7,10 +7,7 @@
 <meta name="theme-color" content="#1b3240">
 <meta name="color-scheme" content="light only">
 <title>Direitos Humanos, Igualdade e Diversidade — Sociologia · 3ª série EM · CERO</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
-<script type="text/javascript" src="https://gc.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=whF0AQoGnZdUhnYC_4TS5RFBVYkSHJlWL9j1Y-oOJLaEqrp3JF4Tuea6NNcuArvBD004DC1Wg_S01Rshvhr5fAV-5bxeWOn4F5GU7v3ovq-aS5wY9wy0um2LtMi71eEVCo_8mNNrqgFSs55GKY0NrI_iJMcJylmBM0-LL059an1q47ZZtK_KSyMuSTA4C6xmoy9S0HXt424gwa6XqvCcTJt89sVdesUbnIdpu3sdEmceXo6L_SiPA63nyBDa9JyEIxbOjz6UQDqd9Ledlp2j60mg-N-GBjM9xjux2mTa23Q2MxCGWI144Vn800uMAI1Otn3jtHdUIIF09ZGxGLH-Uw" charset="UTF-8"></script><link rel="stylesheet" crossorigin="anonymous" href="https://gc.kis.v2.scr.kaspersky-labs.com/E3E8934C-235A-4B0E-825A-35A08381A191/abn/main.css?attr=aHR0cHM6Ly9jaGF0Z3B0LmNvbS9iYWNrZW5kLWFwaS9lc3R1YXJ5L2NvbnRlbnQ_aWQ9ZmlsZV8wMDAwMDAwMDYwOTA4MjBlYjdhY2EzZTg5ZmMwY2Q2ZiZmbj10cmlsaGEyX2F0dWFsaXphZGEuaHRtbCZjZD1hdHRhY2htZW50JnRzPTQ5NjM5NCZwPWZzJmNpZD0xJnNpZz1mMzdkZmQ4ZjE1ZGQ0YTMxOTA1NjJhYjY0NDdlMTI4ZDFjYzk3MDg3YjliNDE0NDliYzAxZTYwOGViZTk1NDNmJnY9MA"/><style>
+<style>
 :root{
   --petroleo:#1b3240;      /* cor-base escura */
   --petroleo-claro:#2d5268;
@@ -23,8 +20,8 @@
   --musgo:#4f6d46;         /* cor de apoio */
   --borda:#d6cebd;
   --branco:#fffefb;
-  --serif-titulo:'Playfair Display',Georgia,'Times New Roman',serif;
-  --serif-corpo:'Source Serif 4',Georgia,'Times New Roman',serif;
+  --serif-titulo:Georgia,'Times New Roman',serif;
+  --serif-corpo:Georgia,'Times New Roman',serif;
   --raio:10px;
   --sombra:0 2px 10px rgba(27,50,64,.10);
   --medida:900px;
@@ -681,7 +678,45 @@ h1{
 
 /* ---------- BOX DE SLIDES EM PDF ---------- */
 
+
+/* =========================================================
+   OTIMIZAÇÃO RESPONSIVA — UMA ÚNICA PÁGINA (PC + CELULAR)
+   ========================================================= */
+html { scroll-padding-top: 12px; }
+body { overflow-x: hidden; }
+
+@media (max-width:700px){
+  body{font-size:16px;line-height:1.6;}
+  main{width:100%;padding-left:14px;padding-right:14px;padding-bottom:40px;}
+  section{margin-top:32px;}
+  h2.secao{font-size:1.30rem;line-height:1.25;padding-bottom:8px;}
+  h2.secao .num{width:27px;height:27px;line-height:27px;margin-right:8px;font-size:.78rem;}
+  h3{font-size:1.08rem;margin-top:20px;}
+  p{text-align:left;}
+  .lead{font-size:1rem;}
+  .objetivos{padding:17px 16px;margin-top:24px;}
+  .atv-box{padding:14px 14px 16px;}
+  .ficha-btn{padding:13px 12px;gap:9px;}
+  .ficha-btn .ico{width:30px;height:30px;font-size:.95rem;}
+  .ficha-btn .txt strong{font-size:.96rem;}
+  .ficha-btn .txt em{font-size:.80rem;}
+  .rec-card{padding:15px 14px;}
+  .tabela-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+  .ig-box{margin-left:-2px;margin-right:-2px;}
+  .lb-topo{padding:8px 10px;}
+  .lb-ctrl button,.lb-fechar{min-width:36px;height:36px;padding:0 8px;}
+  .lb-rodape{padding:8px 10px;}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{
+    scroll-behavior:auto !important;
+    transition:none !important;
+    animation:none !important;
+  }
+}
+
 </style>
+<meta name="format-detection" content="telephone=no">
 </head>
 <body>
 
@@ -740,7 +775,7 @@ h1{
         </ul>
         <div style="margin-top: 20px; text-align: center;">
           <a href="img2/info1.webp" target="_blank" rel="noopener noreferrer" style="display: inline-block; text-decoration: none; overflow: hidden; border-radius: var(--raio); box-shadow: var(--sombra); cursor: zoom-in;">
-            <img src="img2/info1.webp" alt="Infográfico explicativo sobre o descritor e os objetivos de aprendizagem" style="border-radius: var(--raio); border: 1px solid var(--borda); display: block; margin: 0 auto; transition: transform 0.3s ease, filter 0.3s ease;" onmouseover="this.style.transform='scale(1.03)'; this.style.filter='brightness(1.03)'" onmouseout="this.style.transform='scale(1)'; this.style.filter='none'">
+            <img loading="lazy" decoding="async" fetchpriority="low" src="img2/info1.webp" alt="Infográfico explicativo sobre o descritor e os objetivos de aprendizagem" style="border-radius: var(--raio); border: 1px solid var(--borda); display: block; margin: 0 auto; transition: transform 0.3s ease, filter 0.3s ease;"scale(1.03)'; this.style.filter='brightness(1.03)'"scale(1)'; this.style.filter='none'">
           </a>
         </div>
       </div>
