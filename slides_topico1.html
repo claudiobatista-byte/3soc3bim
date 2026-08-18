@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Slides do tópico 1 · Sociologia</title>
+<style>
+:root{--p:#1b3240;--t:#b04a28;--a:#f7f4ed}
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden}
+body{background:#111;color:var(--a);font-family:Georgia,serif;display:flex;flex-direction:column}
+.top{height:58px;flex:0 0 58px;background:var(--p);display:flex;align-items:center;gap:8px;padding:9px 12px}
+.title{flex:1;font-size:1rem}.count{font-size:.8rem;color:#f0c9a8}
+button{border:1px solid #ffffff66;background:transparent;color:var(--a);min-width:38px;height:38px;border-radius:8px;cursor:pointer}
+button:hover{background:#ffffff18}
+.stage{position:relative;flex:1;min-height:0;background:#111;overflow:hidden}
+.track{height:100%;display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none}
+.track::-webkit-scrollbar{display:none}
+.slide{flex:0 0 100%;height:100%;scroll-snap-align:center;display:flex;align-items:center;justify-content:center;padding:16px}
+.slide img{max-width:100%;max-height:100%;object-fit:contain;background:#fff;box-shadow:0 10px 35px #0008;user-select:none;-webkit-user-drag:none;cursor:zoom-in;transform-origin:center}
+.arrow{position:absolute;top:50%;transform:translateY(-50%);z-index:3;width:44px;height:44px;border:0;border-radius:50%;background:#ffffffe8;color:#222;font-size:1.5rem;box-shadow:0 2px 9px #0006}
+.arrow:hover{background:#fff}.prev{left:12px}.next{right:12px}
+.dots{position:absolute;bottom:13px;left:50%;transform:translateX(-50%);display:flex;gap:5px;padding:6px 9px;background:#0009;border-radius:20px;z-index:4}
+.dot{width:7px;min-width:7px;height:7px;min-height:7px;border:0;padding:0;border-radius:50%;background:#aaa}
+.dot.on{width:20px;background:var(--t);border-radius:5px}
+.hint{position:absolute;bottom:13px;left:13px;background:#0009;padding:5px 9px;border-radius:20px;font-size:.7rem;z-index:4}
+.zoomed{cursor:grab!important}.zoomed:active{cursor:grabbing!important}
+@media(max-width:600px){.top{height:52px;flex-basis:52px;padding:7px}.slide{padding:7px}.arrow{width:36px;height:36px}.hint{display:none}}
+</style>
+</head>
+<body>
+<div class="top">
+<strong class="title">Slides do tópico 1 · Sociologia</strong>
+<span class="count"><span id="count">1</span>/10</span>
+<button id="minus" aria-label="Diminuir zoom">−</button>
+<button id="reset" aria-label="Restaurar zoom">100%</button>
+<button id="plus" aria-label="Aumentar zoom">+</button>
+<button id="close" aria-label="Fechar">×</button>
+</div>
+<div class="stage" id="stage">
+<div class="track" id="track">
+<div class="slide"><img src="img2/Slide1.webp" alt="Slide 1"></div>
+<div class="slide"><img src="img2/Slide2.webp" alt="Slide 2"></div>
+<div class="slide"><img src="img2/Slide3.webp" alt="Slide 3"></div>
+<div class="slide"><img src="img2/Slide4.webp" alt="Slide 4"></div>
+<div class="slide"><img src="img2/Slide5.webp" alt="Slide 5"></div>
+<div class="slide"><img src="img2/Slide6.webp" alt="Slide 6"></div>
+<div class="slide"><img src="img2/Slide7.webp" alt="Slide 7"></div>
+<div class="slide"><img src="img2/Slide8.webp" alt="Slide 8"></div>
+<div class="slide"><img src="img2/Slide9.webp" alt="Slide 9"></div>
+<div class="slide"><img src="img2/Slide10.webp" alt="Slide 10"></div>
+</div>
+<button class="arrow prev" id="prev" aria-label="Slide anterior">‹</button>
+<button class="arrow next" id="next" aria-label="Próximo slide">›</button>
+<div class="dots" id="dots"></div>
+<div class="hint">← → passar imagens · duplo clique / + / − para zoom · arraste ampliada</div>
+</div>
+<script>
+(()=> {
+const track=document.getElementById('track'), stage=document.getElementById('stage');
+const imgs=[...track.querySelectorAll('img')], dots=document.getElementById('dots'), count=document.getElementById('count');
+let cur=0,scale=1,x=0,y=0,drag=false,sx=0,sy=0;
+imgs.forEach((im,i)=>{const b=document.createElement('button');b.className='dot'+(!i?' on':'');b.onclick=()=>go(i);dots.appendChild(b)});
+const ds=[...dots.children];
+function reset(){scale=1;x=0;y=0;imgs.forEach(im=>{im.style.transform='';im.classList.remove('zoomed')});document.getElementById('reset').textContent='100%'}
+function apply(){const im=imgs[cur];im.style.transform=`translate(${x}px,${y}px) scale(${scale})`;im.classList.toggle('zoomed',scale>1);document.getElementById('reset').textContent=Math.round(scale*100)+'%'}
+function zoom(f,cx,cy){const old=scale,n=Math.max(1,Math.min(6,old*f));if(n===old)return;if(cx!=null){const r=stage.getBoundingClientRect(),dx=cx-(r.left+r.width/2),dy=cy-(r.top+r.height/2);x=dx-(dx-x)*(n/old);y=dy-(dy-y)*(n/old)}scale=n;if(scale===1){x=0;y=0}apply()}
+function update(){cur=Math.max(0,Math.min(9,Math.round(track.scrollLeft/track.clientWidth)));count.textContent=cur+1;ds.forEach((d,i)=>d.classList.toggle('on',i===cur))}
+function go(i){cur=(i+10)%10;reset();track.scrollTo({left:cur*track.clientWidth,behavior:'smooth'});update()}
+track.addEventListener('scroll',()=>requestAnimationFrame(update),{passive:true});
+document.getElementById('prev').onclick=()=>go(cur-1);document.getElementById('next').onclick=()=>go(cur+1);
+document.getElementById('plus').onclick=()=>zoom(1.35);document.getElementById('minus').onclick=()=>zoom(1/1.35);
+document.getElementById('reset').onclick=reset;document.getElementById('close').onclick=()=>window.close();
+stage.addEventListener('wheel',e=>{e.preventDefault();zoom(e.deltaY<0?1.15:1/1.15,e.clientX,e.clientY)},{passive:false});
+imgs.forEach(im=>im.addEventListener('dblclick',e=>scale>1?reset():zoom(2.2,e.clientX,e.clientY)));
+stage.addEventListener('mousedown',e=>{if(scale<=1)return;drag=true;sx=e.clientX-x;sy=e.clientY-y});
+window.addEventListener('mousemove',e=>{if(drag){x=e.clientX-sx;y=e.clientY-sy;apply()}});
+window.addEventListener('mouseup',()=>drag=false);
+document.addEventListener('keydown',e=>{
+if(e.key==='ArrowRight')go(cur+1);else if(e.key==='ArrowLeft')go(cur-1);
+else if(e.key==='+'||e.key==='=')zoom(1.35);else if(e.key==='-')zoom(1/1.35);
+else if(e.key==='0')reset();else if(e.key==='Escape')window.close();
+});
+const q=new URLSearchParams(location.search), n=Number(q.get('slide'));cur=Number.isFinite(n)?Math.max(0,Math.min(9,n)):0;
+requestAnimationFrame(()=>{track.scrollLeft=cur*track.clientWidth;update()});
+})();
+</script>
+</body>
+</html>
