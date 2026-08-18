@@ -1,0 +1,1178 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="description" content="Material de estudo de Sociologia (3ª série EM - EM13CHS605): Direitos Humanos, Justiça, Igualdade, Fraternidade, Crítica Decolonial e Práxis Social. CERO - Prof. Claudio.">
+<meta name="theme-color" content="#1b3240">
+<meta name="color-scheme" content="light only">
+<title>Direitos Humanos, Igualdade e Diversidade — Sociologia · 3ª série EM · CERO</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --petroleo:#1b3240;      /* cor-base escura */
+  --petroleo-claro:#2d5268;
+  --terracota:#b04a28;     /* cor de acento */
+  --terracota-claro:#d16e4d;
+  --areia:#f7f4ed;         /* fundo de papel */
+  --areia-escura:#e9e2d3;
+  --grafite:#2b2b2b;
+  --cinza:#5c5c5c;
+  --musgo:#4f6d46;         /* cor de apoio */
+  --borda:#d6cebd;
+  --branco:#fffefb;
+  --serif-titulo:'Playfair Display',Georgia,'Times New Roman',serif;
+  --serif-corpo:'Source Serif 4',Georgia,'Times New Roman',serif;
+  --raio:10px;
+  --sombra:0 2px 10px rgba(27,50,64,.10);
+  --medida:900px;
+  --gutter:clamp(16px,4vw,28px);
+  --topbar-h:44px;
+}
+html{
+  -webkit-text-size-adjust:100%;text-size-adjust:100%;
+  scroll-behavior:smooth;
+}
+*{box-sizing:border-box;}
+body{
+  margin:0;background:var(--areia);color:var(--grafite);
+  font-family:var(--serif-corpo);font-size:17px;line-height:1.7;
+  -webkit-user-select:none;user-select:none;
+  -webkit-tap-highlight-color:rgba(176,74,40,.18);
+}
+main,.conteudo,.glossario,.modal-corpo{-webkit-user-select:text;user-select:text;}
+h1,h2,h3,h4{font-family:var(--serif-titulo);line-height:1.25;overflow-wrap:break-word;}
+img,svg,video{max-width:100%;height:auto;}
+
+a:focus-visible,button:focus-visible,summary:focus-visible{
+  outline:3px solid var(--terracota);outline-offset:2px;border-radius:4px;
+}
+.topbar a:focus-visible,.topbar button:focus-visible,.hero a:focus-visible{
+  outline-color:#f5d0b5;
+}
+
+main{max-width:var(--medida);margin:0 auto;padding:0 var(--gutter) 60px;}
+section{margin-top:44px;}
+h2.secao{
+  font-size:1.6rem;color:var(--petroleo);margin:0 0 6px;
+  border-bottom:2px solid var(--areia-escura);padding-bottom:10px;
+}
+h2.secao .num{
+  display:inline-block;background:var(--terracota);color:#fff;font-family:var(--serif-corpo);
+  font-size:.85rem;font-weight:600;width:30px;height:30px;line-height:30px;text-align:center;
+  border-radius:50%;margin-right:12px;vertical-align:2px;
+}
+h3{font-size:1.18rem;color:var(--petroleo-claro);margin:26px 0 8px;}
+p{margin:0 0 14px;text-align:justify;}
+.lead{font-size:1.06rem;color:var(--cinza);}
+
+.objetivos{
+  background:var(--branco);border-left:6px solid var(--petroleo);border-radius:var(--raio);
+  padding:22px 26px;box-shadow:var(--sombra);margin-top:34px;
+}
+.objetivos .acc{margin:0;}
+.objetivos .acc-head{font-size:1.15rem;}
+.objetivos ul{margin:0;padding-left:20px;}
+.objetivos li{margin-bottom:8px;}
+.hab{
+  display:inline-block;background:var(--areia-escura);color:var(--petroleo);
+  font-size:.75rem;letter-spacing:.08em;padding:3px 10px;border-radius:100px;
+  font-weight:600;margin-bottom:10px;
+}
+.objetivos.slides{margin-top:16px;padding:18px 26px;border-left-color:var(--musgo);}
+@media print{.objetivos.slides{display:none;}}
+
+.atv-box{
+  clear:both;background:var(--branco);border:1px solid var(--borda);
+  border-top:4px solid var(--terracota);border-radius:var(--raio);
+  box-shadow:var(--sombra);padding:16px 20px 18px;margin:26px 0 8px;
+}
+.atv-box .rot{
+  display:block;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--terracota);font-weight:700;margin-bottom:3px;
+}
+.atv-box h4{
+  font-family:var(--serif-titulo);font-size:1.05rem;color:var(--petroleo);
+  margin:0 0 6px;line-height:1.3;
+}
+.atv-box .intro{font-size:.88rem;color:var(--cinza);margin:0;line-height:1.5;}
+.atv-box .btn-recurso{margin-top:12px;}
+@media print{.atv-box{display:none !important;}}
+
+.btn-recurso{
+  display:flex;align-items:center;gap:13px;
+  background:var(--branco);border:1px solid var(--borda);border-left:5px solid var(--musgo);
+  border-radius:var(--raio);padding:14px 18px;margin-top:14px;
+  text-decoration:none;color:var(--petroleo);
+  transition:transform .12s ease,border-color .12s ease,box-shadow .12s ease;
+}
+.btn-recurso:hover{
+  transform:translateY(-2px);border-left-color:var(--terracota);
+  box-shadow:var(--sombra);
+}
+.br-ico{
+  flex:0 0 auto;display:flex;align-items:center;justify-content:center;
+  width:44px;height:44px;border-radius:9px;background:var(--musgo);color:#fff;
+  font-family:var(--serif-titulo);font-size:.8rem;letter-spacing:.06em;
+}
+.btn-recurso:hover .br-ico{background:var(--terracota);}
+.br-txt{flex:1;display:block;line-height:1.35;}
+.br-txt strong{display:block;font-family:var(--serif-titulo);font-size:1.05rem;}
+.br-txt em{display:block;font-style:normal;font-size:.82rem;color:var(--cinza);margin-top:2px;}
+.br-seta{flex:0 0 auto;font-size:1.2rem;color:var(--terracota);}
+.btn-recurso.atividade{border-left-color:var(--terracota);}
+.btn-recurso.atividade .br-ico{background:var(--terracota);}
+.btn-recurso.atividade:hover .br-ico{background:var(--petroleo);}
+.btn-recurso.atividade .br-seta{color:var(--petroleo-claro);}
+@media print{.btn-recurso{display:none;}}
+
+.termo-box{
+  background:var(--branco);border:1px solid var(--borda);border-left:5px solid var(--terracota);
+  border-radius:var(--raio);padding:16px 20px;margin:18px 0;
+}
+.termo-box .rot{
+  display:block;font-family:var(--serif-titulo);color:var(--terracota);
+  font-size:.82rem;letter-spacing:.12em;text-transform:uppercase;margin-bottom:6px;
+}
+.termo-box p:last-child{margin-bottom:0;}
+
+.saiba-box{
+  background:#eaf1f5;border:1px dashed var(--petroleo-claro);border-radius:var(--raio);
+  padding:16px 20px;margin:18px 0;
+}
+.saiba-box .rot{display:block;color:var(--petroleo-claro);font-weight:600;font-size:.85rem;
+  letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px;}
+.saiba-box p:last-child{margin-bottom:0;}
+
+.goias-box{
+  background:linear-gradient(135deg,#fcf6ee,#f5e8d7);
+  border:1px solid var(--terracota-claro);border-radius:var(--raio);
+  padding:20px 24px;margin:22px 0;box-shadow:var(--sombra);
+}
+.goias-box .rot{display:block;color:var(--terracota);font-family:var(--serif-titulo);
+  font-size:1rem;letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px;}
+.goias-box p:last-child{margin-bottom:0;}
+
+.cita{
+  border-left:4px solid var(--petroleo-claro);background:var(--branco);
+  padding:14px 20px;margin:20px 0;font-style:italic;color:#3a3a3a;border-radius:0 var(--raio) var(--raio) 0;
+}
+.cita .fonte{display:block;font-style:normal;font-size:.82rem;color:var(--cinza);margin-top:8px;text-align:right;}
+
+.pesquise{
+  background:var(--petroleo);color:var(--areia);border-radius:var(--raio);
+  padding:18px 22px;margin:20px 0;
+}
+.pesquise .rot{display:block;font-family:var(--serif-titulo);font-size:.9rem;
+  letter-spacing:.12em;text-transform:uppercase;margin-bottom:8px;color:#f0c9a8;}
+.pesquise p:last-child{margin-bottom:0;}
+.pesquise ul{margin:8px 0 0;padding-left:20px;}
+.pesquise li{margin-bottom:6px;}
+
+.acc{border:1px solid var(--borda);border-radius:var(--raio);overflow:hidden;margin:14px 0;background:var(--branco);}
+.acc-head{
+  width:100%;text-align:left;background:var(--branco);border:0;cursor:pointer;
+  font-family:var(--serif-titulo);font-size:1.02rem;color:var(--petroleo);
+  padding:15px 46px 15px 18px;position:relative;
+}
+.acc-head:hover{background:#f9f6ef;}
+.acc-head::after{
+  content:'+';position:absolute;right:18px;top:50%;transform:translateY(-50%);
+  font-size:1.4rem;color:var(--terracota);font-family:var(--serif-corpo);
+}
+.acc.aberto .acc-head::after{content:'–';}
+.acc-body{display:none;padding:4px 18px 18px;border-top:1px solid var(--areia-escura);}
+.acc.aberto .acc-body{display:block;}
+
+.tabela-wrap{overflow-x:auto;margin:20px 0;}
+table{border-collapse:collapse;width:100%;background:var(--branco);font-size:.93rem;}
+caption{caption-side:top;text-align:left;font-size:.85rem;color:var(--cinza);padding-bottom:8px;font-style:italic;}
+th,td{border:1px solid var(--borda);padding:10px 12px;vertical-align:top;text-align:left;}
+th{background:var(--petroleo);color:var(--areia);font-family:var(--serif-titulo);font-weight:600;}
+tbody tr:nth-child(even){background:#faf7f0;}
+
+.linha{border-left:3px solid var(--terracota-claro);margin:22px 0 22px 10px;padding-left:20px;}
+.linha .item{margin-bottom:16px;position:relative;}
+.linha .item::before{
+  content:'';position:absolute;left:-27px;top:8px;width:11px;height:11px;
+  background:var(--terracota);border-radius:50%;border:2px solid var(--areia);
+}
+.linha .ano{font-family:var(--serif-titulo);color:var(--petroleo);font-weight:700;}
+
+.sintese{background:var(--branco);border:1px solid var(--borda);border-top:6px solid var(--musgo);
+  border-radius:var(--raio);padding:22px 26px;box-shadow:var(--sombra);}
+.sintese ul{margin:0;padding-left:20px;}
+.sintese li{margin-bottom:10px;}
+
+.glossario dl{margin:0;}
+.glossario dt{font-family:var(--serif-titulo);color:var(--petroleo);font-weight:700;margin-top:14px;}
+.glossario dd{margin:2px 0 0;padding-left:0;color:#3a3a3a;}
+
+.refs{font-size:.88rem;color:var(--cinza);}
+.refs li{margin-bottom:8px;}
+
+footer{
+  background:var(--petroleo);color:var(--areia);text-align:center;
+  padding:28px var(--gutter) calc(28px + env(safe-area-inset-bottom));
+  font-size:.86rem;letter-spacing:.04em;
+}
+footer p{text-align:center;margin:0;}
+footer strong{color:#f0c9a8;}
+
+.progresso{
+  position:fixed;top:0;left:0;right:0;height:3px;background:rgba(27,50,64,.12);z-index:800;
+}
+.progresso span{
+  display:block;height:100%;width:0;background:linear-gradient(90deg,var(--terracota),#e29b68);
+  transition:width .08s linear;
+}
+.topbar{
+  position:sticky;top:0;z-index:790;
+  display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+  background:var(--petroleo);color:var(--areia);
+  padding:9px var(--gutter);font-size:.76rem;letter-spacing:.1em;text-transform:uppercase;
+  border-bottom:1px solid rgba(247,244,237,.16);
+  min-height:40px;
+}
+.topbar-inner{
+  max-width:var(--medida);margin:0 auto;width:100%;
+  display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+}
+.tb-marca{font-family:var(--serif-titulo);font-weight:700;letter-spacing:.22em;}
+.tb-sep{width:1px;height:14px;background:rgba(247,244,237,.35);}
+.tb-disc{opacity:.85;}
+.tb-hab{
+  margin-left:auto;background:var(--terracota);color:#fff;
+  padding:3px 10px;border-radius:100px;letter-spacing:.12em;font-size:.7rem;
+}
+
+.hero{
+  background:
+    radial-gradient(1100px 380px at 82% -12%,rgba(176,74,40,.42),transparent 62%),
+    linear-gradient(158deg,#13242e 0%,#1b3240 52%,#2d5268 100%);
+  color:var(--areia);border-bottom:0;text-align:left;
+  padding:clamp(34px,7vw,68px) var(--gutter) clamp(30px,5vw,52px);
+  position:relative;
+}
+.hero::after{
+  content:'';position:absolute;left:0;right:0;bottom:0;height:4px;
+  background:linear-gradient(90deg,var(--terracota) 0%,var(--musgo) 55%,var(--petroleo-claro) 100%);
+}
+.hero-inner{max-width:var(--medida);margin:0 auto;}
+.hero-eyebrow{
+  font-size:.74rem;letter-spacing:.2em;text-transform:uppercase;color:#f0c9a8;
+  margin:0 0 14px;padding-left:16px;position:relative;text-align:left;
+}
+.hero-eyebrow::before{
+  content:'';position:absolute;left:0;top:50%;transform:translateY(-50%);
+  width:8px;height:8px;background:var(--terracota);border-radius:2px;
+}
+h1{
+  font-size:clamp(1.85rem,6.2vw,3.1rem);margin:0 0 14px;max-width:18ch;line-height:1.12;
+  letter-spacing:-.01em;
+}
+.hero .sub{
+  font-size:clamp(1rem,2.6vw,1.16rem);max-width:64ch;margin:0;opacity:.94;
+  font-style:normal;line-height:1.6;text-align:left;
+}
+.hero-tags{
+  list-style:none;display:flex;flex-wrap:wrap;gap:8px;
+  margin:22px 0 0;padding:0;
+}
+.hero-tags li{
+  border:1px solid rgba(247,244,237,.34);border-radius:100px;
+  padding:5px 13px;font-size:.78rem;letter-spacing:.03em;background:rgba(255,255,255,.06);
+}
+.hero .meta{
+  margin:24px 0 0;font-size:.8rem;letter-spacing:.08em;opacity:.72;text-align:left;
+  padding-top:16px;border-top:1px solid rgba(247,244,237,.18);
+}
+
+.sumario-box{position:relative;}
+.sum-toggle{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(247,244,237,.10);border:1px solid rgba(247,244,237,.26);
+  border-radius:100px;padding:5px 12px 5px 8px;
+  color:var(--areia);font-family:var(--serif-corpo);
+  font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;
+  cursor:pointer;min-height:32px;line-height:1;
+  transition:background .16s ease,border-color .16s ease;
+}
+.sum-toggle:hover{background:rgba(247,244,237,.2);border-color:rgba(247,244,237,.5);}
+.sumario-box.aberto .sum-toggle{background:var(--terracota);border-color:var(--terracota);}
+.sum-ico{font-size:.9rem;line-height:1;}
+.sum-cont{
+  display:inline-flex;align-items:center;justify-content:center;
+  min-width:18px;height:18px;padding:0 5px;border-radius:100px;
+  background:rgba(247,244,237,.22);font-size:.66rem;letter-spacing:0;
+}
+.sumario-box.aberto .sum-cont{background:rgba(0,0,0,.22);}
+.sum-seta{font-size:.9rem;line-height:1;transition:transform .22s ease;}
+.sumario-box.aberto .sum-seta{transform:rotate(180deg);}
+
+.sum-chips{
+  display:none;flex-direction:column;
+  position:absolute;top:calc(100% + 15px);left:0;
+  width:min(350px,calc(100vw - 2 * var(--gutter)));
+  max-height:70vh;max-height:70dvh;overflow-y:auto;overscroll-behavior:contain;
+  background:var(--branco);border:1px solid var(--borda);border-top:4px solid var(--terracota);
+  border-radius:var(--raio);box-shadow:0 16px 38px rgba(27,50,64,.28);
+  padding:6px 0;z-index:795;text-transform:none;letter-spacing:normal;
+}
+.sumario-box.aberto .sum-chips{display:flex;}
+.sum-chips a{
+  display:flex;align-items:center;gap:11px;
+  padding:11px 16px;min-height:46px;
+  color:var(--petroleo);text-decoration:none;font-size:.92rem;line-height:1.35;
+  border-bottom:1px solid var(--areia-escura);
+}
+.sum-chips a:last-child{border-bottom:0;}
+.sum-chips a:hover,.sum-chips a:focus{background:var(--areia);color:var(--terracota);}
+.sum-chips a b{
+  display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto;
+  width:22px;height:22px;border-radius:50%;background:var(--petroleo);color:var(--areia);
+  font-size:.72rem;font-family:var(--serif-corpo);font-weight:400;
+}
+.sum-chips a:hover b{background:var(--terracota);}
+
+.ficha-btn{
+  display:flex;align-items:center;gap:12px;width:100%;text-align:left;cursor:pointer;
+  background:linear-gradient(135deg,#1b3240,#2d5268);color:var(--areia);
+  border:0;border-left:5px solid var(--terracota);border-radius:var(--raio);
+  padding:14px 18px;margin:18px 0;font-family:var(--serif-corpo);font-size:1rem;
+  box-shadow:var(--sombra);transition:transform .12s ease,filter .12s ease;
+}
+.ficha-btn:hover{filter:brightness(1.12);transform:translateY(-1px);}
+.ficha-btn .ico{
+  flex:0 0 auto;width:34px;height:34px;border-radius:8px;background:var(--terracota);
+  display:flex;align-items:center;justify-content:center;font-size:1.05rem;font-weight:700;
+  font-family:var(--serif-titulo);
+}
+.ficha-btn .txt{flex:1;}
+.ficha-btn .txt strong{display:block;font-family:var(--serif-titulo);font-size:1.02rem;}
+.ficha-btn .txt em{font-style:normal;font-size:.85rem;opacity:.82;}
+.ficha-btn .seta{font-size:1.3rem;color:#f0c9a8;}
+
+.modal-fundo{
+  display:none;position:fixed;inset:0;background:rgba(27,50,64,.72);
+  z-index:900;padding:24px 16px;overscroll-behavior:contain;
+}
+.modal-fundo.ativo{display:flex;align-items:flex-start;justify-content:center;}
+.modal-cx{
+  background:var(--branco);width:100%;max-width:880px;margin:0 auto;border-radius:14px;
+  box-shadow:0 18px 50px rgba(0,0,0,.35);overflow:hidden;
+  display:flex;flex-direction:column;
+  max-height:calc(100vh - 48px);max-height:calc(100dvh - 48px);
+}
+.modal-topo{
+  background:var(--petroleo);color:var(--areia);padding:18px 22px;
+  display:flex;align-items:flex-start;gap:14px;flex:0 0 auto;
+}
+.modal-topo .rot{font-size:.74rem;letter-spacing:.16em;text-transform:uppercase;color:#f0c9a8;display:block;}
+.modal-topo h3{margin:2px 0 0;font-size:1.3rem;color:var(--areia);}
+.modal-fechar{
+  margin-left:auto;background:transparent;border:1px solid rgba(247,244,237,.45);
+  color:var(--areia);width:34px;height:34px;border-radius:8px;font-size:1.2rem;
+  cursor:pointer;line-height:1;flex:0 0 auto;
+}
+.modal-corpo{
+  padding:20px 24px 26px;flex:1 1 auto;
+  overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;
+}
+.modal-corpo h4{
+  font-family:var(--serif-titulo);color:var(--terracota);font-size:.85rem;
+  letter-spacing:.1em;text-transform:uppercase;margin:20px 0 6px;
+  border-bottom:1px solid var(--areia-escura);padding-bottom:5px;
+}
+.modal-corpo h4:first-child{margin-top:0;}
+.modal-corpo ul{margin:0;padding-left:20px;}
+.modal-corpo li{margin-bottom:7px;text-align:left;font-size:.97rem;}
+.modal-rodape{
+  border-top:1px solid var(--areia-escura);padding:14px 24px;background:#faf7f0;
+  display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between;
+  flex:0 0 auto;
+}
+.modal-rodape button{
+  background:var(--musgo);color:#fff;border:0;border-radius:8px;padding:9px 16px;
+  font-family:var(--serif-corpo);font-size:.9rem;cursor:pointer;
+}
+
+.rec-grid{
+  display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin:20px 0 6px;
+}
+.rec-card{
+  display:flex;flex-direction:column;align-items:flex-start;gap:4px;cursor:pointer;
+  background:var(--branco);border:1px solid var(--borda);border-top:5px solid var(--musgo);
+  border-radius:var(--raio);padding:18px 16px;text-align:left;
+  font-family:var(--serif-corpo);box-shadow:var(--sombra);
+  transition:transform .12s ease,border-color .12s ease;
+}
+.rec-card:hover{transform:translateY(-3px);border-top-color:var(--terracota);}
+.rec-ico{
+  display:flex;align-items:center;justify-content:center;
+  width:34px;height:34px;border-radius:8px;background:var(--petroleo);color:var(--areia);
+  font-family:var(--serif-titulo);font-size:.9rem;margin-bottom:6px;
+}
+.rec-tit{font-family:var(--serif-titulo);font-size:1.02rem;color:var(--petroleo);line-height:1.3;}
+.rec-sub{font-size:.82rem;color:var(--cinza);line-height:1.45;}
+@media (max-width:900px){.rec-grid{grid-template-columns:repeat(2,minmax(0,1fr));}}
+@media (max-width:520px){.rec-grid{grid-template-columns:1fr;}}
+
+.texto-apoio{font-size:.97rem;}
+.texto-apoio h3{font-size:1.05rem;color:var(--petroleo);margin:22px 0 8px;}
+.texto-apoio .ta-fonte{display:block;font-size:.82rem;color:var(--cinza);font-style:italic;margin-bottom:14px;}
+.texto-apoio .ta-destaque{background:var(--areia);border-left:4px solid var(--terracota);
+  border-radius:0 var(--raio) var(--raio) 0;padding:14px 18px;margin:0 0 18px;}
+.texto-apoio .ta-nota{background:#eaf1f5;border:1px dashed var(--petroleo-claro);border-radius:var(--raio);
+  padding:14px 18px;margin:18px 0;}
+.texto-apoio .ta-nota .ta-rot{display:block;color:var(--petroleo-claro);font-weight:600;font-size:.82rem;
+  letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px;}
+.texto-apoio .ta-citacao{border-left:4px solid var(--petroleo-claro);background:var(--branco);
+  margin:20px 0;padding:14px 20px;font-style:italic;border-radius:0 var(--raio) var(--raio) 0;}
+.texto-apoio .ta-citacao .ta-autor{display:block;font-style:normal;font-size:.82rem;
+  color:var(--cinza);margin-top:8px;text-align:right;}
+</style>
+</head>
+<body>
+
+<div class="progresso"><span id="barraProgresso"></span></div>
+
+<div class="topbar">
+ <div class="topbar-inner">
+  <span class="tb-marca">CERO</span>
+  <div class="sumario-box" id="sumBox">
+    <button class="sum-toggle" id="sumToggle" aria-expanded="false" aria-controls="sumChips">
+      <span class="sum-ico">&#9776;</span>
+      <span class="sum-rot">Trilha do tema</span>
+      <span class="sum-cont" id="sumCount">0</span>
+      <span class="sum-seta" aria-hidden="true">&#9662;</span>
+    </button>
+    <div class="sum-chips" id="sumChips"></div>
+  </div>
+  <span class="tb-sep"></span>
+  <span class="tb-disc">Sociologia &middot; 3ª s&eacute;rie EM</span>
+  <span class="tb-hab">EM13CHS605</span>
+ </div>
+</div>
+
+<header class="hero">
+  <div class="hero-inner">
+    <p class="hero-eyebrow">Ci&ecirc;ncias Humanas e Sociais Aplicadas</p>
+    <h1>Direitos Humanos, Igualdade e Diversidade</h1>
+    <p class="sub">Justi&ccedil;a, igualdade e fraternidade em disputa: an&aacute;lise sociol&oacute;gica dos avan&ccedil;os, entraves contempor&acirc;neos e a&ccedil;&otilde;es coletivas a partir da diversidade e das epistemologias do Sul</p>
+    <ul class="hero-tags">
+      <li>Declara&ccedil;&atilde;o Universal de 1948</li>
+      <li>Justi&ccedil;a e Fraternidade</li>
+      <li>Cr&iacute;tica Decolonial</li>
+      <li>Identidades e Juventudes</li>
+      <li>Interculturalidade e Pr&aacute;xis</li>
+    </ul>
+    <p class="meta">Col&eacute;gio Estadual Rodolfo de Oliveira &middot; 2026 &middot; Prof. Claudio</p>
+  </div>
+</header>
+
+<main>
+
+  <section class="objetivos">
+    <span class="hab">EM13CHS605 &middot; Sociologia &middot; 3ª S&eacute;rie EM</span>
+
+    <div class="acc">
+      <button class="acc-head" type="button" aria-expanded="false">Descritor e objetivos de aprendizagem</button>
+      <div class="acc-body">
+        <p class="lead"><strong>EM13CHS605:</strong> Analisar os princ&iacute;pios da Declara&ccedil;&atilde;o dos Direitos Humanos, recorrendo &agrave;s no&ccedil;&otilde;es de justi&ccedil;a, igualdade e fraternidade, identificar os progressos e entraves &agrave; concretiza&ccedil;&atilde;o desses direitos nas diversas sociedades contempor&acirc;neas e promover a&ccedil;&otilde;es concretas diante da desigualdade e das viola&ccedil;&otilde;es desses direitos em diferentes espa&ccedil;os de viv&ecirc;ncia, respeitando a identidade de cada grupo e de cada pessoa.</p>
+        <p class="lead">Ao final deste estudo, voc&ecirc; dever&aacute; ser capaz de:</p>
+        <ul>
+          <li>Compreender a gênese histórica e os fundamentos filosóficos dos Direitos Humanos (1789 e 1948), identificando as tensões entre a retórica universalista e a exclusão concreta de sujeitos subalternizados.</li>
+          <li>Articular as noções clássicas de <strong>justiça, igualdade e fraternidade</strong> às teorias sociológicas de Marx, Durkheim e Weber, desnaturalizando as desigualdades estruturais.</li>
+          <li>Identificar os principais <strong>entraves contemporâneos</strong> à efetivação dos direitos: racismo institucional, machismo, desigualdade de classe, intolerância e racismo religioso.</li>
+          <li>Operar conceitos críticos decoloniais e afrodiaspóricos (<em>amefricanidade</em> em Lélia Gonzalez, <em>colonialidade do poder e do saber</em> em Quijano e Dussel, <em>Bem Viver</em> e direitos da natureza).</li>
+          <li>Construir propostas de <strong>intervenção social e intercultural</strong> fundamentadas no respeito à alteridade, às identidades juvenis e à diversidade cultural.</li>
+        </ul>
+        <div style="margin-top: 20px; text-align: center;">
+          <a href="img2/info1.webp" target="_blank" rel="noopener noreferrer" style="display: inline-block; text-decoration: none; overflow: hidden; border-radius: var(--raio); box-shadow: var(--sombra); cursor: zoom-in;">
+            <img src="img2/info1.webp" alt="Infográfico explicativo sobre o descritor e os objetivos de aprendizagem" style="border-radius: var(--raio); border: 1px solid var(--borda); display: block; margin: 0 auto; transition: transform 0.3s ease, filter 0.3s ease;" onmouseover="this.style.transform='scale(1.03)'; this.style.filter='brightness(1.03)'" onmouseout="this.style.transform='scale(1)'; this.style.filter='none'">
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="secao" id="t1" data-sum="A Promessa Universal e a Realidade"><span class="num">1</span>A promessa universal e a realidade fraturada: o olhar sociol&oacute;gico</h2>
+
+    <button class="ficha-btn" type="button" data-ficha="1">
+      <span class="ico">1</span>
+      <span class="txt"><strong>Fichamento do t&oacute;pico 1</strong><em>Resumo em t&oacute;picos: conceitos, autores e ideias-chave</em></span>
+      <span class="seta">&#8250;</span>
+    </button>
+
+    <p>A Sociologia é, nas palavras de Pierre Bourdieu, "um esporte de combate": uma ciência voltada a desvendar as raízes das violências e desigualdades sociais e fornecer ferramentas teóricas e práticas para transformá-las. Quando nos debruçamos sobre a <strong>Declaração Universal dos Direitos Humanos (DUDH)</strong>, proclamada pela Organização das Nações Unidas (ONU) em 10 de dezembro de 1948, o primeiro exercício sociológico indispensável consiste em <em>desnaturalizar</em> a realidade e romper com o senso comum.</p>
+
+    <p>O senso comum costuma tratar os direitos humanos sob duas óticas reducionistas: ora como um dado "natural" e universal já garantido nas democracias ocidentais, ora de forma distorcida como "privilégio de infratores". Ambas as visões ignoram que os direitos humanos são <strong>construções históricas e institucionais</strong>, forjadas no calor de intensas lutas sociais e que permanecem permanentemente incompletas e sob disputa.</p>
+
+    <div class="termo-box">
+      <span class="rot">Conceito-chave &middot; C. Wright Mills</span>
+      <p><strong>Imaginação Sociológica.</strong> Capacidade do espírito humano de compreender que os dilemas biográficos e as aflições pessoais imediatas (como o desemprego, a discriminação racial ou a fome) estão intimamente conectados às estruturas históricas, econômicas e institucionais da sociedade. Ter imaginação sociológica é olhar além do indivíduo isolado e entender como as instituições sociais moldam nossas oportunidades e direitos.</p>
+    </div>
+
+    <p>Adotar a imaginação sociológica diante dos Direitos Humanos implica perguntar: por que uma declaração assinada por dezenas de Estados soberanos, assentada nos princípios universais de liberdade, igualdade e dignidade, convive no século XXI com a extrema concentração de renda, o encarceramento em massa da juventude negra, a violência contra as mulheres e a degradação ambiental? Essa contradição fundamental é o ponto de partida da nossa investigação.</p>
+
+    <div class="acc">
+      <button class="acc-head" type="button" aria-expanded="false">&#128100; Na voz do autor &middot; Émile Durkheim e o fato social da dignidade</button>
+      <div class="acc-body">
+        <div class="texto-apoio">
+          <span class="ta-fonte">Comentário elaborado a partir da teoria dos fatos sociais e da consciência coletiva.</span>
+          <p>Para Émile Durkheim (1858-1917), os direitos e os valores morais de uma época não derivam da vontade arbitrária de um único sujeito: são <strong>fatos sociais</strong>, caracterizados pela <em>exterioridade</em> (existem antes do indivíduo e são transmitidos pela socialização), pela <em>coercitividade</em> (exercem pressão e sanção social) e pela <em>generalidade</em> (estão difundidos na coletividade).</p>
+          <div class="ta-destaque">
+            <p>A Declaração dos Direitos Humanos opera como um elemento da <strong>consciência coletiva</strong> moderna. Quando uma sociedade falha em aplicar suas normas fundamentais e passa a naturalizar violações e a violência, instala-se um estado de <strong>anomia</strong> — a quebra das regras e dos limites morais e de coesão que deveriam proteger a vida coletiva.</p>
+          </div>
+          <p><em>Referência:</em> DURKHEIM, Émile. <em>As regras do método sociológico</em>. São Paulo: Martins Fontes, 2014.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="atv-box">
+      <span class="rot">Atividade &middot; t&oacute;pico 1</span>
+      <h4>A promessa universal e a imaginação sociológica</h4>
+      <p class="intro">Exercício reflexivo sobre a transição do senso comum à atitude científica sociológica em torno da garantia dos Direitos Humanos.</p>
+      <a class="btn-recurso atividade" href="#modalFicha" onclick="abrirModalPorNumero(1); return false;">
+        <span class="br-ico">Atv 1</span>
+        <span class="br-txt"><strong>Fazer a atividade do t&oacute;pico 1</strong><em>Questões conceituais e estudo de caso</em></span>
+        <span class="br-seta" aria-hidden="true">&#8599;</span>
+      </a>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="secao" id="t2" data-sum="Genealogia da Tríade"><span class="num">2</span>Genealogia da tr&iacute;ade: Justi&ccedil;a, Igualdade e Fraternidade</h2>
+
+    <button class="ficha-btn" type="button" data-ficha="2">
+      <span class="ico">2</span>
+      <span class="txt"><strong>Fichamento do t&oacute;pico 2</strong><em>Resumo em t&oacute;picos: conceitos, autores e ideias-chave</em></span>
+      <span class="seta">&#8250;</span>
+    </button>
+
+    <p>O lema <em>"Liberté, Égalité, Fraternité"</em>, consagrado durante a Revolução Francesa de 1789 com a <em>Declaração dos Direitos do Homem e do Cidadão</em>, constitui a matriz conceitual da Declaração Universal de 1948. Contudo, a análise sociológica das transformações do Estado moderno revela que esses conceitos assumiram significados distintos e frequentemente contraditórios ao longo dos séculos.</p>
+
+    <div class="tabela-wrap">
+      <table>
+        <caption>As três dimensões constitutivas dos Direitos Humanos e suas leituras sociológicas</caption>
+        <thead><tr><th>Princípio</th><th>Fundamento Iluminista / Jurídico</th><th>Crítica Sociológica Estrutural</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>Igualdade</strong></td>
+            <td>Igualdade formal perante a lei (isonomia jurídica) e universalidade do estatuto do cidadão.</td>
+            <td><strong>Karl Marx:</strong> A igualdade jurídica burguesa camufla a profunda desigualdade material das relações sociais de produção e da divisão de classes. Tratar formalmente como iguais os desiguais perpetua a dominação.</td>
+          </tr>
+          <tr>
+            <td><strong>Justiça</strong></td>
+            <td>Garantia de liberdades civis, império da lei e contenção do arbítrio do Estado.</td>
+            <td><strong>Max Weber / Pierre Bourdieu:</strong> O sistema de justiça reflete tipos de dominação e distribui privilégios de acordo com o capital econômico e cultural, convertendo normas em reprodução de poder.</td>
+          </tr>
+          <tr>
+            <td><strong>Fraternidade</strong></td>
+            <td>Solidariedade mútua, convivência republicana e cooperação cívica entre os membros da sociedade.</td>
+            <td><strong>Émile Durkheim / Antonio Gramsci:</strong> Fraternidade não é mero afeto moral, mas solidariedade orgânica e consciência ético-política capaz de mobilizar sujeitos subalternos rumo à emancipação coletiva.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>A contradição fundacional da modernidade ocidental</h3>
+    <p>Enquanto os pensadores iluministas e as burguesias europeias proclamavam a igualdade universal e a liberdade no século XVIII e XIX, os mesmos Estados europeus mantinham o tráfico transatlântico de escravizados africanos, a espoliação colonial das Américas e da Ásia e a exclusão política total das mulheres e dos trabalhadores não proprietários.</p>
+
+    <div class="cita">
+      A Europa acumulou para si a riqueza material gerada pelo trabalho escravizado e pela pilhagem colonial enquanto disseminava com sucesso a narrativa de que o homem branco ocidental era o padrão universal de razão e humanidade.
+      <span class="fonte">S&iacute;ntese baseada em OLIVEIRA, L. F.; COSTA, R. C. R. <em>Sociologia para Jovens do S&eacute;culo XXI</em>, 2024.</span>
+    </div>
+
+    <p>A Declaração Universal de 1948, formulada após o trauma do Holocausto e das barbáries da Segunda Guerra Mundial, buscou reatar a promessa da dignidade humana inalienável. Entretanto, sua aplicabilidade encontrou barreiras imediatas na Guerra Fria, nas estruturas capitalistas globais e na persistência de hierarquias imperiais.</p>
+
+    <div class="atv-box">
+      <span class="rot">Atividade &middot; t&oacute;pico 2</span>
+      <h4>Das revoluções burguesas à DUDH de 1948</h4>
+      <p class="intro">Análise documental comparativa entre a Declaração de 1789 e o texto da Declaração da ONU de 1948.</p>
+      <a class="btn-recurso atividade" href="#modalFicha" onclick="abrirModalPorNumero(2); return false;">
+        <span class="br-ico">Atv 2</span>
+        <span class="br-txt"><strong>Fazer a atividade do t&oacute;pico 2</strong><em>Interpretação e crítica teórica</em></span>
+        <span class="br-seta" aria-hidden="true">&#8599;</span>
+      </a>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="secao" id="t3" data-sum="Entraves Estruturais Contemporâneos"><span class="num">3</span>Entraves contempor&acirc;neos: racismo, colonialidade e exclus&atilde;o</h2>
+
+    <button class="ficha-btn" type="button" data-ficha="3">
+      <span class="ico">3</span>
+      <span class="txt"><strong>Fichamento do t&oacute;pico 3</strong><em>Resumo em t&oacute;picos: conceitos, autores e ideias-chave</em></span>
+      <span class="seta">&#8250;</span>
+    </button>
+
+    <p>Por que a efetivação dos Direitos Humanos encontra tantos obstáculos nas sociedades contemporâneas? A Sociologia latino-americana e os estudos pós-coloniais demonstram que as violações não são meros "desvios eventuais", mas consequências de uma matriz estrutural de poder.</p>
+
+    <h3>Colonialidade do poder, do saber e do ser</h3>
+    <p>Autores decoloniais como <strong>Aníbal Quijano</strong>, <strong>Enrique Dussel</strong> e <strong>Nelson Maldonado-Torres</strong> explicam que o fim formal do colonialismo histórico não significou o fim da <strong>colonialidade</strong>. A colonialidade é o padrão global de dominação que continuou a classificar a humanidade a partir da ideia pseudocientífica de "raça", estabelecendo quem possui plenitude de direitos e quem é empurrado para a condição de subalternidade.</p>
+
+    <div class="termo-box">
+      <span class="rot">As Três Dimensões da Colonialidade</span>
+      <p><strong>1. Colonialidade do Poder:</strong> Distribuição desigual do trabalho, da riqueza e da autoridade política com base em hierarquias raciais e eurocêntricas.<br>
+      <strong>2. Colonialidade do Saber:</strong> Racismo epistêmico; desqualificação de todos os conhecimentos, filosofias e medicinas dos povos originários e africanos, tomados como "místicos" ou "inferiores".<br>
+      <strong>3. Colonialidade do Ser:</strong> Desumanização ontológica do colonizado, tornando sua vida descartável e invisível perante o Estado.</p>
+    </div>
+
+    <div class="goias-box">
+      <span class="rot">A Realidade Brasileira &middot; O Mito da Democracia Racial</span>
+      <p>No Brasil, a consagração da tese da miscigenação harmoniosa — popularizada a partir da leitura de Gilberto Freyre nos anos 1930 — deu origem ao <strong>mito da democracia racial</strong>. Conforme demonstrado pelas pesquisas de <strong>Florestan Fernandes</strong>, <strong>Abdias Nascimento</strong> e <strong>Kabengele Munanga</strong>, esse mito funcionou como uma ideologia que camufla o racismo institucional, culpabiliza a população negra pela sua exclusão e enfraquece a luta por direitos e reparações.</p>
+    </div>
+
+    <div class="acc">
+      <button class="acc-head" type="button" aria-expanded="false">&#128100; Na voz da autora &middot; Lélia Gonzalez e a Amefricanidade</button>
+      <div class="acc-body">
+        <div class="texto-apoio">
+          <span class="ta-fonte">Comentário elaborado a partir dos ensaios de Lélia Gonzalez (1935–1994).</span>
+          <p>Lélia Gonzalez articulou de forma pioneira os eixos de <strong>raça, gênero e classe</strong>. Ao formular o conceito de <strong>Amefricanidade</strong>, a autora resgatou a trajetória comum de resistência cultural e política das populações negras e indígenas em toda a diáspora das Américas.</p>
+          <div class="ta-citacao">
+            "Enquanto descendentes de africanos, a herança africana sempre foi a grande fonte revivificadora de nossas forças. Assumindo nossa Amefricanidade, podemos voltar o nosso olhar para a realidade em que vivem todos os amefricanos do continente."
+            <span class="ta-autor">GONZALEZ, Lélia. <em>Primavera para as rosas negras</em>, 2018.</span>
+          </div>
+          <p>Para Gonzalez, a plena realização dos direitos humanos no Brasil passa obrigatoriamente pelo combate à violência policial periférica, pela superação da hiperexploração do trabalho das mulheres negras e pelo reconhecimento da herança afro-ameríndia.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="atv-box">
+      <span class="rot">Atividade &middot; t&oacute;pico 3</span>
+      <h4>Crítica decolonial e violações estruturais</h4>
+      <p class="intro">Interpretação dos dados sociológicos de desigualdade racial e de gênero no Brasil contemporâneo à luz da crítica pós-colonial.</p>
+      <a class="btn-recurso atividade" href="#modalFicha" onclick="abrirModalPorNumero(3); return false;">
+        <span class="br-ico">Atv 3</span>
+        <span class="br-txt"><strong>Fazer a atividade do t&oacute;pico 3</strong><em>Análise de gráficos e textos críticos</em></span>
+        <span class="br-seta" aria-hidden="true">&#8599;</span>
+      </a>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="secao" id="t4" data-sum="Identidades e Juventudes"><span class="num">4</span>Identidades, juventudes e novos sujeitos de direitos</h2>
+
+    <button class="ficha-btn" type="button" data-ficha="4">
+      <span class="ico">4</span>
+      <span class="txt"><strong>Fichamento do t&oacute;pico 4</strong><em>Resumo em t&oacute;picos: conceitos, autores e ideias-chave</em></span>
+      <span class="seta">&#8250;</span>
+    </button>
+
+    <p>A formulação original dos Direitos Humanos concebia o "sujeito" a partir do modelo iluminista: o indivíduo racional, unificado e abstrato. O avanço da Sociologia e a emergência dos movimentos sociais contemporâneos demonstraram que a cidadania plena só se realiza quando se reconhece a <strong>multiplicidade das identidades</strong>.</p>
+
+    <p>O sociólogo jamaicano <strong>Stuart Hall</strong> aponta que o sujeito pós-moderno vive a fragmentação e o descentramento das identidades. Não há uma essência imutável: a identidade é uma construção cultural contínua, perpassada por recortes de gênero, orientação sexual, classe social, território, raça e religiosidade.</p>
+
+    <div class="acc">
+      <button class="acc-head" type="button" aria-expanded="false">A condição juvenil e os múltiplos modos de ser jovem no Brasil</button>
+      <div class="acc-body">
+        <p>Os sociólogos brasileiros <strong>Juarez Dayrell</strong> e <strong>Juliana Reis</strong> destacam a necessidade de falarmos em <em>juventudes</em> (no plural). A "condição juvenil" brasileira é atravessada por três dimensões centrais:</p>
+        <ul>
+          <li><strong>Trabalho e Sobrevivência:</strong> Grande parte dos jovens de periferia ingressa precocemente no mercado de trabalho para garantir o sustento básico de suas famílias, enfrentando dilemas entre trabalhar e estudar.</li>
+          <li><strong>Dimensão Cultural e Simbólica:</strong> Espaço privilegiado onde a juventude constrói sua voz e visibilidade (o hip-hop, o funk, a poesia marginal, os saraus e as batalhas de rima).</li>
+          <li><strong>Sociabilidade e Coletividade:</strong> Encontros entre pares na escola, na rua e nas redes digitais, formando laços de solidariedade e identidade contra o isolamento e a estigmatização social.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="saiba-box">
+      <span class="rot">Saiba mais &middot; O direito à diferença</span>
+      <p>O sociólogo <strong>Boaventura de Sousa Santos</strong> resume o desafio contemporâneo dos Direitos Humanos com uma máxima célebre: <em>"Temos o direito a ser iguais sempre que a diferença nos inferioriza; temos o direito de ser diferentes sempre que a igualdade nos descaracteriza"</em>. A igualdade sem respeito à diversidade produz assimilação forçada; a diferença sem igualdade produz discriminação e opressão.</p>
+    </div>
+
+    <div class="atv-box">
+      <span class="rot">Atividade &middot; t&oacute;pico 4</span>
+      <h4>Juventudes, identidades e direitos</h4>
+      <p class="intro">Investigação sobre o papel das juventudes como protagonistas na defesa dos Direitos Humanos e no combate aos preconceitos.</p>
+      <a class="btn-recurso atividade" href="#modalFicha" onclick="abrirModalPorNumero(4); return false;">
+        <span class="br-ico">Atv 4</span>
+        <span class="br-txt"><strong>Fazer a atividade do t&oacute;pico 4</strong><em>Produção textual e debate em grupo</em></span>
+        <span class="br-seta" aria-hidden="true">&#8599;</span>
+      </a>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="secao" id="t5" data-sum="Ideologia e Intolerância"><span class="num">5</span>Ideologia, intoler&acirc;ncia e racismo religioso no Brasil</h2>
+
+    <button class="ficha-btn" type="button" data-ficha="5">
+      <span class="ico">5</span>
+      <span class="txt"><strong>Fichamento do t&oacute;pico 5</strong><em>Resumo em t&oacute;picos: conceitos, autores e ideias-chave</em></span>
+      <span class="seta">&#8250;</span>
+    </button>
+
+    <p>A violação dos Direitos Humanos na contemporaneidade é frequentemente sustentada por mecanismos ideológicos que naturalizam o preconceito e desqualificam a dignidade do outro. O conceito de <strong>ideologia</strong>, estudado por pensadores como Marilena Chaui, Antonio Gramsci e os teóricos da Escola de Frankfurt (Theodor Adorno e Max Horkheimer), designa o conjunto articulado de ideias e representações que opera ocultando as relações reais de dominação e tornando "aceitável" a violência cotidiana.</p>
+
+    <div class="termo-box">
+      <span class="rot">Conceito Sociológico</span>
+      <p><strong>Racismo Religioso.</strong> Conceito que designa a violência, perseguição e depredação direcionadas especificamente contra as religiões de matriz africana (como o Candomblé e a Umbanda). A Sociologia demonstra que essas agressões não constituem mera "divergência teológica", mas sim o prolongamento do racismo estrutural que historicamente criminaliza os corpos e a ancestralidade negra no Brasil.</p>
+    </div>
+
+    <p>Apesar de a Constituição Brasileira de 1988 assegurar a inviolabilidade da liberdade de crença e cultos no Artigo 5º, os dados oficiais registram milhares de denúncias anuais de ataques a terreiros e intimidação de praticantes. Esse cenário revela como o fundamentalismo religioso e o etnocentrismo sabotam o princípio constitucional do Estado Laico e ferem a fraternidade republicana.</p>
+
+    <div class="atv-box">
+      <span class="rot">Atividade &middot; t&oacute;pico 5</span>
+      <h4>Ideologia e combate ao racismo religioso</h4>
+      <p class="intro">Análise sociológica sobre dados de intolerância religiosa e elaboração de proposta de intervenção nos moldes do ENEM.</p>
+      <a class="btn-recurso atividade" href="#modalFicha" onclick="abrirModalPorNumero(5); return false;">
+        <span class="br-ico">Atv 5</span>
+        <span class="br-txt"><strong>Fazer a atividade do t&oacute;pico 5</strong><em>Competência 5 do ENEM e Direitos Humanos</em></span>
+        <span class="br-seta" aria-hidden="true">&#8599;</span>
+      </a>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="secao" id="t6" data-sum="Práxis, Interculturalidade e Bem Viver"><span class="num">6</span>Da teoria &agrave; pr&aacute;xis: interculturalidade, Bem Viver e a&ccedil;&otilde;es concretas</h2>
+
+    <button class="ficha-btn" type="button" data-ficha="6">
+      <span class="ico">6</span>
+      <span class="txt"><strong>Fichamento do t&oacute;pico 6</strong><em>Resumo em t&oacute;picos: conceitos, autores e ideias-chave</em></span>
+      <span class="seta">&#8250;</span>
+    </button>
+
+    <p>A habilidade <strong>EM13CHS605</strong> exige a passagem da crítica teórica para a <em>ação prática e transformadora</em> nos múltiplos espaços de vivência (escola, bairro, trabalho e redes sociais). Para que a defesa dos Direitos Humanos não seja apenas uma declaração retórica, as Ciências Sociais contemporâneas oferecem dois referenciais fundamentais: a <strong>interculturalidade crítica</strong> e a filosofia do <strong>Bem Viver</strong>.</p>
+
+    <h3>Interculturalidade Crítica vs. Multiculturalismo Liberal</h3>
+    <p>A educadora e teórica <strong>Catherine Walsh</strong> alerta que o simples discurso da "tolerância multicultural" é insuficiente quando mantém intactas as assimetrias econômicas e de poder. A interculturalidade crítica é um projeto ético, político e pedagógico de transformação radical:</p>
+
+    <div class="tabela-wrap">
+      <table>
+        <caption>Distinção sociológica entre posturas perante a diversidade cultural</caption>
+        <thead><tr><th>Postura</th><th>Definição</th><th>Efeito Social</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>Etnocentrismo</strong></td>
+            <td>Julgar e desqualificar a cultura do outro tomando os próprios valores culturais como centro e padrão universal superior.</td>
+            <td>Gera discriminação, xenofobia, racismo e justificação de violências coloniais.</td>
+          </tr>
+          <tr>
+            <td><strong>Multiculturalismo Assimilacionista</strong></td>
+            <td>Reconhece formalmente a pluralidade, mas exige que as minorias se adaptem às regras do grupo dominante sem alterar as estruturas.</td>
+            <td>Mantém a hierarquia de poder e a marginalização material inalteradas.</td>
+          </tr>
+          <tr>
+            <td><strong>Interculturalidade Crítica</strong></td>
+            <td>Construção de relações simétricas e de diálogo horizontal entre culturas, confrontando desigualdades, racismo e privilégios históricos.</td>
+            <td>Promove emancipação, trocas recíprocas e respeito efetivo à identidade de cada pessoa e grupo.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>O Bem Viver (<em>Sumak Kawsay</em>) e os Direitos da Natureza</h3>
+    <p>Formulado a partir da cosmologia de povos indígenas andinos e amazônicos e sintetizado por autores como <strong>Alberto Acosta</strong> e <strong>Ailton Krenak</strong>, o conceito de <strong>Bem Viver</strong> propõe superar o paradigma predatório ocidental de "desenvolvimento e progresso ilimitado".</p>
+
+    <div class="saiba-box">
+      <span class="rot">Perspectiva Sociobiocêntrica</span>
+      <p>No Bem Viver, a humanidade não está separada da natureza: <em>nós somos a própria natureza</em>. Rompe-se com a visão antropocêntrica e consagra-se a visão <strong>sociobiocêntrica</strong>, na qual rios, florestas e biomas (como o Cerrado) são sujeitos de direitos e exigem restauração e justiça ecológica intergeracional.</p>
+    </div>
+
+    <div class="pesquise">
+      <span class="rot">A&ccedil;&otilde;es Concretas no seu Espa&ccedil;o de Viv&ecirc;ncia</span>
+      <p>Como aplicar a defesa ativa dos Direitos Humanos na sua escola e comunidade?</p>
+      <ul>
+        <li><strong>No cotidiano escolar:</strong> Denunciar ativamente práticas de capacitismo, machismo, homofobia e racismo em sala de aula e nas redes sociais.</li>
+        <li><strong>Na valorização da memória:</strong> Exigir e participar da aplicação das Leis 10.639/03 e 11.645/08, estudando a história e as produções intelectuais afro-brasileiras e indígenas.</li>
+        <li><strong>Na solidariedade comunitária:</strong> Articular grêmios estudantis e coletivos de juventude em torno da defesa de direitos à moradia, saneamento básico e cultura na periferia.</li>
+        <li><strong>Na sustentabilidade ecológica:</strong> Promover a defesa do Cerrado e o combate ao desperdício e à degradação ambiental no território local.</li>
+      </ul>
+    </div>
+
+    <div class="atv-box">
+      <span class="rot">Atividade &middot; t&oacute;pico 6</span>
+      <h4>Da teoria à ação: plano de intervenção coletiva</h4>
+      <p class="intro">Elaboração de um projeto de intervenção cidadã escolar para a promoção dos Direitos Humanos e valorização da diversidade.</p>
+      <a class="btn-recurso atividade" href="#modalFicha" onclick="abrirModalPorNumero(6); return false;">
+        <span class="br-ico">Atv 6</span>
+        <span class="br-txt"><strong>Fazer a atividade do t&oacute;pico 6</strong><em>Guia de intervenção prática</em></span>
+        <span class="br-seta" aria-hidden="true">&#8599;</span>
+      </a>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="secao" id="t7" data-sum="Resumo e Fichamento"><span class="num">7</span>Resumo integrado do tema: s&iacute;ntese para o ENEM e Vestibulares</h2>
+
+    <div class="termo-box">
+      <span class="rot">Vis&atilde;o Panor&acirc;mica</span>
+      <p>A defesa dos Direitos Humanos <strong>(EM13CHS605)</strong> exige a superação da neutralidade ilusória. Requer identificar as raízes históricas das desigualdades materiais e simbólicas, incorporar as epistemologias do Sul global e articular conhecimento crítico à promoção prática da justiça social e do respeito incondicional às identidades.</p>
+    </div>
+
+    <div class="sintese">
+      <ul>
+        <li><strong>Gênese e Disputa:</strong> Os Direitos Humanos (1789 e 1948) resultam de conquistas históricas, mas carregam a contradição de terem nascido sob um ideário eurocêntrico que historicamente conviveu com a exclusão colonial e de classe.</li>
+        <li><strong>Justiça, Igualdade e Fraternidade:</strong> Não são noções abstratas; exigem análise das estruturas econômicas (Marx), da coesão e anomia social (Durkheim) e das motivações da ação social (Weber).</li>
+        <li><strong>Colonialidade e Racismo Estrutural:</strong> O padrão de poder da modernidade colonial (Quijano) e o mito da democracia racial (desmontado por Florestan Fernandes, Abdias Nascimento e Munanga) operam perpetuando privilégios e marginalizando corpos negros e indígenas.</li>
+        <li><strong>Multiplicidade Identitária e Juventudes:</strong> Stuart Hall (sujeito pós-moderno descentrado) e Juarez Dayrell (condição juvenil) demonstram que as identidades são dinâmicas e que as juventudes periféricas são sujeitos ativos de direitos e produção cultural.</li>
+        <li><strong>Práxis e Bem Viver:</strong> A superação dos entraves se dá pela interculturalidade crítica (Catherine Walsh) e pela cosmologia sociobiocêntrica do Bem Viver (Alberto Acosta), promovendo ações concretas de justiça social, equidade de gênero e restauração ambiental.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="recursos">
+    <h2 class="secao" id="t-recursos" data-sum="Material de Consulta"><span class="num">+</span>Material de consulta e aprofundamento</h2>
+    <p class="lead">Consulte os recursos integrados para consolidar conceitos, revisar termos-chave e fundamentar suas produções textuais.</p>
+    <div class="rec-grid">
+      <button class="rec-card" type="button" data-rec="sintese">
+        <span class="rec-ico">&#10003;</span>
+        <span class="rec-tit">S&iacute;ntese do tema</span>
+        <span class="rec-sub">8 teses estruturantes da Sociologia</span>
+      </button>
+      <button class="rec-card" type="button" data-rec="glossario">
+        <span class="rec-ico">A-Z</span>
+        <span class="rec-tit">Gloss&aacute;rio do tema</span>
+        <span class="rec-sub">20 conceitos essenciais definidos</span>
+      </button>
+      <button class="rec-card" type="button" data-rec="linha">
+        <span class="rec-ico">&#8594;</span>
+        <span class="rec-tit">Linha do tempo</span>
+        <span class="rec-sub">De 1789 aos marcos contemporâneos</span>
+      </button>
+      <button class="rec-card" type="button" data-rec="refs">
+        <span class="rec-ico">&sect;</span>
+        <span class="rec-tit">Refer&ecirc;ncias e fontes</span>
+        <span class="rec-sub">Livro didático, autores e documentos</span>
+      </button>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <p><strong>Col&eacute;gio Estadual Rodolfo de Oliveira &middot; CERO &middot; 2026</strong><br>
+  Sociologia &mdash; 3ª s&eacute;rie EM &middot; Habilidade EM13CHS605 (BNCC / DC-GO)<br>
+  Material de estudo elaborado pelo Prof. Claudio</p>
+</footer>
+
+<div class="modal-fundo" id="modalFicha" role="dialog" aria-modal="true" aria-labelledby="fichaTitulo" aria-hidden="true">
+  <div class="modal-cx">
+    <div class="modal-topo">
+      <div>
+        <span class="rot" id="fichaRot">Fichamento</span>
+        <h3 id="fichaTitulo"></h3>
+      </div>
+      <button class="modal-fechar" id="fecharFicha" type="button" aria-label="Fechar">&times;</button>
+    </div>
+    <div class="modal-corpo" id="fichaCorpo" tabindex="-1"></div>
+    <div class="modal-rodape">
+      <span>Col&eacute;gio Estadual Rodolfo de Oliveira &middot; CERO &middot; 2026</span>
+      <button id="fecharFicha2" type="button">Voltar ao material</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const RECURSOS = {
+  "sintese": {
+    "titulo": "Síntese Estruturante do Tema (EM13CHS605)",
+    "html": "<div class=\"sintese\"><ul>\n<li><strong>1. Desnaturalização Sociológica:</strong> Direitos Humanos não são concessões benevolentes nem dados biológicos universais; são frutos de lutas sociais, conflitos de classe e mobilização histórica.</li>\n<li><strong>2. Limites do Universalismo Iluminista:</strong> A modernidade ocidental declarou a igualdade jurídica burguesa enquanto manteve a escravização e a espoliação colonial.</li>\n<li><strong>3. Dimensões Teóricas Clássicas:</strong> Igualdade, Justiça e Fraternidade adquirem concretude com as críticas à alienação de classe (Marx), às regras e coesão contra a anomia (Durkheim) e à compreensão do sentido da ação social (Weber).</li>\n<li><strong>4. Colonialidade do Poder e Racismo:</strong> A persistência da hierarquização racial nega a plenitude dos direitos aos corpos negros e indígenas e sustenta a violência institucional.</li>\n<li><strong>5. Amefricanidade e Interseccionalidade:</strong> Lélia Gonzalez ensina que o combate às violações exige articular gênero, raça e classe de forma inseparável.</li>\n<li><strong>6. Sujeito Pós-Moderno e Juventudes:</strong> As identidades são múltiplas e construídas culturalmente; os jovens das periferias constroem cidadania e resistência pela cultura e sociabilidade.</li>\n<li><strong>7. Combate ao Racismo Religioso:</strong> A defesa do Estado Laico exige proteger as manifestações de matriz africana diante da escalada do fundamentalismo e da intolerância.</li>\n<li><strong>8. Práxis do Bem Viver:</strong> A promoção efetiva dos direitos requer a interculturalidade crítica de Catherine Walsh e a ética sociobiocêntrica do Bem Viver de Alberto Acosta e Ailton Krenak.</li>\n</ul></div>"
+  },
+  "glossario": {
+    "titulo": "Glossário Sociológico",
+    "html": "<div class=\"glossario\"><dl>\n<dt>Alteridade</dt><dd>Reconhecimento de que o outro é diferente de nós, com legitimidade, cultura e história próprias.</dd>\n<dt>Amefricanidade</dt><dd>Conceito de Lélia Gonzalez que designa a identidade e a experiência histórica de resistência dos povos afrodescendentes e indígenas nas Américas.</dd>\n<dt>Anomia</dt><dd>Conceito de Durkheim para a situação de enfraquecimento das normas e regras sociais que garantem a coesão coletiva.</dd>\n<dt>Bem Viver (Sumak Kawsay)</dt><dd>Filosofia indígena que defende a harmonia entre comunidade e natureza, rompendo com o paradigma capitalista de consumo infinito.</dd>\n<dt>Capital Cultural</dt><dd>Conceito de Bourdieu referente aos saberes, credenciais e hábitos socialmente valorizados que reproduzem desigualdades.</dd>\n<dt>Colonialidade</dt><dd>Padrão global de poder, saber e ser que perpetua a subalternização de povos e conhecimentos não europeus após o fim do colonialismo.</dd>\n<dt>Consciência Coletiva</dt><dd>Conjunto de crenças, valores e sentimentos comuns aos membros de uma sociedade que orienta suas condutas morais.</dd>\n<dt>Desnaturalização</dt><dd>Postura científica da Sociologia que questiona o senso comum e demonstra que fenômenos sociais são construções históricas.</dd>\n<dt>Etnocentrismo</dt><dd>Tendência de julgar a cultura alheia a partir dos padrões e valores da própria cultura, considerando-a superior.</dd>\n<dt>Fato Social</dt><dd>Maneiras de pensar, agir e sentir exteriores ao indivíduo, dotadas de poder coercitivo e generalidade na sociedade.</dd>\n<dt>Hegemonia Cultural</dt><dd>Conceito de Gramsci para a dominação de uma classe exercida por meio do consentimento e difusão de sua visão de mundo.</dd>\n<dt>Ideologia</dt><dd>Sistema de ideias e representações que orienta condutas e frequentemente oculta as relações reais de dominação.</dd>\n<dt>Imaginação Sociológica</dt><dd>Habilidade teórica (Wright Mills) de associar problemas individuais aos acontecimentos e estruturas da história social.</dd>\n<dt>Interculturalidade Crítica</dt><dd>Projeto ético e político (Catherine Walsh) que propõe transformações estruturais a partir do diálogo simétrico entre culturas.</dd>\n<dt>Mito da Democracia Racial</dt><dd>Ideologia que propaga uma suposta convivência harmoniosa e sem discriminação entre raças no Brasil, mascarando o racismo.</dd>\n<dt>Racismo Epistêmico</dt><dd>Desqualificação e apagamento dos sistemas de conhecimento, filosofias e ciências não ocidentais.</dd>\n<dt>Racismo Institucional</dt><dd>Dimensão do racismo que se manifesta no funcionamento sistemático e discriminatório de instituições estatais e privadas.</dd>\n<dt>Racismo Religioso</dt><dd>Violência sistemática, preconceito e perseguição dirigidos aos cultos e tradições de matriz africana.</dd>\n<dt>Relações Sociais de Produção</dt><dd>Conceito de Marx sobre as formas como os indivíduos se organizam e se dividem no trabalho e na posse dos meios de produção.</dd>\n<dt>Sujeito Pós-Moderno</dt><dd>Conceito de Stuart Hall para o indivíduo contemporâneo cuja identidade é descentrada, múltipla e dinâmica.</dd>\n</dl></div>"
+  },
+  "linha": {
+    "titulo": "Linha do Tempo dos Direitos Humanos",
+    "html": "<div class=\"linha\">\n<div class=\"item\"><span class=\"ano\">1789</span> &mdash; Proclamação da Declaração dos Direitos do Homem e do Cidadão na França revolucionária.</div>\n<div class=\"item\"><span class=\"ano\">1838</span> &mdash; Harriet Martineau publica o primeiro tratado metodológico sociológico sobre observação de costumes sociais.</div>\n<div class=\"item\"><span class=\"ano\">1848</span> &mdash; Karl Marx e Friedrich Engels publicam o <em>Manifesto Comunista</em>, criticando a igualdade meramente formal.</div>\n<div class=\"item\"><span class=\"ano\">1888</span> &mdash; Abolição formal da escravidão no Brasil sem políticas de integração fundiária ou educacional para os libertos.</div>\n<div class=\"item\"><span class=\"ano\">1948</span> &mdash; Proclamação da Declaração Universal dos Direitos Humanos (DUDH) pela Assembleia Geral da ONU.</div>\n<div class=\"item\"><span class=\"ano\">1950</span> &mdash; Projeto UNESCO sobre relações raciais no Brasil descontrói o mito da democracia racial (Florestan Fernandes e Bastide).</div>\n<div class=\"item\"><span class=\"ano\">1961</span> &mdash; Frantz Fanon publica <em>Os Condenados da Terra</em>, fundamentando a denúncia da violência colonial.</div>\n<div class=\"item\"><span class=\"ano\">1978</span> &mdash; Fundação do Movimento Negro Unificado (MNU) no Brasil, com atuação de Lélia Gonzalez e Abdias Nascimento.</div>\n<div class=\"item\"><span class=\"ano\">1988</span> &mdash; Promulgação da 'Constituição Cidadã' no Brasil, consagrando a dignidade da pessoa humana e a igualdade no Artigo 5º.</div>\n<div class=\"item\"><span class=\"ano\">2003</span> &mdash; Lei 10.639 torna obrigatório o ensino de História e Cultura Afro-Brasileira nas escolas do país.</div>\n<div class=\"item\"><span class=\"ano\">2008</span> &mdash; Equador incorpora os Direitos da Natureza (Pacha Mama) e o Bem Viver em sua Constituição.</div>\n<div class=\"item\"><span class=\"ano\">2012</span> &mdash; Lei de Cotas (Lei 12.711) no Brasil como ação afirmativa de reparação histórica no ensino superior federal.</div>\n</div>"
+  },
+  "refs": {
+    "titulo": "Referências Bibliográficas e Fontes Consultadas",
+    "html": "<h4>Livro Didático Base</h4><ul class=\"refs\">\n<li>OLIVEIRA, Luiz Fernandes de; COSTA, Ricardo Cesar Rocha da. <em>Sociologia para jovens do século XXI</em>. Volume único. 1. ed. São Paulo: Editora do Brasil, 2024 (PNLD 2026-2029).</li>\n</ul><h4>Documentos e Legislação</h4><ul class=\"refs\">\n<li>BRASIL. [Constituição (1988)]. <em>Constituição da República Federativa do Brasil</em>. Brasília, DF: Presidência da República, 1988.</li>\n<li>ONU. <em>Declaração Universal dos Direitos Humanos</em>. Paris: Assembleia Geral das Nações Unidas, 1948.</li>\n<li>FRANÇA. <em>Declaração dos Direitos do Homem e do Cidadão</em>. Paris: Assembleia Nacional Constituinte, 1789.</li>\n</ul><h4>Obras Sociológicas e Antropológicas Fundamentais</h4><ul class=\"refs\">\n<li>ACOSTA, Alberto. <em>O Bem Viver: uma oportunidade para imaginar outros mundos</em>. São Paulo: Autonomia Literária/Elefante, 2016.</li>\n<li>BOURDIEU, Pierre; PASSERON, Jean-Claude. <em>A reprodução: elementos para uma teoria do sistema de ensino</em>. Petrópolis: Vozes, 2014.</li>\n<li>CHAUI, Marilena. <em>O que é ideologia</em>. São Paulo: Brasiliense, 2008.</li>\n<li>DAYRELL, Juarez. <em>O jovem como sujeito social</em>. Revista Brasileira de Educação, 2003.</li>\n<li>DURKHEIM, Émile. <em>As regras do método sociológico</em>. São Paulo: Martins Fontes, 2014.</li>\n<li>FANON, Frantz. <em>Os Condenados da Terra</em>. Juiz de Fora: Ed. UFJF, 2005.</li>\n<li>GONZALEZ, Lélia. <em>Primavera para as rosas negras: Lélia Gonzalez em primeira pessoa</em>. Diáspora Africana: Filhos da África, 2018.</li>\n<li>GRAMSCI, Antonio. <em>Cadernos do cárcere</em>. Rio de Janeiro: Civilização Brasileira, 1999.</li>\n<li>HALL, Stuart. <em>A identidade cultural na pós-modernidade</em>. Rio de Janeiro: DP&A, 2006.</li>\n<li>MARX, Karl; ENGELS, Friedrich. <em>A ideologia alemã</em>. São Paulo: Boitempo, 2007.</li>\n<li>MILLS, C. Wright. <em>A imaginação sociológica</em>. Rio de Janeiro: Zahar, 1975.</li>\n<li>MUNANGA, Kabengele. <em>Rediscutindo a mestiçagem no Brasil</em>. Belo Horizonte: Autêntica, 2019.</li>\n<li>QUIJANO, Aníbal. <em>Colonialidade do poder, eurocentrismo e América Latina</em>. Buenos Aires: CLACSO, 2005.</li>\n<li>SANTOS, Boaventura de Sousa. <em>Reconhecer para libertar: os caminhos do cosmopolitanismo multicultural</em>. Rio de Janeiro: Civilização Brasileira, 2003.</li>\n<li>WALSH, Catherine. <em>Interculturalidad crítica y pedagogía de-colonial</em>. Quito: Universidad Andina Simón Bolívar, 2009.</li>\n<li>WEBER, Max. <em>Economia e Sociedade</em>. Brasília: Ed. UnB, 1999.</li>\n</ul>"
+  }
+};
+
+const FICHAS = {
+  "1": {
+    "titulo": "A Promessa Universal e a Imaginação Sociológica",
+    "blocos": [
+      ["Ideia Central e Desnaturalização", [
+        "A Declaração Universal dos Direitos Humanos (DUDH/1948) não é uma concessão benevolente do Estado ou um dado biológico da espécie, mas uma construção histórica e institucional forjada em meio a contradições e disputas sociais.",
+        "A Sociologia atua como um 'esporte de combate' (Pierre Bourdieu): problematiza as opiniões correntes e desnaturaliza a realidade, demonstrando que as violações de direitos não são 'naturais', mas produzidas pela estrutura social.",
+        "O senso comum comete dois erros opostos: crer que a cidadania já é plenamente universal nas democracias liberais ou tachar pejorativamente os direitos humanos de 'privilégio de infratores'."
+      ]],
+      ["Conceitos e Autores-Chave", [
+        "Imaginação Sociológica (C. Wright Mills): qualidade intelectual de conectar as inquietações pessoais imediatas (como desemprego, fome e violência) aos problemas públicos da estrutura social e da história coletiva.",
+        "Fato Social (Émile Durkheim): os Direitos Humanos e as normas morais constituem fatos sociais — são exteriores aos indivíduos, coercitivos (moldam as condutas) e gerais na sociedade.",
+        "Consciência Coletiva e Anomia: o enfraquecimento das regras morais que protegem a vida e a dignidade humana gera anomia, fragmentando a solidariedade e a coesão social."
+      ]],
+      ["Entraves e Violações Estruturais", [
+        "Descompasso entre norma e realidade: a existência da DUDH não eliminou a miséria, o encarceramento seletivo de grupos vulneráveis ou o trabalho precário.",
+        "Naturalização das violências: discursos ideológicos que desumanizam determinados grupos sociais e os colocam à margem da proteção estatal."
+      ]],
+      ["Para Redação e Provas (ENEM/Vestibulares)", [
+        "Argumento estrutural: use o conceito de 'imaginação sociológica' de Wright Mills para demonstrar que a violação de direitos não é desvio individual, mas falha das instituições e da organização socioeconômica.",
+        "Conexão teórica: articule a teoria durkheimiana de 'anomia' para fundamentar temas ligados à violência institucionalizada e à fragilização do tecido moral democrático."
+      ]],
+      ["Questão de Práxis e Fixação", [
+        "Como a imaginação sociológica nos ajuda a desconstruir o discurso do senso comum que afirma que os Direitos Humanos servem para 'proteger privilégios'?"
+      ]]
+    ]
+  },
+  "2": {
+    "titulo": "Genealogia da Tríade: Liberdade, Igualdade e Fraternidade",
+    "blocos": [
+      ["Ideia Central e Genealogia", [
+        "A tríade 'Liberdade, Igualdade e Fraternidade' tem origem no Iluminismo e nas revoluções burguesas (Revolução Francesa de 1789), servindo de matriz filosófica para a DUDH de 1948.",
+        "A proclamação dos direitos universais nasceu sob uma contradição fundacional: a burguesia europeia defendia a liberdade comercial e a igualdade civil enquanto mantinha a escravização transatlântica e a exploração colonial nas Américas, África e Ásia."
+      ]],
+      ["Conceitos e Crítica Sociológica Clássica", [
+        "Karl Marx (Materialismo Histórico e Luta de Classes): a igualdade perante a lei no capitalismo é meramente formal. Ela oculta a desigualdade real nas relações sociais de produção, onde a burguesia detém os meios de produção e explora a mais-valia da classe trabalhadora.",
+        "Émile Durkheim (Divisão do Trabalho e Solidariedade): a fraternidade traduz-se em solidariedade orgânica (interdependência funcional nas sociedades complexas), cuja preservação exige normas jurídicas justas para evitar a desintegração social.",
+        "Max Weber (Ação Social e Tipos de Dominação): a justiça estatal moderna assenta-se na dominação racional-legal e na burocracia, mas pode legitimar estruturas assimétricas se os sentidos das ações coletivas forem capturados por grupos de status dominantes.",
+        "Antonio Gramsci: a fraternidade e a religiosidade podem operar como forças utópicas e contra-hegemônicas capazes de mobilizar as classes subalternas na luta por igualdade substantiva."
+      ]],
+      ["Entraves Contemporâneos", [
+        "A ilusão da isonomia jurídica: tratar indivíduos socioeconomicamente desiguais sob a mesma regra abstrata aprofunda a exclusão e perpetua privilégios de classe.",
+        "Captura do Estado: aparelhos jurídicos e políticos que funcionam prioritariamente para a defesa da propriedade privada em detrimento das necessidades humanas básicas."
+      ]],
+      ["Para Redação e Provas (ENEM/Vestibulares)", [
+        "Tese crítica: mostre como a igualdade formal garantida pelo Artigo 5º da CF/88 ou pela DUDH de 1948 é neutralizada na prática pela desigualdade material e pela divisão de classes (Karl Marx).",
+        "Conceito de Solidariedade: utilize Durkheim para justificar a necessidade de políticas sociais e redes de proteção como garantia de coesão republicana."
+      ]],
+      ["Questão de Práxis e Fixação", [
+        "Em que medida a crítica marxista à 'igualdade burguesa' continua válida para analisar a concentração de renda e a precariedade do trabalho no Brasil atual?"
+      ]]
+    ]
+  },
+  "3": {
+    "titulo": "Entraves Estruturais: Racismo e Colonialidade",
+    "blocos": [
+      ["Ideia Central e Giro Decolonial", [
+        "As violações de Direitos Humanos no Sul Global resultam da persistência da 'colonialidade' — um padrão global de dominação que sobreviveu ao término da colonização territorial e continua a hierarquizar a humanidade a partir da invenção social de 'raça'.",
+        "O eurocentrismo impôs o sujeito europeu masculino e branco como único modelo universal de humanidade e conhecimento, empurrando povos originários e afrodiaspóricos para a invisibilidade e subalternidade."
+      ]],
+      ["Conceitos e Pensamento Crítico Latino-Americano", [
+        "Tríade da Colonialidade: Colonialidade do Poder (exploração do trabalho e autoridade baseadas em raça - Aníbal Quijano); Colonialidade do Saber (racismo epistêmico e negação dos saberes indígenas e africanos - Ramón Grosfoguel); Colonialidade do Ser (desumanização do colonizado, tornando sua vida descartável - Nelson Maldonado-Torres e Enrique Dussel).",
+        "Frantz Fanon (Os Condenados da Terra): denúncia da hipocrisia europeia, que prega direitos humanos universais na metrópole enquanto promove a violência colonial e o racismo nas periferias globais.",
+        "Lélia Gonzalez e a Amefricanidade: articulação indissociável entre raça, gênero e classe social, resgatando a memória e a práxis de resistência compartilhada por negros e indígenas nas Américas.",
+        "Desmistificação da Democracia Racial: superação da tese harmoniosa de Gilberto Freyre a partir das pesquisas científicas de Florestan Fernandes, Abdias Nascimento e Kabengele Munanga, que demonstraram o racismo institucional como sustentáculo da desigualdade brasileira."
+      ]],
+      ["Entraves e Violações Estruturais", [
+        "Racismo Institucional: atuação seletiva e violenta do aparato estatal sobre jovens negros de periferia e comunidades quilombolas.",
+        "Invasão de territórios originários e violência contra lideranças indígenas, desrespeitando o direito à terra e à preservação biocultural."
+      ]],
+      ["Para Redação e Provas (ENEM/Vestibulares)", [
+        "Repertório autoral: utilize Lélia Gonzalez (Amefricanidade / interseccionalidade) e Aníbal Quijano (Colonialidade do Poder) para fundamentar temas sobre desigualdade racial, violência policial ou apagamento cultural.",
+        "Desconstrução de mitos: cite Kabengele Munanga e Florestan Fernandes para combater a falsa narrativa de que o Brasil não possui preconceito racial estrutural."
+      ]],
+      ["Questão de Práxis e Fixação", [
+        "De que modo a categoria político-cultural de Amefricanidade proposta por Lélia Gonzalez subverte a dominação eurocêntrica e fortalece a luta antirracista no Brasil?"
+      ]]
+    ]
+  },
+  "4": {
+    "titulo": "Identidades, Juventudes e Sujeitos de Direitos",
+    "blocos": [
+      ["Ideia Central e Deslocamento Identitário", [
+        "A universalidade dos Direitos Humanos só é legítima quando reconhece a pluralidade dos sujeitos. A identidade não é uma essência biológica fixa, mas uma construção relacional e cultural em permanente transformação.",
+        "A passagem da modernidade à pós-modernidade fragmentou o antigo sujeito unificado (iluminista), dando lugar a sujeitos que vivem múltiplas identidades sociais simultâneas."
+      ]],
+      ["Conceitos e Teóricos Sociais", [
+        "Stuart Hall (A Identidade Cultural na Pós-Modernidade): o sujeito pós-moderno é descentrado; suas identidades cruzam recortes de classe, etnia, gênero, sexualidade e geração, manifestando contradições e dinamicidade.",
+        "Erving Goffman (A Representação do Eu): a identidade como dramaturgia social, na qual os indivíduos adotam papéis sociais e moldam suas impressões a partir das interações cotidianas.",
+        "George Herbert Mead: a formação do self social por meio do diálogo entre o 'eu' (sujeito ativo) e o 'mim' (incorporação das atitudes organizadas da sociedade).",
+        "Juarez Dayrell e Juliana Reis (Condição Juvenil): a juventude no Brasil não é mero estágio biológico de transição, mas uma categoria social diversa. Destacam-se as dimensões do trabalho precoce, da sociabilidade entre pares e da cultura (hip-hop, poesia marginal, saraus) como território de afirmação cidadã.",
+        "Boaventura de Sousa Santos: a dialética entre igualdade e diferença — 'Temos o direito a ser iguais quando a diferença nos inferioriza; temos o direito de ser diferentes quando a igualdade nos descaracteriza'."
+      ]],
+      ["Entraves e Violações Estruturais", [
+        "Estigmatização das juventudes periféricas e criminalização de suas expressões culturais e estéticas.",
+        "Violência de gênero, machismo, homofobia e transfobia que violam o direito à livre existência e à identidade de pessoas LGBTQIAPN+."
+      ]],
+      ["Para Redação e Provas (ENEM/Vestibulares)", [
+        "Citação de autoridade: use a fórmula de Boaventura de Sousa Santos para sustentar propostas de inclusão que respeitem especificidades identitárias sem criar hierarquias.",
+        "Juventude como sujeito: cite Juarez Dayrell para defender políticas públicas de cultura, educação integral e trabalho digno voltadas aos jovens periféricos."
+      ]],
+      ["Questão de Práxis e Fixação", [
+        "Como as manifestações culturais da juventude periférica (batalhas de rima, saraus) atuam como instrumentos concretos de defesa de direitos e construção de identidade?"
+      ]]
+    ]
+  },
+  "5": {
+    "titulo": "Ideologia, Intolerância e Racismo Religioso",
+    "blocos": [
+      ["Ideia Central e Disputas Simbólicas", [
+        "A violação de Direitos Humanos é alimentada por mecanismos ideológicos que invertem, naturalizam e justificam preconceitos e violências nas relações cotidianas.",
+        "A defesa do Estado Laico e a liberdade de crença (assegurada pelo Artigo 5º da CF/88) enfrentam barreiras severas devido à ascensão do fundamentalismo religioso e à intolerância sistemática."
+      ]],
+      ["Conceitos e Matrizes Teóricas", [
+        "Conceito de Ideologia: Marilena Chaui (conjunto prescritivo e normativo que prescreve como pensar e agir, naturalizando o que é histórico); Karl Marx (falsa consciência e inversão da realidade que oculta a dominação de classe); Antonio Gramsci (hegemonia cultural que busca o consentimento passivo da sociedade civil).",
+        "Escola de Frankfurt (Theodor Adorno e Max Horkheimer): a Indústria Cultural e a cultura de massa transformam bens simbólicos em mercadorias padronizadas, promovendo conformismo e despolitização.",
+        "Racismo Religioso: conceito sociológico que demonstra que a violência contra terreiros e fiéis de Candomblé e Umbanda não é mera divergência doutrinária, mas a perpetuação do racismo estrutural contra matrizes civilizatórias de origem africana.",
+        "Fundamentalismo Religioso: leitura literal de textos considerados sagrados, combinada à intolerância e à deslegitimação de outras formas de fé e existência."
+      ]],
+      ["Entraves e Violações Estruturais", [
+        "Aumento expressivo de denúncias de ataques, incineração de terreiros e agressões a praticantes de religiões afro-brasileiras.",
+        "Tentativas de desmonte do Estado Laico mediante imposição de dogmas fundamentalistas sobre políticas públicas de saúde, direitos sexuais e reprodutivos."
+      ]],
+      ["Para Redação e Provas (ENEM/Vestibulares)", [
+        "Conexão direta com a Competência 5 do ENEM: o combate ao racismo religioso exige intervenções que combinem fiscalização policial rigorosa, acolhimento de denúncias e educação intercultural nas escolas públicas.",
+        "Fundamentação teórica: empregue Marilena Chaui para demonstrar como o preconceito religioso é naturalizado por discursos ideológicos conservadores."
+      ]],
+      ["Questão de Práxis e Fixação", [
+        "Por que a Sociologia diferencia o conceito de 'intolerância religiosa genérica' do conceito de 'racismo religioso' na realidade brasileira?"
+      ]]
+    ]
+  },
+  "6": {
+    "titulo": "Práxis Social: Interculturalidade e Bem Viver",
+    "blocos": [
+      ["Ideia Central e Práxis Transformadora", [
+        "A realização plena dos Direitos Humanos requer a passagem da teoria sociológica para a práxis — a ação social consciente, reflexiva e transformadora nos espaços de vivência.",
+        "Supera-se a tolerância passiva por meio da construção de sociedades verdadeiramente democráticas, pluriculturais e sociobiocêntricas."
+      ]],
+      ["Conceitos e Paradigmas Emergentes", [
+        "Interculturalidade Crítica (Catherine Walsh): contraponto ao multiculturalismo liberal/assimilacionista. Não basta celebrar a diversidade; é preciso confrontar as estruturas desiguais de poder, construir espaços simétricos de escuta e promover a justiça social entre povos historicamente marginalizados.",
+        "Bem Viver (Sumak Kawsay - Alberto Acosta / Ailton Krenak): cosmologia indígena que recusa a ideia de desenvolvimento e progresso predatório linear baseados no consumo infinito e na destruição da natureza.",
+        "Perspectiva Sociobiocêntrica e Direitos da Natureza: o ser humano é parte inseparável da Mãe Terra (Pacha Mama). A natureza deixa de ser mero recurso econômico a ser explorado e passa a ser sujeito de direitos (como nas Constituições do Equador e Bolívia)."
+      ]],
+      ["Entraves e Violações Estruturais", [
+        "Prevalência do modelo de desenvolvimento predatório capitalista, que gera colapso ecológico, contaminação hídrica e expulsão de povos tradicionais de seus territórios.",
+        "Persistência de práticas etnocêntricas e capacitistas nas instituições educacionais e no mercado de trabalho."
+      ]],
+      ["Para Redação e Provas (ENEM/Vestibulares)", [
+        "Proposta de Intervenção Cidadã: utilize o paradigma do 'Bem Viver' e da 'Interculturalidade Crítica' para formular propostas que integrem direitos humanos, justiça socioambiental e valorização das comunidades locais.",
+        "Cidadania ativa: cite a aplicação efetiva das Leis 10.639/03 e 11.645/08 como medidas indispensáveis para a construção de uma educação antirracista e descolonizada."
+      ]],
+      ["Questão de Práxis e Fixação", [
+        "Como a adoção de uma ética sociobiocêntrica baseada no Bem Viver pode redefinir o conceito ocidental de Direitos Humanos diante da emergência climática do século XXI?"
+      ]]
+    ]
+  }
+};
+
+(function(){
+  var d = document, raiz = d.documentElement;
+
+  /* Topbar offset */
+  var topbar = d.querySelector('.topbar');
+  function medirTopbar(){
+    if(!topbar) return;
+    raiz.style.setProperty('--topbar-h', Math.round(topbar.getBoundingClientRect().height) + 'px');
+  }
+  medirTopbar();
+  window.addEventListener('resize', medirTopbar);
+
+  /* Acordeões */
+  d.querySelectorAll('.acc-head').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var aberto = btn.parentElement.classList.toggle('aberto');
+      btn.setAttribute('aria-expanded', aberto ? 'true' : 'false');
+    });
+  });
+
+  /* Modal */
+  var fundo = d.getElementById('modalFicha');
+  var corpo = d.getElementById('fichaCorpo');
+  var tit   = d.getElementById('fichaTitulo');
+  var rot   = d.getElementById('fichaRot');
+
+  function travarScroll(){ d.body.style.overflow = 'hidden'; }
+  function liberarScroll(){ d.body.style.overflow = ''; }
+
+  function abrirModal(rotulo, titulo, html){
+    rot.textContent = rotulo;
+    tit.textContent = titulo;
+    corpo.innerHTML = html;
+    fundo.classList.add('ativo');
+    fundo.setAttribute('aria-hidden','false');
+    travarScroll();
+    corpo.scrollTop = 0;
+  }
+  function fecharModal(){
+    fundo.classList.remove('ativo');
+    fundo.setAttribute('aria-hidden','true');
+    liberarScroll();
+    corpo.innerHTML = '';
+  }
+
+  window.abrirModalPorNumero = function(n){
+    var f = FICHAS[String(n)];
+    if(!f) return;
+    var html = f.blocos.map(function(bl){
+      return '<h4>' + bl[0] + '</h4><ul>' + bl[1].map(function(i){ return '<li>' + i + '</li>'; }).join('') + '</ul>';
+    }).join('');
+    abrirModal('Fichamento \u00b7 T\u00f3pico ' + n, f.titulo, html);
+  };
+
+  d.querySelectorAll('.ficha-btn').forEach(function(b){
+    b.addEventListener('click', function(){
+      window.abrirModalPorNumero(b.dataset.ficha);
+    });
+  });
+
+  d.querySelectorAll('.rec-card').forEach(function(c){
+    c.addEventListener('click', function(){
+      var r = RECURSOS[c.dataset.rec];
+      if(!r) return;
+      abrirModal('Material de consulta', r.titulo, r.html);
+    });
+  });
+
+  d.getElementById('fecharFicha').addEventListener('click', fecharModal);
+  d.getElementById('fecharFicha2').addEventListener('click', fecharModal);
+  fundo.addEventListener('click', function(e){ if(e.target === fundo) fecharModal(); });
+
+  /* Sumário / Trilha do Tema */
+  var chips = d.getElementById('sumChips');
+  var box   = d.getElementById('sumBox');
+  var bt    = d.getElementById('sumToggle');
+
+  function fecharTrilha(){
+    if(!box || !box.classList.contains('aberto')) return;
+    box.classList.remove('aberto');
+    bt.setAttribute('aria-expanded','false');
+  }
+
+  if(chips){
+    d.querySelectorAll('h2.secao[id]').forEach(function(h){
+      var n = h.querySelector('.num');
+      var texto = h.dataset.sum || h.textContent;
+      var a = d.createElement('a');
+      a.href = '#' + h.id;
+      a.innerHTML = '<b>' + (n ? n.textContent : '') + '</b>' + texto;
+      chips.appendChild(a);
+    });
+    var cont = d.getElementById('sumCount');
+    if(cont) cont.textContent = chips.children.length;
+
+    if(bt && box){
+      bt.addEventListener('click', function(e){
+        e.stopPropagation();
+        var aberto = box.classList.toggle('aberto');
+        bt.setAttribute('aria-expanded', aberto ? 'true' : 'false');
+      });
+      chips.addEventListener('click', function(e){
+        if(e.target.closest('a')) fecharTrilha();
+      });
+      d.addEventListener('click', function(e){
+        if(box.classList.contains('aberto') && !box.contains(e.target)) fecharTrilha();
+      });
+    }
+  }
+
+  d.addEventListener('keydown', function(e){
+    if(e.key === 'Escape' || e.key === 'Esc'){
+      if(fundo.classList.contains('ativo')){ fecharModal(); return; }
+      fecharTrilha();
+    }
+  });
+
+  /* Barra de Progresso */
+  var barra = d.getElementById('barraProgresso');
+  if(barra){
+    window.addEventListener('scroll', function(){
+      var alt = raiz.scrollHeight - window.innerHeight;
+      var pct = alt > 0 ? (window.pageYOffset / alt) * 100 : 0;
+      barra.style.width = Math.min(100, Math.max(0, pct)) + '%';
+    }, {passive:true});
+  }
+})();
+</script>
+</body>
+</html>

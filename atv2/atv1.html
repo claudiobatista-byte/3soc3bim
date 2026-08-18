@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Atividade — A Promessa Universal e a Imaginação Sociológica | CERO</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+  :root{
+    --bg:#f4f6f0;
+    --bg-alt:#e5ebd8;
+    --paper:#ffffff;
+    --ink:#1c261d;
+    --ink-soft:#4a594e;
+    --verde:#1f3d2b;
+    --verde-dark:#14291b;
+    --verde-2:#2f5a3f;
+    --terracota:#b4442a;
+    --terracota-light:#f2d5ce;
+    --line:#cad6c5;
+    --shadow:0 10px 30px rgba(31,61,43,.1);
+    --radius:14px;
+    --font-title:'Playfair Display', serif;
+    --font-body:'Source Serif 4', serif;
+    --font-mono:'JetBrains Mono', monospace;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:var(--font-body);
+    line-height:1.7;
+    -webkit-touch-callout:none;
+    user-select:none;
+  }
+  .selecionavel, main{user-select:text;}
+  .campo-resposta{user-select:text;}
+
+  /* ===== CAPA / GATE ===== */
+  #capa{
+    min-height:100vh;
+    display:flex; align-items:center; justify-content:center;
+    position:relative;
+    overflow:hidden;
+    background:linear-gradient(to bottom, #14291b, #1f3d2b, #2f5a3f);
+    padding:24px;
+  }
+  #capa .grade-centralizada{
+    position:absolute;
+    top:0; bottom:0; left:50%;
+    transform:translateX(-50%);
+    width:100%;
+    max-width:896px;
+    pointer-events:none;
+    z-index:0;
+    opacity:.08;
+    background:
+      repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(255,255,255,.5) 39px, rgba(255,255,255,.5) 40px),
+      repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(255,255,255,.5) 39px, rgba(255,255,255,.5) 40px);
+    background-size:40px 40px;
+  }
+  .capa-card{
+    position:relative;
+    z-index:1;
+    background:var(--paper);
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+    max-width:480px;
+    width:100%;
+    padding:36px 32px;
+    text-align:center;
+  }
+  .capa-card .tag{
+    display:inline-block; font-family:var(--font-mono); font-size:.7rem;
+    letter-spacing:.1em; text-transform:uppercase; color:var(--verde-dark);
+    background:rgba(31,61,43,.12); padding:5px 12px; border-radius:999px; margin-bottom:14px;
+  }
+  .capa-card h1{font-family:var(--font-title); font-size:1.5rem; margin:0 0 10px; color:var(--verde-dark);}
+  .capa-card p.desc{color:var(--ink-soft); font-size:.94rem; margin:0 0 22px;}
+  .capa-card input{
+    width:100%; padding:12px 14px; border:1px solid var(--line); border-radius:8px;
+    font-family:var(--font-body); font-size:1rem; margin-bottom:14px;
+  }
+  .capa-card button{
+    width:100%; padding:13px; border:none; border-radius:8px;
+    background:var(--verde); color:#fff; font-weight:600; font-size:1rem; cursor:pointer;
+    font-family:var(--font-body); transition:filter .15s ease;
+  }
+  .capa-card button:hover{filter:brightness(1.08);}
+  .capa-aviso{font-size:.78rem; color:#a33; margin-top:8px; display:none;}
+
+  /* ===== APP ===== */
+  #app{display:none;}
+  .sticky-header{
+    position:sticky; top:0; z-index:50;
+    background:var(--verde-dark); color:#f2f7f3;
+    padding:12px 20px; display:flex; align-items:center; justify-content:space-between;
+    flex-wrap:wrap; gap:8px;
+    font-family:var(--font-mono); font-size:.82rem;
+  }
+  .sticky-header .aluno{font-family:var(--font-body); font-weight:600; font-size:.92rem;}
+  .barra-progresso-trilho{
+    flex:1; min-width:120px; height:8px; background:rgba(255,255,255,.2); border-radius:6px; overflow:hidden; margin:0 14px;
+  }
+  .barra-progresso-fill{height:100%; background:var(--terracota); width:0%; transition:width .3s ease;}
+
+  .wrap{max-width:800px; margin:0 auto; padding:32px 24px 60px;}
+
+  header.topo{margin-bottom:28px;}
+  header.topo .hero-tag{
+    display:inline-block; font-family:var(--font-mono); font-size:.72rem;
+    letter-spacing:.1em; text-transform:uppercase; color:var(--verde-dark);
+    background:rgba(31,61,43,.12); padding:5px 12px; border-radius:999px; margin-bottom:12px;
+  }
+  header.topo h1{font-family:var(--font-title); font-size:clamp(1.5rem,4vw,2rem); margin:0 0 8px; color:var(--ink);}
+  header.topo p.sub{color:var(--ink-soft); margin:0; font-size:.98rem;}
+  .descritor-bar{
+    font-family:var(--font-mono); font-size:.76rem; color:var(--ink-soft);
+    background:var(--paper); border:1px solid var(--line); border-radius:8px;
+    padding:8px 14px; margin-bottom:14px; display:inline-block;
+  }
+  .ficha-id{
+    display:flex; flex-wrap:wrap; gap:10px 26px;
+    background:var(--paper); border:1px solid var(--line); border-radius:10px;
+    padding:12px 16px; margin-top:12px; font-family:var(--font-mono); font-size:.84rem; color:var(--ink);
+  }
+  .ficha-id span b{color:var(--verde-dark);}
+
+  /* ===== TEXTO DE APOIO ===== */
+  .texto-apoio{
+    background:var(--paper); border:1px solid var(--line); border-radius:var(--radius);
+    box-shadow:var(--shadow); padding:24px 28px; margin-bottom:20px;
+  }
+  .texto-apoio h2{font-family:var(--font-title); font-size:1.2rem; color:var(--verde-dark); margin:0 0 4px;}
+  .texto-apoio .fonte-tag{font-family:var(--font-mono); font-size:.72rem; color:var(--ink-soft); margin-bottom:12px; display:block;}
+  .texto-apoio p{margin:0 0 12px; color:var(--ink);}
+  .texto-apoio p:last-of-type{margin-bottom:0;}
+
+  /* ===== QUESTOES ===== */
+  .questoes-titulo{
+    font-family:var(--font-title); font-size:1.3rem; color:var(--verde-dark);
+    margin:28px 0 18px; display:flex; align-items:center; gap:10px; border-bottom:2px solid var(--terracota); padding-bottom:6px;
+  }
+  .questao{
+    background:var(--paper); border:1px solid var(--line); border-radius:12px;
+    padding:20px 22px; margin-bottom:24px;
+  }
+  .questao .num-q{
+    display:inline-flex; align-items:center; justify-content:center;
+    width:26px; height:26px; border-radius:50%; background:var(--verde);
+    color:#fff; font-family:var(--font-mono); font-size:.78rem; margin-right:8px; flex-shrink:0;
+  }
+  .questao .enunciado{font-weight:600; color:var(--ink); margin-bottom:14px; display:flex; align-items:flex-start; flex-direction:column;}
+  .questao .enunciado-header{display:flex; align-items:center; width:100%; margin-bottom:8px;}
+  .questao .texto-questao{
+    font-weight:400; font-size:.95rem; color:#2c382e; background:#f9faf7;
+    border-left:3px solid var(--verde); padding:10px 14px; margin:6px 0 12px; border-radius:0 6px 6px 0;
+    font-style:italic; line-height:1.6; width:100%;
+  }
+  .questao .comando{font-weight:600; font-size:.96rem; color:var(--ink); line-height:1.6; margin-top:4px;}
+  .questao textarea{
+    width:100%; min-height:100px; padding:12px 14px; border:1px solid var(--line); border-radius:8px;
+    font-family:var(--font-body); font-size:.96rem; resize:vertical; color:var(--ink);
+  }
+  .questao textarea:focus{outline:2px solid var(--verde-2); outline-offset:1px;}
+  .contador-chars{font-family:var(--font-mono); font-size:.72rem; color:var(--ink-soft); margin-top:6px; text-align:right;}
+
+  /* ===== OPCOES (OBJETIVAS) ===== */
+  .opcao{
+    display:flex; gap:12px; align-items:flex-start;
+    padding:12px 14px; border:1.5px solid var(--line); border-radius:8px;
+    margin-bottom:8px; cursor:pointer; transition:all .15s ease; background:var(--paper);
+  }
+  .opcao:hover{border-color:var(--verde); background:var(--bg-alt);}
+  .opcao.sel{border-color:var(--verde); background:var(--bg-alt);}
+  .opcao.correta{border-color:var(--verde-2); background:#e9f5ed;}
+  .opcao.errada{border-color:#c0392b; background:#fdeeee;}
+  .opcao.travada{cursor:default;}
+  .opcao-letra{
+    flex:0 0 auto; width:26px; height:26px; border-radius:50%;
+    background:var(--bg-alt); color:var(--ink-soft);
+    font-family:var(--font-mono); font-weight:700; font-size:.78rem;
+    display:flex; align-items:center; justify-content:center; transition:all .15s ease;
+  }
+  .opcao.sel .opcao-letra{background:var(--verde); color:#fff;}
+  .opcao.correta .opcao-letra{background:var(--verde-2); color:#fff;}
+  .opcao.errada .opcao-letra{background:#c0392b; color:#fff;}
+  .opcao-txt{font-size:.94rem; color:var(--ink); line-height:1.6; padding-top:2px;}
+  .opcao-marca{margin-left:auto; font-size:1rem; align-self:center; display:none; flex:0 0 auto;}
+  .gabarito-info{
+    display:none; margin-top:14px; padding:14px 16px;
+    background:#fbf3ea; border:1px solid #ebd4c1; border-radius:8px;
+    font-size:.88rem; color:#68331e; line-height:1.6;
+  }
+  .gabarito-info.show{display:block;}
+  .gabarito-info b{color:var(--terracota);}
+  .questao .badge-resultado{
+    display:none; font-family:var(--font-mono); font-size:.68rem; font-weight:700;
+    padding:2px 10px; border-radius:20px; margin-left:8px; color:#fff;
+  }
+  .questao .badge-resultado.ok{display:inline-block; background:var(--verde-2);}
+  .questao .badge-resultado.no{display:inline-block; background:#c0392b;}
+
+  .comentario-prof{
+    display:none; margin-top:14px; padding:14px 16px;
+    background:#eaf2ed; border:1px solid #c2dad0; border-radius:8px; font-size:.9rem; color:var(--verde-dark);
+  }
+  .comentario-prof.show{display:block;}
+  .comentario-prof b{display:block; margin-bottom:4px; font-family:var(--font-title); font-size:.92rem;}
+
+  /* ===== ALERTA / FINALIZAR ===== */
+  .alerta-incompleto{
+    display:none; background:#fdf3e2; border:1px solid #f1d9a6; color:#8a5a10;
+    padding:12px 16px; border-radius:8px; font-size:.9rem; margin-bottom:16px;
+  }
+  .alerta-incompleto.show{display:block;}
+
+  .acoes-finais{display:flex; gap:12px; flex-wrap:wrap; margin-top:20px;}
+  .btn{
+    font-family:var(--font-body); font-weight:600; font-size:.94rem; padding:12px 22px;
+    border-radius:8px; border:none; cursor:pointer; transition:filter .15s ease;
+  }
+  .btn:hover{filter:brightness(1.08);}
+  .btn-primario{background:var(--verde); color:#fff;}
+  .btn-secundario{background:transparent; color:var(--ink); border:1px solid var(--line);}
+  .btn-pdf{background:var(--terracota); color:#fff;}
+  .btn[disabled]{opacity:.5; cursor:not-allowed;}
+
+  footer.rodape{text-align:center; padding:24px; color:var(--ink-soft); font-family:var(--font-mono); font-size:.8rem;}
+
+  @media (max-width:600px){
+    .wrap{padding:24px 16px 50px;}
+    .texto-apoio, .questao{padding:18px 18px;}
+  }
+</style>
+</head>
+<body>
+
+<div id="capa">
+  <div class="grade-centralizada"></div>
+  <div class="capa-card">
+    <span class="tag">3ª série · Ensino Médio · CERO</span>
+    <h1>A Promessa Universal e a Imaginação Sociológica</h1>
+    <p class="desc">Atividade avaliativa de Sociologia baseada no modelo ENEM (EM13CHS305), articulando a imaginação sociológica (C. Wright Mills), atitude científica e os Direitos Humanos. Contém 2 questões dissertativas e 8 questões objetivas com resolução comentada.</p>
+    <input type="text" id="nome-aluno" placeholder="Seu nome completo">
+    <input type="text" id="turma-aluno" placeholder="Turma (ex.: 3ª A)">
+    <button onclick="iniciarAtividade()">Iniciar atividade</button>
+    <div class="capa-aviso" id="capa-aviso">Por favor, digite seu nome para continuar.</div>
+  </div>
+</div>
+
+<div id="app">
+  <div class="sticky-header">
+    <span class="aluno" id="header-nome"></span>
+    <div class="barra-progresso-trilho"><div class="barra-progresso-fill" id="barra-fill"></div></div>
+    <span id="contador-geral">Respondidas: 0/10</span>
+  </div>
+
+  <div class="wrap">
+    <header class="topo selecionavel">
+      <span class="descritor-bar">Ciências Humanas e Sociais Aplicadas / 3ª série do Ensino Médio &nbsp;|&nbsp; Matriz ENEM · (EM13CHS305)</span>
+      <span class="hero-tag" style="display:block; margin-top:10px;">Atividade Avaliativa · Tópico 2</span>
+      <h1>A Promessa Universal e a Imaginação Sociológica: Direitos Humanos e Estrutura Social</h1>
+      <p class="sub">Leia os textos de apoio e responda às questões dissertativas e objetivas analisando criticamente a transição do senso comum à atitude científica sociológica.</p>
+      <div class="ficha-id" id="ficha-id">
+        <span><b>NOME:</b> <span id="ficha-nome"></span></span>
+        <span><b>DATA:</b> <span id="ficha-data"></span></span>
+        <span><b>TURMA:</b> <span id="ficha-turma"></span></span>
+      </div>
+    </header>
+
+    <main>
+      <h2 class="questoes-titulo">&#9997;&#65039; Parte I — Leituras Intercaladas e Questões Dissertativas</h2>
+
+      <section class="texto-apoio selecionavel">
+        <h2>1. O Conceito de Imaginação Sociológica</h2>
+        <span class="fonte-tag">Leitura de Apoio — Bloco 1</span>
+        <p>A imaginação sociológica, conceito desenvolvido pelo sociólogo Charles Wright Mills em sua obra de 1959, é a capacidade de conectar as experiências pessoais de indivíduos aos processos históricos e sociais mais amplos. Mills argumentava que um problema que parece ser exclusivamente pessoal — como o desemprego de uma única pessoa — só pode ser verdadeiramente compreendido quando analisado como um fenômeno coletivo e estrutural. Se 15 milhões de pessoas estão desempregadas em um país de 50 milhões, esse não é mais um problema individual, mas uma questão da estrutura social e econômica.</p>
+      </section>
+
+      <div class="questao" data-questao="1">
+        <div class="enunciado">
+          <div class="enunciado-header"><span class="num-q">1</span> <b>Questão Dissertativa</b></div>
+          <div class="comando">Com base no conceito de imaginação sociológica de Charles Wright Mills, explique como a transição do senso comum para a atitude científica sociológica nos ajuda a compreender os desafios na garantia dos Direitos Humanos. Utilize exemplos concretos em sua resposta.</div>
+        </div>
+        <textarea id="resp-1" class="campo-resposta dissertativa" data-min="60" placeholder="Escreva sua resposta aqui..."></textarea>
+        <div class="contador-chars">0 caracteres (mínimo 60)</div>
+        <div class="comentario-prof">
+          <b>Comentário do professor</b>
+          Espera-se que o estudante explique que a imaginação sociológica permite "desnaturalizar" a realidade — reconhecer que as violações de direitos humanos não são "naturais" ou "inevitáveis", mas resultados de estruturas sociais construídas historicamente que podem ser transformadas. Exemplos válidos incluem: discriminação racial não como defeito individual, mas como sistema estrutural; pobreza não como falta de mérito individual, mas como resultado de desigualdades econômicas estruturais.
+        </div>
+      </div>
+
+      <section class="texto-apoio selecionavel">
+        <h2>2. A Declaração Universal dos Direitos Humanos e Seus Desafios</h2>
+        <span class="fonte-tag">Leitura de Apoio — Bloco 2</span>
+        <p>A Declaração Universal dos Direitos Humanos, aprovada pela Organização das Nações Unidas em dezembro de 1948, representa uma "promessa universal": o compromisso formal de que "todas as pessoas nascem livres e iguais em dignidade e direitos", sem qualquer distinção de raça, cor, sexo, língua, religião, opinião política ou outra condição. No entanto, existe um abismo entre essa promessa formal e a realidade. Enquanto o senso comum trata essa declaração como óbvia ou "natural", a atitude científica sociológica questiona: por que essa promessa ainda não é realidade? Quais estruturas sociais perpetuam a desigualdade e impedem a garantia efetiva de direitos? Como a desigualdade econômica, o preconceito e as discriminações sistêmicas continuam violando direitos fundamentais?</p>
+      </section>
+
+      <div class="questao" data-questao="2">
+        <div class="enunciado">
+          <div class="enunciado-header"><span class="num-q">2</span> <b>Questão Dissertativa</b></div>
+          <div class="comando">A Declaração Universal dos Direitos Humanos (1948) estabelece que "todas as pessoas nascem livres e iguais em dignidade e direitos". Analise criticamente: por que essa promessa universal ainda enfrenta dificuldades para ser completamente implementada? O que a atitude científica sociológica revela sobre as estruturas sociais que impedem a realização plena desses direitos?</div>
+        </div>
+        <textarea id="resp-2" class="campo-resposta dissertativa" data-min="60" placeholder="Escreva sua resposta aqui..."></textarea>
+        <div class="contador-chars">0 caracteres (mínimo 60)</div>
+        <div class="comentario-prof">
+          <b>Comentário do professor</b>
+          Espera-se que o estudante reconheça a distância entre teoria e prática. A atitude científica sociológica revela que estruturas sociais — como desigualdade econômica, sistemas de classe, racismo institucional, patriarcado, xenofobia — funcionam como barreiras estruturais à garantia efetiva de direitos. O estudante deve demonstrar compreensão de que essas não são apenas questões morais, mas questões estruturais que exigem análise científica e transformação social.
+        </div>
+      </div>
+
+      <h2 class="questoes-titulo">📋 Parte II — Questões Objetivas (Padrão ENEM)</h2>
+
+      <div class="questao objetiva" data-questao="obj-1" data-correta="1">
+        <div class="enunciado">
+          <div class="enunciado-header"><span class="num-q">3</span> <span><b>(ENEM/EM13CHS305)</b></span> <span class="badge-resultado" id="badge-obj-1"></span></div>
+          <div class="texto-questao">
+            "Quando, em uma cidade de 100 mil habitantes, apenas um homem está desempregado, isso pode ser seu problema pessoal, e para sua solução podemos olhar para o caráter do homem, suas habilidades ou suas oportunidades imediatas. Mas quando, em uma nação de 50 milhões de empregados, 15 milhões de homens estão sem trabalho, isso é uma questão pública, e não podemos esperar sua solução considerando a faixa de oportunidades abertas a qualquer indivíduo isolado. A própria estrutura das oportunidades entrou em colapso."<br>
+            <small style="display:block; text-align:right; margin-top:4px;">MILLS, C. Wright. <em>A Imaginação Sociológica</em>. Rio de Janeiro: Zahar, 1981 (adaptado).</small>
+          </div>
+          <div class="comando">Sob a perspectiva sociológica formulada por Wright Mills, a diferenciação entre "perturbações individuais" e "questões públicas da estrutura social" estabelece que a atitude científica em Sociologia deve:</div>
+        </div>
+        <div class="opcao" data-idx="0" onclick="marcarOpcao(1,0)"><div class="opcao-letra">A</div><div class="opcao-txt">restringir o estudo dos problemas sociais às patologias de caráter e às limitações psicológicas de cada sujeito.</div><div class="opcao-marca" id="marca-1-0"></div></div>
+        <div class="opcao" data-idx="1" onclick="marcarOpcao(1,1)"><div class="opcao-letra">B</div><div class="opcao-txt">conectar as trajetórias biográficas particulares às dinâmicas históricas e aos arranjos institucionais mais amplos.</div><div class="opcao-marca" id="marca-1-1"></div></div>
+        <div class="opcao" data-idx="2" onclick="marcarOpcao(1,2)"><div class="opcao-letra">C</div><div class="opcao-txt">desconsiderar a vivência dos indivíduos para focar unicamente em indicadores macroeconômicos quantitativos.</div><div class="opcao-marca" id="marca-1-2"></div></div>
+        <div class="opcao" data-idx="3" onclick="marcarOpcao(1,3)"><div class="opcao-letra">D</div><div class="opcao-txt">atribuir as crises coletivas de emprego à soma direta e voluntária das decisões e méritos individuais.</div><div class="opcao-marca" id="marca-1-3"></div></div>
+        <div class="opcao" data-idx="4" onclick="marcarOpcao(1,4)"><div class="opcao-letra">E</div><div class="opcao-txt">tratar as transformações da estrutura produtiva como fatalidades naturais alheias à intervenção política.</div><div class="opcao-marca" id="marca-1-4"></div></div>
+        <div class="gabarito-info" id="gab-1"><b>Gabarito: B.</b> A imaginação sociológica consiste justamente na capacidade intelectual de articular a biografia individual com a história e a estrutura da sociedade, superando as explicações puramente individualistas do senso comum.</div>
+      </div>
+
+      <div class="questao objetiva" data-questao="obj-2" data-correta="3">
+        <div class="enunciado">
+          <div class="enunciado-header"><span class="num-q">4</span> <span><b>(ENEM/EM13CHS305)</b></span> <span class="badge-resultado" id="badge-obj-2"></span></div>
+          <div class="texto-questao">
+            "Pensar sociologicamente é, antes de tudo, desfamiliarizar o familiar. As coisas não são necessariamente como parecem ser, e aquilo que a rotina do senso comum nos apresenta como 'natural', 'eterno' ou 'inevitável' é, na verdade, produto de construções humanas, convenções históricas e disputas de poder."<br>
+            <small style="display:block; text-align:right; margin-top:4px;">BAUMAN, Zygmunt. <em>Pensando Sociologicamente</em>. Rio de Janeiro: Zahar, 2010 (adaptado).</small>
+          </div>
+          <div class="comando">No campo da investigação sociológica, a ruptura com o senso comum descrita no excerto cumpre o papel fundamental de:</div>
+        </div>
+        <div class="opcao" data-idx="0" onclick="marcarOpcao(2,0)"><div class="opcao-letra">A</div><div class="opcao-txt">validar opiniões preconcebidas e crenças populares transmitidas acriticamente entre as gerações.</div><div class="opcao-marca" id="marca-2-0"></div></div>
+        <div class="opcao" data-idx="1" onclick="marcarOpcao(2,1)"><div class="opcao-letra">B</div><div class="opcao-txt">substituir a observação empírica criteriosa por dogmas morais prescritos por autoridades tradicionais.</div><div class="opcao-marca" id="marca-2-1"></div></div>
+        <div class="opcao" data-idx="2" onclick="marcarOpcao(2,2)"><div class="opcao-letra">C</div><div class="opcao-txt">legitimar as hierarquias e disparidades socioeconômicas como fenômenos biologicamente determinados.</div><div class="opcao-marca" id="marca-2-2"></div></div>
+        <div class="opcao" data-idx="3" onclick="marcarOpcao(2,3)"><div class="opcao-letra">D</div><div class="opcao-txt">desnaturalizar as relações sociais, demonstrando a historicidade e a possibilidade de transformação da realidade.</div><div class="opcao-marca" id="marca-2-3"></div></div>
+        <div class="opcao" data-idx="4" onclick="marcarOpcao(2,4)"><div class="opcao-letra">E</div><div class="opcao-txt">isolar os acontecimentos cotidianos de qualquer tentativa de explicação teórica ou conceitual.</div><div class="opcao-marca" id="marca-2-4"></div></div>
+        <div class="gabarito-info" id="gab-2"><b>Gabarito: D.</b> A atitude científica em Sociologia promove a "desnaturalização" dos fenômenos sociais, revelando que aquilo tido pelo senso comum como "natural" é fruto de relações históricas e sociais passíveis de intervenção e transformação.</div>
+      </div>
+
+      <div class="questao objetiva" data-questao="obj-3" data-correta="0">
+        <div class="enunciado">
+          <div class="enunciado-header"><span class="num-q">5</span> <span><b>(ENEM/EM13CHS305)</b></span> <span class="badge-resultado" id="badge-obj-3"></span></div>
+          <div class="texto-questao">
+            "Artigo 1º: Todos os seres humanos nascem livres e iguais em dignidade e direitos. São dotados de razão e consciência e devem agir em relação uns aos outros com espírito de fraternidade.<br>
+            Artigo 2º: Todo ser humano tem capacidade para gozar os direitos e as liberdades estabelecidos nesta Declaração, sem distinção de qualquer espécie, seja de raça, cor, sexo, língua, religião, opinião política ou de outra natureza..."<br>
+            <small style="display:block; text-align:right; margin-top:4px;">ORGANIZAÇÃO DAS NAÇÕES UNIDAS. <em>Declaração Universal dos Direitos Humanos</em>, 1948.</small>
+          </div>
+          <div class="comando">A proclamação da Declaração Universal pela Assembleia Geral da ONU, em 1948, configurou um marco histórico no direito internacional ao instituir a "promessa universal" da dignidade humana. Essa iniciativa teve como propósito central:</div>
+        </div>
+        <div class="opcao" data-idx="0" onclick="marcarOpcao(3,0)"><div class="opcao-letra">A</div><div class="opcao-txt">afirmar a dignidade inalienável de qualquer pessoa contra as atrocidades totalitárias e as segregações sistemáticas.</div><div class="opcao-marca" id="marca-3-0"></div></div>
+        <div class="opcao" data-idx="1" onclick="marcarOpcao(3,1)"><div class="opcao-letra">B</div><div class="opcao-txt">impor a homogeneização cultural e religiosa dos países centrais sobre as nações periféricas do globo.</div><div class="opcao-marca" id="marca-3-1"></div></div>
+        <div class="opcao" data-idx="2" onclick="marcarOpcao(3,2)"><div class="opcao-letra">C</div><div class="opcao-txt">assegurar a extinção mecânica e imediata de todas as contradições socioeconômicas em nível internacional.</div><div class="opcao-marca" id="marca-3-2"></div></div>
+        <div class="opcao" data-idx="3" onclick="marcarOpcao(3,3)"><div class="opcao-letra">D</div><div class="opcao-txt">restringir o acesso aos direitos civis e políticos àqueles inseridos nos estratos de maior renda e escolaridade.</div><div class="opcao-marca" id="marca-3-3"></div></div>
+        <div class="opcao" data-idx="4" onclick="marcarOpcao(3,4)"><div class="opcao-letra">E</div><div class="opcao-txt">subordinar a garantia da integridade humana à concordância estrita com regimes políticos hegemônicos.</div><div class="opcao-marca" id="marca-3-4"></div></div>
+        <div class="gabarito-info" id="gab-3"><b>Gabarito: A.</b> Gestada no contexto pós-Segunda Guerra Mundial e em resposta aos horrores do Holocausto e dos totalitarismos, a DUDH estabeleceu formalmente o princípio da universalidade e indivisibilidade dos direitos humanos para todos os seres humanos.</div>
+      </div>
+
+      <div class="questao objetiva" data-questao="obj-4" data-correta="4">
+        <div class="enunciado">
+          <div class="enunciado-header"><span class="num-q">6</span> <span><b>(ENEM/EM13CHS305)</b></span> <span class="badge-resultado" id="badge-obj-4"></span></div>
+          <div class="texto-questao">
+            "O grave problema de nosso tempo não é mais fundamentar os direitos do homem, mas protegê-los e realizá-los. [...] A distância que separa a proclamação solene dos direitos de sua efetiva execução não decorre apenas de falhas jurídicas, mas de contradições profundas na organização material e nas assimetrias de poder das sociedades contemporâneas."<br>
+            <small style="display:block; text-align:right; margin-top:4px;">BOBBIO, Norberto. <em>A Era dos Direitos</em>. Rio de Janeiro: Elsevier, 2004 (adaptado).</small>
+          </div>
+          <div class="comando">A análise sociológica sobre o descompasso entre a universalidade jurídica dos Direitos Humanos e sua concretização prática revela que a plena fruição da cidadania é:</div>
+        </div>
+        <div class="opcao" data-idx="0" onclick="marcarOpcao(4,0)"><div class="opcao-letra">A</div><div class="opcao-txt">garantida de forma automática a partir da simples ratificação de tratados e códigos normativos pelo Estado.</div><div class="opcao-marca" id="marca-4-0"></div></div>
+        <div class="opcao" data-idx="1" onclick="marcarOpcao(4,1)"><div class="opcao-letra">B</div><div class="opcao-txt">inviabilizada porque a busca por igualdade de direitos é uma utopia teórica sem relevância histórica.</div><div class="opcao-marca" id="marca-4-1"></div></div>
+        <div class="opcao" data-idx="2" onclick="marcarOpcao(4,2)"><div class="opcao-letra">C</div><div class="opcao-txt">comprometida unicamente pelo desconhecimento do texto legal por parte das populações em situação de pobreza.</div><div class="opcao-marca" id="marca-4-2"></div></div>
+        <div class="opcao" data-idx="3" onclick="marcarOpcao(4,3)"><div class="opcao-letra">D</div><div class="opcao-txt">um processo já concluído nas democracias ocidentais devido ao desaparecimento das classes sociais.</div><div class="opcao-marca" id="marca-4-3"></div></div>
+        <div class="opcao" data-idx="4" onclick="marcarOpcao(4,4)"><div class="opcao-letra">E</div><div class="opcao-txt">obstaculizada por estruturas históricas de desigualdade de classe, racismo institucional e assimetrias de poder.</div><div class="opcao-marca" id="marca-4-4"></div></div>
+        <div class="gabarito-info" id="gab-4"><b>Gabarito: E.</b> A Sociologia evidencia que a igualdade formal/jurídica encontra barreiras reais nas estruturas sociais desiguais (econômicas, étnico-raciais e de gênero), exigindo transformações institucionais e materiais para sua efetivação.</div>
+      </div>
+
+      <div class="questao objetiva" data-questao="obj-5" data-correta="1">
+        <div class="enunciado">
+          <div class="enunciado-header"><span class="num-q">7</span> <span><b>(ENEM/EM13CHS305)</b></span> <span class="badge-resultado" id="badge-obj-5"></span></div>
+          <div class="texto-questao">
+            Em diversas cidades brasileiras, o fenômeno da ocupação de encostas e áreas de preservação ambiental por moradias precárias costuma ser rotulado pelo senso comum como "falta de planejamento familiar" ou "desrespeito voluntário à lei". No entanto, uma pesquisa sociológica rigorosa sobre o tema investiga as variáveis de concentração de renda, especulação fundiária urbana, custo dos aluguéis e insuficiência de políticas habitacionais voltadas às faixas de menor poder aquisitivo.
+          </div>
+          <div class="comando">A comparação entre as duas abordagens apresentadas evidencia que a atitude científica em Ciências Sociais se diferencia do senso comum por:</div>
+        </div>
+        <div class="opcao" data-idx="0" onclick="marcarOpcao(5,0)"><div class="opcao-letra">A</div><div class="opcao-txt">reafirmar julgamentos morais que culpabilizam as vítimas pelos seus contextos de vulnerabilidade.</div><div class="opcao-marca" id="marca-5-0"></div></div>
+        <div class="opcao" data-idx="1" onclick="marcarOpcao(5,1)"><div class="opcao-letra">B</div><div class="opcao-txt">empregar métodos sistemáticos de análise empírica para investigar os determinantes estruturais do fenômeno.</div><div class="opcao-marca" id="marca-5-1"></div></div>
+        <div class="opcao" data-idx="2" onclick="marcarOpcao(5,2)"><div class="opcao-letra">C</div><div class="opcao-txt">ignorar dados socioeconômicos em prol de impressões intuitivas captadas em redes sociais.</div><div class="opcao-marca" id="marca-5-2"></div></div>
+        <div class="opcao" data-idx="3" onclick="marcarOpcao(5,3)"><div class="opcao-letra">D</div><div class="opcao-txt">sustentar que a segregação socioespacial resulta exclusivamente de decisões e preferências individuais.</div><div class="opcao-marca" id="marca-5-3"></div></div>
+        <div class="opcao" data-idx="4" onclick="marcarOpcao(5,4)"><div class="opcao-letra">E</div><div class="opcao-txt">restringir o foco da pesquisa aos aspectos geográficos, desconsiderando a dinâmica do mercado imobiliário.</div><div class="opcao-marca" id="marca-5-4"></div></div>
+        <div class="gabarito-info" id="gab-5"><b>Gabarito: B.</b> Ao contrário do senso comum (que individualiza e moraliza o problema), a atitude científica sociológica investiga a totalidade do fenômeno por meio de dados, hipóteses e análise das variáveis estruturais (especulação imobiliária, renda e políticas públicas).</div>
+      </div>
+
+      <div class="questao objetiva" data-questao="obj-6" data-correta="2">
+        <div class="enunciado">
+          <div class="enunciado-header"><span class="num-q">8</span> <span><b>(ENEM/EM13CHS305)</b></span> <span class="badge-resultado" id="badge-obj-6"></span></div>
+          <div class="texto-questao">
+            "A imaginação sociológica capacita seu possuidor a compreender o cenário histórico mais amplo em termos de seu significado para a vida interior e para a carreira exterior de uma variedade de indivíduos. Permite-lhe levar em conta como os indivíduos, na agitação de sua experiência diária, tornam-se frequentemente falsamente conscientes de suas posições sociais."<br>
+            <small style="display:block; text-align:right; margin-top:4px;">MILLS, C. Wright. <em>A Imaginação Sociológica</em>. Rio de Janeiro: Zahar, 1981.</small>
+          </div>
+          <div class="comando">A aplicação da imaginação sociológica na análise dos Direitos Humanos fortalece o exercício da cidadania democrática porque capacita os sujeitos a:</div>
+        </div>
+        <div class="opcao" data-idx="0" onclick="marcarOpcao(6,0)"><div class="opcao-letra">A</div><div class="opcao-txt">adotar posturas conformistas diante das desigualdades consolidadas pelo costume tradicional.</div><div class="opcao-marca" id="marca-6-0"></div></div>
+        <div class="opcao" data-idx="1" onclick="marcarOpcao(6,1)"><div class="opcao-letra">B</div><div class="opcao-txt">desvincular a defesa de garantias fundamentais das lutas políticas e históricas da sociedade civil.</div><div class="opcao-marca" id="marca-6-1"></div></div>
+        <div class="opcao" data-idx="2" onclick="marcarOpcao(6,2)"><div class="opcao-letra">C</div><div class="opcao-txt">compreender que suas privações particulares conectam-se a demandas coletivas por justiça distributiva e direitos.</div><div class="opcao-marca" id="marca-6-2"></div></div>
+        <div class="opcao" data-idx="3" onclick="marcarOpcao(6,3)"><div class="opcao-letra">D</div><div class="opcao-txt">encarar a violação de direitos como um fenômeno insuperável decorrente da natureza humana.</div><div class="opcao-marca" id="marca-6-3"></div></div>
+        <div class="opcao" data-idx="4" onclick="marcarOpcao(6,4)"><div class="opcao-letra">E</div><div class="opcao-txt">priorizar soluções individualizadas no mercado de consumo em detrimento de políticas públicas universais.</div><div class="opcao-marca" id="marca-6-4"></div></div>
+        <div class="gabarito-info" id="gab-6"><b>Gabarito: C.</b> A imaginação sociológica permite superar a alienação (a falsa consciência da posição social), fazendo o cidadão perceber que suas dificuldades cotidianas são compartilhadas e exigem engajamento cívico e reformas institucionais coletivas.</div>
+      </div>
+
+      <div class="questao objetiva" data-questao="obj-7" data-correta="0">
+        <div class="enunciado">
+          <div class="enunciado-header"><span class="num-q">9</span> <span><b>(ENEM/EM13CHS305)</b></span> <span class="badge-resultado" id="badge-obj-7"></span></div>
+          <div class="texto-questao">
+            "A ciência não é apenas um conjunto de enunciados verdadeiros sobre o mundo; é uma prática de vigilância epistemológica, um método sistemático de perguntar, testar e retificar continuamente os erros produzidos pelas aparências primeiras e pelas ilusões do saber imediato."<br>
+            <small style="display:block; text-align:right; margin-top:4px;">BOURDIEU, Pierre; CHAMBOREDON, J.-C.; PASSERON, J.-C. <em>O Ofício de Sociólogo</em>. Petrópolis: Vozes, 2004 (adaptado).</small>
+          </div>
+          <div class="comando">Considerando a epistemologia das Ciências Sociais, a atitude científica expressa no texto contrapõe-se ao senso comum na medida em que:</div>
+        </div>
+        <div class="opcao" data-idx="0" onclick="marcarOpcao(7,0)"><div class="opcao-letra">A</div><div class="opcao-txt">exige rigor metodológico, problematização das aparências e comprovação sistemática por meio de hipóteses e dados.</div><div class="opcao-marca" id="marca-7-0"></div></div>
+        <div class="opcao" data-idx="1" onclick="marcarOpcao(7,1)"><div class="opcao-letra">B</div><div class="opcao-txt">estabelece verdades imutáveis e absolutas que dispensam revisão crítica futura perante novos fatos históricos.</div><div class="opcao-marca" id="marca-7-1"></div></div>
+        <div class="opcao" data-idx="2" onclick="marcarOpcao(7,2)"><div class="opcao-letra">C</div><div class="opcao-txt">prescinde de instrumentos empíricos para basear-se exclusivamente em discursos de autoridade tradicional.</div><div class="opcao-marca" id="marca-7-2"></div></div>
+        <div class="opcao" data-idx="3" onclick="marcarOpcao(7,3)"><div class="opcao-letra">D</div><div class="opcao-txt">reproduz noções prontas do cotidiano sem submetê-las ao crivo da dúvida metódica e da verificação.</div><div class="opcao-marca" id="marca-7-3"></div></div>
+        <div class="opcao" data-idx="4" onclick="marcarOpcao(7,4)"><div class="opcao-letra">E</div><div class="opcao-txt">limita-se a descrever casos isolados sem produzir generalizações explicativas sobre as estruturas sociais.</div><div class="opcao-marca" id="marca-7-4"></div></div>
+        <div class="gabarito-info" id="gab-7"><b>Gabarito: A.</b> O método sociológico baseia-se na "ruptura epistemológica" com o saber imediato, operando pela formulação de problemas teóricos, rigor conceitual e testagem empírica dos dados coletados.</div>
+      </div>
+
+      <div class="questao objetiva" data-questao="obj-8" data-correta="3">
+        <div class="enunciado">
+          <div class="enunciado-header"><span class="num-q">10</span> <span><b>(ENEM/EM13CHS305)</b></span> <span class="badge-resultado" id="badge-obj-8"></span></div>
+          <div class="texto-questao">
+            "Os direitos humanos não são uma dádiva concedida pelos governantes, mas o resultado de lutas árduas travadas por grupos subalternizados ao longo da história contra o arbítrio e a opressão. Falar em 'promessa universal' significa reconhecer que esses direitos são um horizonte em contínua construção, demandando constante vigilância contra retrocessos."<br>
+            <small style="display:block; text-align:right; margin-top:4px;">COMPARATO, Fábio Konder. <em>A Afirmação Histórica dos Direitos Humanos</em>. São Paulo: Saraiva, 2015 (adaptado).</small>
+          </div>
+          <div class="comando">A compreensão histórica e sociológica dos Direitos Humanos apresentada no excerto define a "promessa universal" como:</div>
+        </div>
+        <div class="opcao" data-idx="0" onclick="marcarOpcao(8,0)"><div class="opcao-letra">A</div><div class="opcao-txt">um conjunto estático de normas outorgadas espontaneamente pelas elites detentoras do poder econômico.</div><div class="opcao-marca" id="marca-8-0"></div></div>
+        <div class="opcao" data-idx="1" onclick="marcarOpcao(8,1)"><div class="opcao-letra">B</div><div class="opcao-txt">uma meta utópica e prescindível de regulação jurídica nos marcos do Estado Democrático de Direito.</div><div class="opcao-marca" id="marca-8-1"></div></div>
+        <div class="opcao" data-idx="2" onclick="marcarOpcao(8,2)"><div class="opcao-letra">C</div><div class="opcao-txt">um privilégio legal condicionado à contribuição tributária e ao status profissional dos cidadãos.</div><div class="opcao-marca" id="marca-8-2"></div></div>
+        <div class="opcao" data-idx="3" onclick="marcarOpcao(8,3)"><div class="opcao-letra">D</div><div class="opcao-txt">um processo dinâmico de conquistas sociais e mobilização permanente que visa superar as assimetrias de poder.</div><div class="opcao-marca" id="marca-8-3"></div></div>
+        <div class="opcao" data-idx="4" onclick="marcarOpcao(8,4)"><div class="opcao-letra">E</div><div class="opcao-txt">um estágio de perfeição institucional plenamente consolidado que encerra as tensões sociais contemporâneas.</div><div class="opcao-marca" id="marca-8-4"></div></div>
+        <div class="gabarito-info" id="gab-8"><b>Gabarito: D.</b> Os Direitos Humanos configuram conquistas históricas abertas e dinâmicas; sua efetivação integral como "promessa universal" depende das lutas democráticas da sociedade civil organizada frente às estruturas de dominação.</div>
+      </div>
+
+      <div class="alerta-incompleto" id="alerta-incompleto">
+        ⚠️ Você ainda possui questões não respondidas. Verifique antes de corrigir.
+      </div>
+
+      <div class="acoes-finais">
+        <button class="btn btn-primario" onclick="corrigirAtividade()">Corrigir atividade</button>
+        <button class="btn btn-secundario" onclick="limparAtividade()">Limpar resposta</button>
+        <button class="btn btn-pdf" onclick="exportarPDF()">Exportar PDF</button>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<footer class="rodape">Colégio Estadual Rodolfo de Oliveira · Goiás · 2026</footer>
+
+<script>
+let corrigido = false;
+let respMC = {};
+window.__acertos = undefined;
+
+function iniciarAtividade(){
+  const nome = document.getElementById('nome-aluno').value.trim();
+  if(!nome){ 
+    document.getElementById('capa-aviso').style.display='block'; 
+    return; 
+  }
+  
+  document.getElementById('capa').style.display='none';
+  document.getElementById('app').style.display='block';
+  
+  const turma = document.getElementById('turma-aluno').value.trim() || '—';
+  const agora = new Date().toLocaleDateString('pt-BR');
+  
+  document.getElementById('header-nome').textContent = nome;
+  document.getElementById('ficha-nome').textContent = nome;
+  document.getElementById('ficha-turma').textContent = turma;
+  document.getElementById('ficha-data').textContent = agora;
+  
+  atualizarProgresso();
+  
+  // Contador de caracteres para dissertativas
+  document.querySelectorAll('textarea.dissertativa').forEach(ta => {
+    ta.addEventListener('input', function(){
+      const contador = this.parentElement.querySelector('.contador-chars');
+      const min = parseInt(this.dataset.min, 10) || 0;
+      const chars = this.value.length;
+      contador.textContent = chars + ' caracteres (mínimo ' + min + ')';
+      atualizarProgresso();
+    });
+  });
+}
+
+function marcarOpcao(questao, idx){
+  respMC[questao] = idx;
+  
+  const els = document.querySelectorAll('.questao.objetiva[data-questao="obj-' + questao + '"] .opcao');
+  els.forEach(el => el.classList.remove('sel'));
+  els[idx].classList.add('sel');
+  
+  atualizarProgresso();
+}
+
+function atualizarProgresso(){
+  const total = 10;
+  const diss = document.querySelectorAll('textarea.dissertativa');
+  let respondidas = 0;
+  
+  diss.forEach(ta => {
+    if(ta.value.trim().length >= (parseInt(ta.dataset.min, 10) || 0)) respondidas++;
+  });
+  
+  respondidas += Object.keys(respMC).length;
+  
+  const pct = Math.round((respondidas / total) * 100);
+  document.getElementById('barra-fill').style.width = pct + '%';
+  document.getElementById('contador-geral').textContent = 'Respondidas: ' + respondidas + '/10';
+}
+
+function corrigirAtividade(){
+  corrigido = true;
+  let totalCorreto = 0;
+  
+  // Dissertativas
+  const diss = document.querySelectorAll('textarea.dissertativa');
+  diss.forEach((ta) => {
+    const min = parseInt(ta.dataset.min, 10) || 0;
+    const comment = ta.parentElement.querySelector('.comentario-prof');
+    if(ta.value.trim().length >= min){
+      if(comment) comment.classList.add('show');
+    }
+  });
+  
+  // Objetivas
+  const objs = document.querySelectorAll('.questao.objetiva');
+  objs.forEach((qEl, idx) => {
+    const correta = parseInt(qEl.dataset.correta, 10);
+    const escolha = respMC[idx + 1];
+    const badge = qEl.querySelector('.badge-resultado');
+    const gab = qEl.querySelector('.gabarito-info');
+    
+    if(escolha !== undefined){
+      const opcoes = qEl.querySelectorAll('.opcao');
+      opcoes.forEach((op, oi) => {
+        if(oi === correta) op.classList.add('correta');
+        else if(oi === escolha && oi !== correta) op.classList.add('errada');
+        op.classList.add('travada');
+      });
+      
+      if(escolha === correta){
+        totalCorreto++;
+        if(badge) badge.classList.add('ok');
+      } else {
+        if(badge) badge.classList.add('no');
+      }
+    } else {
+      const opcoes = qEl.querySelectorAll('.opcao');
+      opcoes.forEach((op, oi) => {
+        if(oi === correta) op.classList.add('correta');
+        op.classList.add('travada');
+      });
+    }
+    
+    if(gab) gab.classList.add('show');
+  });
+  
+  window.__acertos = totalCorreto;
+  atualizarProgresso();
+}
+
+function limparAtividade(){
+  if(corrigido){
+    if(!confirm('Tem certeza que deseja limpar toda a atividade?')) return;
+  }
+  
+  respMC = {};
+  corrigido = false;
+  document.getElementById('alerta-incompleto').classList.remove('show');
+  
+  document.querySelectorAll('textarea.dissertativa').forEach(ta => {
+    ta.value = '';
+    const contador = ta.parentElement.querySelector('.contador-chars');
+    contador.textContent = '0 caracteres (mínimo ' + (parseInt(ta.dataset.min, 10) || 0) + ')';
+    ta.parentElement.querySelector('.comentario-prof').classList.remove('show');
+  });
+  
+  document.querySelectorAll('.questao.objetiva').forEach(qEl => {
+    qEl.querySelectorAll('.opcao').forEach(op => {
+      op.classList.remove('sel', 'correta', 'errada', 'travada');
+    });
+    qEl.querySelector('.badge-resultado').classList.remove('ok', 'no');
+    qEl.querySelector('.gabarito-info').classList.remove('show');
+  });
+  
+  atualizarProgresso();
+  window.scrollTo(0,0);
+}
+
+/* ===== EXPORTAR PDF ===== */
+function sleep(ms){ return new Promise(function(r){ setTimeout(r, ms); }); }
+
+function esc(str){
+  const d = document.createElement('div');
+  d.textContent = str || '';
+  return d.innerHTML.replace(/\n/g, '<br>');
+}
+
+async function exportarPDF(){
+  const overlay = document.createElement('div');
+  overlay.id = 'pdf-overlay';
+  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(20,41,27,.6);display:flex;align-items:center;justify-content:center;z-index:999;';
+  overlay.innerHTML =
+    '<div style="background:#fff;border-radius:14px;padding:32px 36px;text-align:center;max-width:300px;box-shadow:0 10px 30px rgba(31,61,43,.3);font-family:Georgia,serif;">' +
+      '<div style="font-size:2rem;margin-bottom:8px;">📄</div>' +
+      '<h4 style="margin:0 0 4px;color:#14291b;font-family:Georgia,serif;">Gerando PDF…</h4>' +
+      '<p style="margin:0 0 14px;color:#4a594e;font-size:.86rem;">Aguarde alguns instantes.</p>' +
+      '<div style="background:#e5ebd8;border-radius:6px;overflow:hidden;height:8px;">' +
+        '<div id="pdf-prog" style="height:100%;width:0%;background:#1f3d2b;transition:width .2s ease;"></div>' +
+      '</div>' +
+      '<div id="pdf-prog-txt" style="margin-top:8px;font-family:monospace;font-size:.74rem;color:#4a594e;">0%</div>' +
+    '</div>';
+  document.body.appendChild(overlay);
+  await sleep(80);
+  
+  function setP(pct, msg){
+    const pp = document.getElementById('pdf-prog'), pt = document.getElementById('pdf-prog-txt');
+    if(pp) pp.style.width = pct + '%';
+    if(pt) pt.textContent = msg || (pct + '%');
+  }
+
+  try{
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF({orientation:'portrait', unit:'px', format:'a4', hotfixes:['px_scaling']});
+    const PW = pdf.internal.pageSize.getWidth(), PH = pdf.internal.pageSize.getHeight();
+    const ML = 28, CW = PW - ML*2;
+    let y = ML;
+
+    async function addImg(el){
+      const canvas = await html2canvas(el, {scale:2, useCORS:true, logging:false, backgroundColor:'#ffffff'});
+      const imgW = CW, imgH = (canvas.height / canvas.width) * imgW;
+      const dataUrl = canvas.toDataURL('image/jpeg', .92), avail = PH - ML*2;
+      if(imgH <= avail){
+        if(y + imgH > PH - ML){ pdf.addPage(); y = ML; }
+        pdf.addImage(dataUrl, 'JPEG', ML, y, imgW, imgH);
+        y += imgH + 8;
+      } else {
+        const pxPerPdfPt = canvas.width / imgW;
+        let srcY = 0;
+        while(srcY < canvas.height){
+          const availPt = PH - y - ML, sliceH_pt = Math.min(availPt, avail);
+          const sliceH_px = Math.round(sliceH_pt * pxPerPdfPt), actualH_px = Math.min(sliceH_px, canvas.height - srcY);
+          const tmp = document.createElement('canvas');
+          tmp.width = canvas.width; tmp.height = actualH_px;
+          tmp.getContext('2d').drawImage(canvas, 0, srcY, canvas.width, actualH_px, 0, 0, canvas.width, actualH_px);
+          const sliceUrl = tmp.toDataURL('image/jpeg', .92), slicePt = (actualH_px / canvas.width) * imgW;
+          pdf.addImage(sliceUrl, 'JPEG', ML, y, imgW, slicePt);
+          srcY += actualH_px; y += slicePt;
+          if(srcY < canvas.height){ pdf.addPage(); y = ML; }
+        }
+        y += 8;
+      }
+    }
+
+    async function band(tag, txt){
+      const b = document.createElement('div');
+      b.style.cssText = 'width:860px;font-family:Arial,sans-serif;position:absolute;left:-9999px;top:0';
+      b.innerHTML = '<div style="background:linear-gradient(90deg,#1f3d2b,#14291b);border-radius:8px;padding:12px 22px;display:flex;align-items:center;gap:12px">' +
+        '<span style="background:rgba(255,255,255,.2);color:#fff;font-weight:700;font-size:12px;letter-spacing:1px;border-radius:20px;padding:3px 12px">' + tag + '</span>' +
+        '<span style="color:#fff;font-size:15px;font-weight:700">' + txt + '</span></div>';
+      document.body.appendChild(b);
+      await sleep(20);
+      await addImg(b);
+      document.body.removeChild(b);
+    }
+
+    const nome = document.getElementById('header-nome').textContent || 'Aluno(a)';
+    const turma = document.getElementById('ficha-turma').textContent || '—';
+    const acertos = window.__acertos !== undefined ? window.__acertos : '—';
+    const pct = window.__acertos !== undefined ? Math.round(window.__acertos/8*100)+'%' : '—';
+    const now = new Date();
+    const dtStr = now.toLocaleDateString('pt-BR') + ' às ' + now.toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'});
+
+    setP(5, 'Preparando capa…'); await sleep(40);
+    const coverEl = document.createElement('div');
+    coverEl.style.cssText = 'width:860px;font-family:Arial,sans-serif;overflow:hidden;position:absolute;left:-9999px;top:0';
+    coverEl.innerHTML =
+      '<div style="background:linear-gradient(135deg,#14291b 0%,#1f3d2b 60%,#2f5a3f 100%);padding:32px 48px 28px;color:white">' +
+        '<div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;opacity:.7;font-weight:700;margin-bottom:6px">Ciências Humanas e Sociais Aplicadas · 3ª série do Ensino Médio · Matriz ENEM (EM13CHS305)</div>' +
+        '<div style="font-size:26px;font-weight:900;line-height:1.2;margin-bottom:5px">A Promessa Universal e a Imaginação Sociológica</div>' +
+        '<div style="font-size:13px;opacity:.8;font-style:italic">Atividade Avaliativa · 2 questões dissertativas + 8 questões objetivas</div>' +
+      '</div>' +
+      '<div style="background:#f4f6f0;padding:22px 48px 26px;border-bottom:3px solid #b4442a">' +
+        '<div style="font-size:9px;text-transform:uppercase;letter-spacing:2px;color:#1f3d2b;font-weight:700;margin-bottom:5px">Aluno(a)</div>' +
+        '<div style="font-size:20px;font-weight:700;color:#1c261d;border-bottom:2.5px solid #1f3d2b;padding-bottom:6px;display:inline-block;margin-bottom:16px">' + esc(nome) + '</div>' +
+        '<div style="display:flex;gap:12px;flex-wrap:wrap">' +
+          '<div style="background:white;border-radius:8px;padding:12px 18px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.07);min-width:84px">' +
+            '<div style="font-size:22px;font-weight:900;color:#1f3d2b">' + esc(turma) + '</div>' +
+            '<div style="font-size:9px;text-transform:uppercase;letter-spacing:1px;color:#888;margin-top:2px">Turma</div></div>' +
+          '<div style="background:white;border-radius:8px;padding:12px 18px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.07);min-width:84px">' +
+            '<div style="font-size:22px;font-weight:900;color:#b4442a">2</div>' +
+            '<div style="font-size:9px;text-transform:uppercase;letter-spacing:1px;color:#888;margin-top:2px">Dissertativas</div></div>' +
+          '<div style="background:white;border-radius:8px;padding:12px 18px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.07);min-width:84px">' +
+            '<div style="font-size:22px;font-weight:900;color:#1f3d2b">' + acertos + '/8</div>' +
+            '<div style="font-size:9px;text-transform:uppercase;letter-spacing:1px;color:#888;margin-top:2px">Objetivas (' + pct + ')</div></div>' +
+          '<div style="background:white;border-radius:8px;padding:12px 18px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.07);min-width:140px">' +
+            '<div style="font-size:13px;font-weight:700;color:#333">' + dtStr + '</div>' +
+            '<div style="font-size:9px;text-transform:uppercase;letter-spacing:1px;color:#888;margin-top:2px">Gerado em</div></div>' +
+        '</div>' +
+        '<div style="font-size:9px;color:#bbb;margin-top:14px">Colégio Estadual Rodolfo de Oliveira · Goiás · 2026</div>' +
+      '</div>';
+    document.body.appendChild(coverEl); await sleep(60); await addImg(coverEl); document.body.removeChild(coverEl);
+
+    // DISSERTATIVAS
+    setP(15, 'Preparando dissertativas…'); await sleep(20);
+    await band('DISSERTATIVAS', 'Parte I — Questões Dissertativas');
+
+    const DISS = [
+      { num:'1', enunc:'Com base no conceito de imaginação sociológica de Charles Wright Mills, explique como a transição do senso comum para a atitude científica sociológica nos ajuda a compreender os desafios na garantia dos Direitos Humanos. Utilize exemplos concretos em sua resposta.', id:'resp-1', coment:'Espera-se que o estudante explique que a imaginação sociológica permite "desnaturalizar" a realidade — reconhecer que as violações de direitos humanos não são "naturais" ou "inevitáveis", mas resultados de estruturas sociais construídas historicamente que podem ser transformadas.' },
+      { num:'2', enunc:'A Declaração Universal dos Direitos Humanos (1948) estabelece que "todas as pessoas nascem livres e iguais em dignidade e direitos". Analise criticamente: por que essa promessa universal ainda enfrenta dificuldades para ser completamente implementada? O que a atitude científica sociológica revela sobre as estruturas sociais que impedem a realização plena desses direitos?', id:'resp-2', coment:'Espera-se que o estudante reconheça o gap entre teoria e prática. A atitude científica sociológica revela que estruturas sociais — como desigualdade econômica, sistemas de classe, racismo institucional — funcionam como barreiras estruturais à garantia efetiva de direitos.' }
+    ];
+
+    for(let i=0; i<DISS.length; i++){
+      const q = DISS[i];
+      setP(15 + Math.round(i/DISS.length*20), 'Dissertativa ' + q.num + '/2…'); await sleep(10);
+
+      const valor = document.getElementById(q.id) ? document.getElementById(q.id).value : '';
+      const respostaHTML =
+        '<div style="background:#f2f7f3;border:1.5px solid #cad6c5;border-radius:8px;padding:12px 15px;min-height:40px">' +
+          '<div style="font-size:12px;color:#1c261d;line-height:1.75;white-space:pre-wrap">' + (esc(valor) || '<span style="color:#aaa">(sem resposta)</span>') + '</div>' +
+        '</div>';
+
+      const qEl = document.createElement('div');
+      qEl.style.cssText = 'width:860px;font-family:Arial,sans-serif;background:white;overflow:hidden;border:1px solid #cad6c5;border-radius:10px;position:absolute;left:-9999px;top:0';
+      qEl.innerHTML =
+        '<div style="background:linear-gradient(90deg,#1f3d2b,#14291b);padding:10px 22px;display:flex;justify-content:space-between;align-items:center">' +
+          '<span style="color:white;font-weight:700;font-size:13px;letter-spacing:.8px">QUESTÃO ' + q.num + '</span>' +
+          '<span style="background:rgba(255,255,255,.15);color:rgba(255,255,255,.9);font-size:11px;padding:3px 12px;border-radius:20px;font-weight:600">Dissertativa</span></div>' +
+        '<div style="padding:18px 24px 16px;background:#ffffff">' +
+          '<div style="font-size:13px;font-weight:700;color:#1c261d;line-height:1.6;margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid #eee">' + esc(q.enunc) + '</div>' +
+          '<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">' +
+            '<div style="width:4px;height:15px;background:#1f3d2b;border-radius:2px"></div>' +
+            '<div style="font-size:10px;font-weight:700;color:#1f3d2b;text-transform:uppercase;letter-spacing:1.5px">Resposta do Aluno(a)</div></div>' +
+          respostaHTML +
+          '<div style="display:flex;align-items:center;gap:8px;margin:12px 0 7px">' +
+            '<div style="width:4px;height:15px;background:#b4442a;border-radius:2px"></div>' +
+            '<div style="font-size:10px;font-weight:700;color:#8a2d18;text-transform:uppercase;letter-spacing:1.5px">Comentário do Professor</div></div>' +
+          '<div style="background:#fbf3ea;border:1.5px solid #f2d5ce;border-radius:8px;padding:13px 16px">' +
+            '<div style="font-size:12px;color:#68331e;line-height:1.8">' + esc(q.coment) + '</div></div>' +
+        '</div>';
+      document.body.appendChild(qEl); await sleep(10); await addImg(qEl); document.body.removeChild(qEl);
+    }
+
+    // OBJETIVAS
+    setP(55, 'Preparando objetivas…'); await sleep(20);
+    await band('OBJETIVAS', 'Parte II — Questões Objetivas (Padrão ENEM)');
+
+    const LETRAS_PDF = ['A','B','C','D','E'];
+    const objetivasEls = document.querySelectorAll('.questao.objetiva');
+    let oi = 0;
+    for(const qEl0 of objetivasEls){
+      const num = qEl0.dataset.questao.replace('obj-','');
+      const correta = parseInt(qEl0.dataset.correta, 10);
+      const escolha = respMC[num];
+      const acertou = escolha === correta;
+      
+      const enuncClone = qEl0.querySelector('.enunciado').cloneNode(true);
+      const badgeInClone = enuncClone.querySelector('.badge-resultado');
+      if(badgeInClone) badgeInClone.remove();
+      const numQInClone = enuncClone.querySelector('.num-q');
+      if(numQInClone) numQInClone.remove();
+      
+      setP(55 + Math.round(oi/objetivasEls.length*35), 'Objetiva ' + num + '/8…'); await sleep(10);
+
+      let altsHTML = '';
+      qEl0.querySelectorAll('.opcao').forEach(function(op){
+        const idx = parseInt(op.dataset.idx, 10);
+        const txt = op.querySelector('.opcao-txt').textContent;
+        let bg='#ffffff', bd='#cad6c5', cor='#1c261d', tag='';
+        if(idx===correta){ bg='#e9f5ed'; bd='#8ed8a5'; cor='#0d381c'; tag='<span style="color:#0a6e38;font-weight:700"> ✓ correta</span>'; }
+        if(idx===escolha && !acertou){ bg='#fdeeee'; bd='#e3a3a3'; cor='#7a1f1f'; tag='<span style="color:#a83232;font-weight:700"> ✗ sua resposta</span>'; }
+        else if(idx===escolha && acertou){ tag='<span style="color:#0a6e38;font-weight:700"> ← sua resposta</span>'; }
+        altsHTML += '<div style="display:flex;gap:9px;align-items:flex-start;background:'+bg+';border:1px solid '+bd+';border-radius:6px;padding:8px 12px;margin-bottom:6px"><div style="flex:0 0 auto;font-weight:700;color:#1f3d2b;font-size:12px">'+LETRAS_PDF[idx]+')</div><div style="font-size:12px;color:'+cor+';line-height:1.55">'+esc(txt)+tag+'</div></div>';
+      });
+
+      const headBg = acertou ? 'linear-gradient(90deg,#1f3d2b,#14291b)' : 'linear-gradient(90deg,#a83232,#7a1f1f)';
+      const gabTxt = qEl0.querySelector('.gabarito-info').textContent.trim();
+      const qEl = document.createElement('div');
+      qEl.style.cssText = 'width:860px;font-family:Arial,sans-serif;background:white;overflow:hidden;border:1px solid #cad6c5;border-radius:10px;position:absolute;left:-9999px;top:0';
+      qEl.innerHTML =
+        '<div style="background:'+headBg+';padding:10px 22px;display:flex;justify-content:space-between;align-items:center">' +
+          '<span style="color:white;font-weight:700;font-size:13px;letter-spacing:.8px">QUESTÃO ' + (parseInt(num, 10)+2) + ' (OBJ-' + num + ')</span>' +
+          '<span style="background:rgba(255,255,255,.2);color:white;font-size:11px;padding:3px 12px;border-radius:20px;font-weight:700">' + (acertou?'ACERTOU':'ERROU') + '</span></div>' +
+        '<div style="padding:16px 24px 14px;background:#ffffff">' +
+          '<div style="font-size:12px;font-weight:600;color:#1c261d;line-height:1.6;margin-bottom:12px">' + enuncClone.innerHTML + '</div>' +
+          altsHTML +
+          '<div style="margin-top:10px;background:#fbf3ea;border:1px solid #f2d5ce;border-radius:6px;padding:10px 14px">' +
+            '<div style="font-size:12px;color:#68331e;line-height:1.6">' + esc(gabTxt) + '</div></div>' +
+        '</div>';
+      document.body.appendChild(qEl); await sleep(10); await addImg(qEl); document.body.removeChild(qEl);
+      oi++;
+    }
+
+    setP(92, 'Finalizando…'); await sleep(30);
+    const totalPages = pdf.getNumberOfPages();
+    for(let p=1; p<=totalPages; p++){
+      pdf.setPage(p);
+      const fEl = document.createElement('div');
+      fEl.style.cssText = 'width:' + Math.round(CW) + 'px;height:22px;background:#f4f6f0;display:flex;align-items:center;justify-content:space-between;padding:0 28px;font-size:10px;color:#888;font-family:Arial,sans-serif;position:absolute;left:-9999px;top:0';
+      fEl.innerHTML = '<span>Atividade — 3ª série · ' + esc(nome) + ' · Objetivas: ' + acertos + '/8</span><span>Página ' + p + ' de ' + totalPages + '</span>';
+      document.body.appendChild(fEl);
+      const fc = await html2canvas(fEl, {scale:2, logging:false, backgroundColor:'#f4f6f0'});
+      document.body.removeChild(fEl);
+      const fUrl = fc.toDataURL('image/jpeg', .9), fH = (fc.height / fc.width) * CW;
+      pdf.setFillColor(244,246,240); pdf.rect(ML, PH-fH, CW, fH, 'F');
+      pdf.addImage(fUrl, 'JPEG', ML, PH-fH, CW, fH);
+    }
+
+    setP(100, 'Salvando…'); await sleep(200);
+    const safeName = nome.replace(/[^a-zA-Z0-9_\-]/g, '_');
+    pdf.save('Atividade_EM13CHS305_Topico2_ENEM_' + safeName + '.pdf');
+
+  } catch(err){
+    console.error(err);
+    alert('Erro ao gerar PDF: ' + err.message);
+  } finally {
+    const ov = document.getElementById('pdf-overlay');
+    if(ov) document.body.removeChild(ov);
+  }
+}
+
+document.getElementById('nome-aluno').addEventListener('keypress', function(e){
+  if(e.key === 'Enter') iniciarAtividade();
+});
+</script>
+
+</body>
+</html>
