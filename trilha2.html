@@ -213,6 +213,190 @@ tbody tr:nth-child(even){background:#faf7f0;}
 .refs{font-size:.88rem;color:var(--cinza);}
 .refs li{margin-bottom:8px;}
 
+/* ---------- LAYOUT DO TÓPICO 1 ---------- */
+.col2{
+  display:block;
+  margin:0;
+}
+.col2 > .col2-texto{min-width:0;}
+.col2 > .col2-texto > *:first-child{margin-top:0;}
+
+/* ---------- BOX ESTILO INSTAGRAM HORIZONTAL ---------- */
+.ig-box{
+  clear:both;width:100%;max-width:none;margin:26px 0;
+  background:var(--branco);border:1px solid var(--borda);border-radius:14px;
+  box-shadow:var(--sombra);overflow:hidden;font-family:var(--serif-corpo);
+}
+.ig-horizontal{
+  display:grid;
+  grid-template-columns:minmax(360px,1.08fr) minmax(300px,.92fr);
+  grid-template-rows:auto 1fr;
+  align-items:stretch;
+}
+.ig-horizontal .ig-cab{
+  grid-column:1 / -1;
+}
+.ig-horizontal .ig-carrossel{
+  grid-column:1;grid-row:2;
+  min-width:0;
+}
+.ig-horizontal .ig-trilho{height:100%;overflow:hidden;}
+.ig-horizontal .ig-slide{
+  aspect-ratio:4/3;
+  min-height:320px;
+  padding:12px;
+  background:#f3f0e8;
+}
+.ig-horizontal .ig-slide img{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  object-position:center;
+  background:#f3f0e8;
+}
+.ig-horizontal .ig-slide img:hover{transform:none;}
+.ig-horizontal .ig-pags,
+.ig-horizontal .ig-acoes,
+.ig-horizontal .ig-legenda,
+.ig-horizontal .ig-rodape{
+  grid-column:2;
+  margin-left:0;
+}
+.ig-horizontal .ig-pags{
+  grid-row:2;align-self:start;justify-content:flex-start;padding:18px 20px 8px;
+}
+.ig-horizontal .ig-acoes{
+  grid-row:2;align-self:start;padding:12px 20px 4px;
+  margin-top:42px;border-top:0;
+}
+.ig-horizontal .ig-legenda{
+  grid-row:2;align-self:start;padding:78px 20px 18px;
+  font-size:.96rem;line-height:1.65;
+}
+.ig-horizontal .ig-rodape{
+  grid-row:2;align-self:end;padding:12px 20px;
+}
+.ig-cab{
+  display:flex;align-items:center;gap:10px;padding:10px 12px;
+  border-bottom:1px solid var(--areia-escura);
+}
+.ig-avatar{
+  flex:0 0 auto;width:34px;height:34px;border-radius:50%;
+  background:linear-gradient(135deg,var(--terracota),var(--terracota-claro));
+  display:flex;align-items:center;justify-content:center;color:#fff;
+  font-family:var(--serif-titulo);font-size:.85rem;font-weight:700;
+}
+.ig-cab .ig-nome{flex:1;min-width:0;line-height:1.2;}
+.ig-cab .ig-nome strong{display:block;font-size:.86rem;color:var(--grafite);}
+.ig-cab .ig-nome span{display:block;font-size:.72rem;color:var(--cinza);}
+.ig-pontos{color:var(--cinza);font-size:1.1rem;line-height:1;}
+.ig-carrossel{position:relative;background:#000;}
+.ig-trilho{
+  display:flex;overflow-x:auto;scroll-snap-type:x mandatory;
+  -webkit-overflow-scrolling:touch;scrollbar-width:none;
+}
+.ig-trilho::-webkit-scrollbar{display:none;}
+.ig-slide{
+  flex:0 0 100%;scroll-snap-align:center;
+  display:flex;align-items:center;justify-content:center;background:#111;
+}
+.ig-slide img{
+  width:100%;height:100%;object-fit:cover;display:block;cursor:zoom-in;
+  transition:transform .3s ease;
+}
+.ig-slide img:hover{transform:scale(1.02);}
+.ig-seta{
+  position:absolute;top:50%;transform:translateY(-50%);z-index:2;
+  width:30px;height:30px;border-radius:50%;border:0;cursor:pointer;
+  background:rgba(255,255,255,.85);color:#222;font-size:1rem;line-height:1;
+  display:flex;align-items:center;justify-content:center;box-shadow:0 1px 4px rgba(0,0,0,.3);
+}
+.ig-seta:hover{background:#fff;}
+.ig-seta.ant{left:8px;}.ig-seta.prox{right:8px;}
+.ig-contagem{
+  position:absolute;top:10px;right:10px;z-index:2;
+  background:rgba(0,0,0,.55);color:#fff;font-size:.72rem;
+  padding:2px 9px;border-radius:100px;letter-spacing:.02em;
+}
+.ig-lupa{
+  position:absolute;left:10px;bottom:10px;z-index:2;pointer-events:none;
+  background:rgba(0,0,0,.55);color:#fff;font-size:.72rem;
+  padding:3px 9px;border-radius:100px;letter-spacing:.02em;
+  display:flex;align-items:center;gap:5px;
+}
+.ig-pags{display:flex;justify-content:center;gap:6px;padding:10px 0 4px;}
+.ig-pags button{
+  width:6px;height:6px;padding:0;border-radius:50%;border:0;cursor:pointer;
+  background:var(--areia-escura);
+}
+.ig-pags button.on{background:var(--terracota);width:16px;border-radius:4px;}
+.ig-acoes{display:flex;align-items:center;gap:14px;font-size:1.15rem;color:var(--grafite);}
+.ig-legenda{color:var(--grafite);}
+.ig-legenda strong{color:var(--petroleo);}
+.ig-rodape{
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+  border-top:1px solid var(--areia-escura);font-size:.76rem;color:var(--cinza);
+}
+.ig-rodape a{color:var(--terracota);text-decoration:none;font-weight:600;}
+.ig-rodape a:hover{text-decoration:underline;}
+@media (max-width:900px){
+  .ig-horizontal{
+    display:grid;grid-template-columns:1fr;grid-template-rows:auto auto auto auto auto auto;
+  }
+  .ig-horizontal .ig-cab{grid-column:1;grid-row:1;}
+  .ig-horizontal .ig-carrossel{grid-column:1;grid-row:2;}
+  .ig-horizontal .ig-pags{grid-column:1;grid-row:3;justify-content:center;padding:10px 0 4px;}
+  .ig-horizontal .ig-acoes{grid-column:1;grid-row:4;margin-top:0;padding:10px 12px 4px;}
+  .ig-horizontal .ig-legenda{grid-column:1;grid-row:5;padding:8px 12px 14px;}
+  .ig-horizontal .ig-rodape{grid-column:1;grid-row:6;padding:9px 12px;}
+  .ig-horizontal .ig-slide{aspect-ratio:4/5;min-height:0;}
+}
+@media (max-width:460px){
+  .ig-box{max-width:100%;border-radius:0;border-left:0;border-right:0;}
+}
+@media print{.ig-box{display:none !important;}}
+
+/* ---------- LIGHTBOX COM ZOOM (visualizador) ---------- */
+.lb-fundo{
+  display:none;position:fixed;inset:0;background:rgba(20,30,24,.92);z-index:1200;
+  flex-direction:column;overscroll-behavior:contain;touch-action:none;
+}
+.lb-fundo.ativo{display:flex;}
+.lb-topo{
+  display:flex;align-items:center;gap:10px;flex:0 0 auto;
+  padding:10px 14px;background:var(--petroleo);color:var(--areia);flex-wrap:wrap;
+}
+.lb-topo .lb-tit{font-family:var(--serif-titulo);font-size:1rem;flex:1;min-width:140px;line-height:1.3;}
+.lb-ctrl{display:flex;gap:6px;align-items:center;}
+.lb-ctrl button,.lb-fechar{
+  background:transparent;border:1px solid rgba(247,244,237,.45);color:var(--areia);
+  min-width:38px;height:38px;border-radius:8px;font-size:1.05rem;line-height:1;
+  cursor:pointer;font-family:var(--serif-corpo);padding:0 10px;
+}
+.lb-ctrl button:hover,.lb-fechar:hover{background:rgba(247,244,237,.16);}
+.lb-zoom{font-size:.8rem;color:#f0c9a8;min-width:46px;text-align:center;}
+.lb-palco{
+  flex:1 1 auto;overflow:hidden;position:relative;
+  display:flex;align-items:center;justify-content:center;cursor:grab;
+}
+.lb-palco.arrastando{cursor:grabbing;}
+.lb-palco img{
+  max-width:100%;max-height:100%;transform-origin:center center;
+  transition:transform .12s ease-out;user-select:none;-webkit-user-drag:none;
+  box-shadow:0 10px 40px rgba(0,0,0,.5);background:#fff;
+}
+.lb-rodape{
+  flex:0 0 auto;padding:10px 14px;background:rgba(0,0,0,.35);color:#e8e0d0;
+  font-size:.8rem;display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;
+}
+.lb-rodape .lb-fonte{flex:1;min-width:160px;line-height:1.4;}
+.lb-rodape button{
+  background:var(--musgo);color:#fff;border:0;border-radius:8px;padding:8px 14px;
+  font-family:var(--serif-corpo);font-size:.85rem;cursor:pointer;
+}
+.lb-rodape button:hover{filter:brightness(1.1);}
+@media print{.lb-fundo{display:none !important;}}
+
 footer{
   background:var(--petroleo);color:var(--areia);text-align:center;
   padding:28px var(--gutter) calc(28px + env(safe-area-inset-bottom));
@@ -433,6 +617,43 @@ h1{
   margin:20px 0;padding:14px 20px;font-style:italic;border-radius:0 var(--raio) var(--raio) 0;}
 .texto-apoio .ta-citacao .ta-autor{display:block;font-style:normal;font-size:.82rem;
   color:var(--cinza);margin-top:8px;text-align:right;}
+
+/* ---------- BOX DE SLIDES EM PDF ---------- */
+.slides-box{
+  display:flex;align-items:center;gap:16px;
+  background:linear-gradient(135deg,#eef4f6,#f8f5ee);
+  border:1px solid var(--borda);border-left:6px solid var(--musgo);
+  border-radius:var(--raio);padding:14px 18px;margin:14px 0 22px;
+  box-shadow:var(--sombra);
+}
+.slides-box .slides-ico{
+  flex:0 0 auto;width:46px;height:46px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  background:var(--petroleo);color:#fff;font-family:var(--serif-titulo);
+  font-size:.78rem;font-weight:700;letter-spacing:.04em;
+}
+.slides-box .slides-txt{flex:1;min-width:0;}
+.slides-box .slides-txt strong{
+  display:block;font-family:var(--serif-titulo);font-size:1.05rem;
+  color:var(--petroleo);line-height:1.3;
+}
+.slides-box .slides-txt span{
+  display:block;color:var(--cinza);font-size:.84rem;line-height:1.45;margin-top:2px;
+}
+.slides-box .slides-btn{
+  flex:0 0 auto;display:inline-flex;align-items:center;justify-content:center;
+  background:var(--terracota);color:#fff;text-decoration:none;
+  border-radius:8px;padding:9px 14px;font-size:.84rem;font-weight:600;
+  transition:transform .12s ease,filter .12s ease;
+}
+.slides-box .slides-btn:hover{transform:translateY(-1px);filter:brightness(1.08);}
+@media(max-width:520px){
+  .slides-box{align-items:flex-start;flex-wrap:wrap;}
+  .slides-box .slides-txt{flex-basis:calc(100% - 62px);}
+  .slides-box .slides-btn{margin-left:62px;}
+}
+@media print{.slides-box{display:none !important;}}
+
 </style>
 </head>
 <body>
@@ -508,16 +729,56 @@ h1{
       <span class="seta">&#8250;</span>
     </button>
 
-    <p>A Sociologia é, nas palavras de Pierre Bourdieu, "um esporte de combate": uma ciência voltada a desvendar as raízes das violências e desigualdades sociais e fornecer ferramentas teóricas e práticas para transformá-las. Quando nos debruçamos sobre a <strong>Declaração Universal dos Direitos Humanos (DUDH)</strong>, proclamada pela Organização das Nações Unidas (ONU) em 10 de dezembro de 1948, o primeiro exercício sociológico indispensável consiste em <em>desnaturalizar</em> a realidade e romper com o senso comum.</p>
-
-    <p>O senso comum costuma tratar os direitos humanos sob duas óticas reducionistas: ora como um dado "natural" e universal já garantido nas democracias ocidentais, ora de forma distorcida como "privilégio de infratores". Ambas as visões ignoram que os direitos humanos são <strong>construções históricas e institucionais</strong>, forjadas no calor de intensas lutas sociais e que permanecem permanentemente incompletas e sob disputa.</p>
-
-    <div class="termo-box">
-      <span class="rot">Conceito-chave &middot; C. Wright Mills</span>
-      <p><strong>Imaginação Sociológica.</strong> Capacidade do espírito humano de compreender que os dilemas biográficos e as aflições pessoais imediatas (como o desemprego, a discriminação racial ou a fome) estão intimamente conectados às estruturas históricas, econômicas e institucionais da sociedade. Ter imaginação sociológica é olhar além do indivíduo isolado e entender como as instituições sociais moldam nossas oportunidades e direitos.</p>
+    <div class="slides-box" aria-label="Slides em PDF do tópico 1">
+      <span class="slides-ico" aria-hidden="true">PDF</span>
+      <span class="slides-txt">
+        <strong>Slides do tópico 1</strong>
+        <span>Acesse a apresentação em PDF para revisar os conteúdos da promessa universal e da realidade fraturada.</span>
+      </span>
+      <a class="slides-btn" href="https://drive.google.com/file/d/1U66wuTshrvn1pncrHl7e1ATfaPLbgAog/view?usp=sharing" target="_blank" rel="noopener noreferrer">Abrir slides &#8599;</a>
     </div>
 
-    <p>Adotar a imaginação sociológica diante dos Direitos Humanos implica perguntar: por que uma declaração assinada por dezenas de Estados soberanos, assentada nos princípios universais de liberdade, igualdade e dignidade, convive no século XXI com a extrema concentração de renda, o encarceramento em massa da juventude negra, a violência contra as mulheres e a degradação ambiental? Essa contradição fundamental é o ponto de partida da nossa investigação.</p>
+    <div class="col2">
+      <div class="col2-texto">
+        <p>A Sociologia é, nas palavras de Pierre Bourdieu, "um esporte de combate": uma ciência voltada a desvendar as raízes das violências e desigualdades sociais e fornecer ferramentas teóricas e práticas para transformá-las. Quando nos debruçamos sobre a <strong>Declaração Universal dos Direitos Humanos (DUDH)</strong>, proclamada pela Organização das Nações Unidas (ONU) em 10 de dezembro de 1948, o primeiro exercício sociológico indispensável consiste em <em>desnaturalizar</em> a realidade e romper com o senso comum.</p>
+
+        <p>O senso comum costuma tratar os direitos humanos sob duas óticas reducionistas: ora como um dado "natural" e universal já garantido nas democracias ocidentais, ora de forma distorcida como "privilégio de infratores". Ambas as visões ignoram que os direitos humanos são <strong>construções históricas e institucionais</strong>, forjadas no calor de intensas lutas sociais e que permanecem permanentemente incompletas e sob disputa.</p>
+
+        <div class="termo-box">
+          <span class="rot">Conceito-chave &middot; C. Wright Mills</span>
+          <p><strong>Imaginação Sociológica.</strong> Capacidade do espírito humano de compreender que os dilemas biográficos e as aflições pessoais imediatas (como o desemprego, a discriminação racial ou a fome) estão intimamente conectados às estruturas históricas, econômicas e institucionais da sociedade. Ter imaginação sociológica é olhar além do indivíduo isolado e entender como as instituições sociais moldam nossas oportunidades e direitos.</p>
+        </div>
+
+        <p>Adotar a imaginação sociológica diante dos Direitos Humanos implica perguntar: por que uma declaração assinada por dezenas de Estados soberanos, assentada nos princípios universais de liberdade, igualdade e dignidade, convive no século XXI com a extrema concentração de renda, o encarceramento em massa da juventude negra, a violência contra as mulheres e a degradação ambiental? Essa contradição fundamental é o ponto de partida da nossa investigação.</p>
+      </div>
+    </div>
+
+    <figure class="ig-box ig-horizontal" aria-label="Carrossel de imagens: Direitos Humanos e Cidadania em debate">
+          <div class="ig-cab">
+            <span class="ig-avatar">DH</span>
+            <span class="ig-nome"><strong>sociologia.cero</strong><span>Direitos Humanos &middot; Síntese Visual</span></span>
+            <span class="ig-pontos">&#8942;</span>
+          </div>
+          <div class="ig-carrossel">
+            <span class="ig-contagem"><span id="igAtual">1</span>/4</span>
+            <button class="ig-seta ant" type="button" aria-label="Imagem anterior">&#8249;</button>
+            <div class="ig-trilho" id="igTrilho">
+              <div class="ig-slide"><img src="img2/1.webp" alt="Lâmina 1: Direitos Humanos e a Imaginação Sociológica" loading="lazy"></div>
+              <div class="ig-slide"><img src="img2/2.webp" alt="Lâmina 2: Genealogia da Tríade - Liberdade, Igualdade e Fraternidade" loading="lazy"></div>
+              <div class="ig-slide"><img src="img2/3.webp" alt="Lâmina 3: Crítica Decolonial, Amefricanidade e Luta Antirracista" loading="lazy"></div>
+              <div class="ig-slide"><img src="img2/4.webp" alt="Lâmina 4: Juventudes, Interculturalidade e Práxis do Bem Viver" loading="lazy"></div>
+            </div>
+            <span class="ig-lupa">&#128269; Toque para ampliar</span>
+            <button class="ig-seta prox" type="button" aria-label="Próxima imagem">&#8250;</button>
+          </div>
+          <div class="ig-pags" id="igPags"></div>
+          <div class="ig-acoes">&#9825; &#128172; &#10148;</div>
+          <figcaption class="ig-legenda"><strong>sociologia.cero</strong> Síntese visual da habilidade <strong>EM13CHS605</strong>: desnaturalização do senso comum, genealogia filosófica, crítica decolonial e compromisso social em quatro lâminas. Toque na imagem para ampliar com zoom interativo!</figcaption>
+          <div class="ig-rodape">
+            <span>Sociologia &middot; 3ª série EM</span>
+            <a href="javascript:void(0);" onclick="window.abrirVisualizador(GALERIA_IG, 0);">Ver em tela cheia &#8599;</a>
+          </div>
+    </figure>
 
     <div class="acc">
       <button class="acc-head" type="button" aria-expanded="false">&#128100; Na voz do autor &middot; Émile Durkheim e o fato social da dignidade</button>
@@ -537,9 +798,9 @@ h1{
       <span class="rot">Atividade &middot; t&oacute;pico 1</span>
       <h4>A promessa universal e a imaginação sociológica</h4>
       <p class="intro">Exercício reflexivo sobre a transição do senso comum à atitude científica sociológica em torno da garantia dos Direitos Humanos.</p>
-      <a class="btn-recurso atividade" href="#modalFicha" onclick="abrirModalPorNumero(1); return false;">
+      <a class="btn-recurso atividade" href="atv2/atv1.html">
         <span class="br-ico">Atv 1</span>
-        <span class="br-txt"><strong>Fazer a atividade do t&oacute;pico 1</strong><em>Questões conceituais e estudo de caso</em></span>
+        <span class="br-txt"><strong>Fazer a atividade do t&oacute;pico 1</strong><em>Questões discursivas e objetivas</em></span>
         <span class="br-seta" aria-hidden="true">&#8599;</span>
       </a>
     </div>
@@ -867,6 +1128,29 @@ h1{
   </div>
 </div>
 
+<div class="lb-fundo" id="lbFundo" role="dialog" aria-modal="true" aria-labelledby="lbTitulo" aria-hidden="true">
+  <div class="lb-topo">
+    <span class="lb-tit" id="lbTitulo"></span>
+    <span class="lb-ctrl">
+      <button type="button" id="lbMenos" aria-label="Reduzir zoom">&minus;</button>
+      <span class="lb-zoom" id="lbNivel">100%</span>
+      <button type="button" id="lbMais" aria-label="Ampliar zoom">+</button>
+      <button type="button" id="lbReset" aria-label="Tamanho original">100%</button>
+      <button class="lb-fechar" type="button" id="lbFechar" aria-label="Fechar">&times;</button>
+    </span>
+  </div>
+  <div class="lb-palco" id="lbPalco">
+    <img id="lbImg" src="" alt="">
+  </div>
+  <div class="lb-rodape">
+    <span class="lb-fonte" id="lbFonte"></span>
+    <span class="lb-ctrl">
+      <button type="button" id="lbAnt">&#8249; Anterior</button>
+      <button type="button" id="lbProx">Pr&oacute;xima &#8250;</button>
+    </span>
+  </div>
+</div>
+
 <script>
 const RECURSOS = {
   "sintese": {
@@ -1172,6 +1456,203 @@ const FICHAS = {
       barra.style.width = Math.min(100, Math.max(0, pct)) + '%';
     }, {passive:true});
   }
+})();
+</script>
+
+<script>
+(function(){
+  var d=document;
+  var galeria=[];
+  var fundo=d.getElementById('lbFundo'), palco=d.getElementById('lbPalco'), img=d.getElementById('lbImg');
+  if(!fundo||!palco||!img) return;
+  var tit=d.getElementById('lbTitulo'), fonte=d.getElementById('lbFonte'), nivel=d.getElementById('lbNivel');
+  var atual=0, escala=1, x=0, y=0, ultimoFoco=null;
+  var MIN=1, MAX=6;
+
+  function aplicar(){
+    img.style.transform='translate('+x+'px,'+y+'px) scale('+escala+')';
+    nivel.textContent=Math.round(escala*100)+'%';
+    palco.style.cursor = escala>1 ? 'grab' : 'default';
+  }
+  function zerar(){ escala=1; x=0; y=0; aplicar(); }
+  function zoom(fator, cx, cy){
+    var nova=Math.min(MAX,Math.max(MIN,escala*fator));
+    if(nova===escala) return;
+    if(typeof cx==='number'){
+      var r=palco.getBoundingClientRect();
+      var dx=cx-(r.left+r.width/2), dy=cy-(r.top+r.height/2);
+      x=dx-(dx-x)*(nova/escala);
+      y=dy-(dy-y)*(nova/escala);
+    }
+    escala=nova;
+    if(escala===1){ x=0; y=0; }
+    aplicar();
+  }
+  function mostrar(i){
+    if(!galeria.length) return;
+    atual=(i+galeria.length)%galeria.length;
+    var it=galeria[atual];
+    img.src=it.src; img.alt=it.alt;
+    tit.textContent=it.titulo; fonte.textContent=it.fonte;
+    zerar();
+  }
+  function abrir(i){
+    ultimoFoco=d.activeElement;
+    mostrar(i);
+    fundo.classList.add('ativo');
+    fundo.setAttribute('aria-hidden','false');
+    d.body.style.overflow='hidden';
+    d.getElementById('lbFechar').focus();
+  }
+  function fechar(){
+    fundo.classList.remove('ativo');
+    fundo.setAttribute('aria-hidden','true');
+    d.body.style.overflow='';
+    if(ultimoFoco && ultimoFoco.focus) ultimoFoco.focus();
+  }
+  function aberto(){ return fundo.classList.contains('ativo'); }
+
+  window.abrirVisualizador=function(lista, i){
+    if(!lista || !lista.length) return;
+    galeria=lista; abrir(i||0);
+  };
+  d.getElementById('lbFechar').addEventListener('click', fechar);
+  d.getElementById('lbMais').addEventListener('click', function(){ zoom(1.35); });
+  d.getElementById('lbMenos').addEventListener('click', function(){ zoom(1/1.35); });
+  d.getElementById('lbReset').addEventListener('click', zerar);
+  d.getElementById('lbAnt').addEventListener('click', function(){ mostrar(atual-1); });
+  d.getElementById('lbProx').addEventListener('click', function(){ mostrar(atual+1); });
+  fundo.addEventListener('click', function(e){ if(e.target===fundo || e.target===palco) fechar(); });
+
+  palco.addEventListener('wheel', function(e){
+    e.preventDefault();
+    zoom(e.deltaY<0?1.15:1/1.15, e.clientX, e.clientY);
+  }, {passive:false});
+
+  img.addEventListener('dblclick', function(e){
+    if(escala>1) zerar(); else zoom(2.2, e.clientX, e.clientY);
+  });
+
+  var arr=false, px=0, py=0;
+  palco.addEventListener('mousedown', function(e){
+    if(escala<=1) return;
+    arr=true; px=e.clientX-x; py=e.clientY-y;
+    palco.classList.add('arrastando'); e.preventDefault();
+  });
+  d.addEventListener('mousemove', function(e){
+    if(!arr) return;
+    x=e.clientX-px; y=e.clientY-py; aplicar();
+  });
+  d.addEventListener('mouseup', function(){ arr=false; palco.classList.remove('arrastando'); });
+
+  var tx=0, ty=0, dist0=0, esc0=1, ultimoToque=0;
+  function distancia(t){
+    var a=t[0], b=t[1];
+    return Math.hypot(a.clientX-b.clientX, a.clientY-b.clientY);
+  }
+  palco.addEventListener('touchstart', function(e){
+    if(e.touches.length===2){
+      dist0=distancia(e.touches); esc0=escala;
+    }else if(e.touches.length===1){
+      var agora=Date.now();
+      if(agora-ultimoToque<300){
+        if(escala>1) zerar(); else zoom(2.2, e.touches[0].clientX, e.touches[0].clientY);
+      }
+      ultimoToque=agora;
+      tx=e.touches[0].clientX-x; ty=e.touches[0].clientY-y;
+    }
+  }, {passive:true});
+  palco.addEventListener('touchmove', function(e){
+    if(e.touches.length===2){
+      e.preventDefault();
+      var nova=Math.min(MAX,Math.max(MIN, esc0*(distancia(e.touches)/dist0)));
+      escala=nova; if(escala===1){ x=0; y=0; }
+      aplicar();
+    }else if(e.touches.length===1 && escala>1){
+      e.preventDefault();
+      x=e.touches[0].clientX-tx; y=e.touches[0].clientY-ty; aplicar();
+    }
+  }, {passive:false});
+
+  d.addEventListener('keydown', function(e){
+    if(!aberto()) return;
+    if(e.key==='Escape'||e.key==='Esc'){ e.stopPropagation(); fechar(); }
+    else if(e.key==='+'||e.key==='='){ zoom(1.35); }
+    else if(e.key==='-'||e.key==='_'){ zoom(1/1.35); }
+    else if(e.key==='0'){ zerar(); }
+    else if(e.key==='ArrowRight'){ mostrar(atual+1); }
+    else if(e.key==='ArrowLeft'){ mostrar(atual-1); }
+  }, true);
+})();
+</script>
+
+<script>
+var GALERIA_IG = [
+  {src:'img2/1.webp', titulo:'Direitos Humanos e Cidadania \u00b7 Imagem 1', alt:'Lâmina 1: Direitos Humanos e a Imaginação Sociológica', fonte:'Colégio Estadual Rodolfo de Oliveira \u00b7 CERO \u00b7 Sociologia \u00b7 Prof. Claudio'},
+  {src:'img2/2.webp', titulo:'Direitos Humanos e Cidadania \u00b7 Imagem 2', alt:'Lâmina 2: Genealogia da Tríade - Liberdade, Igualdade e Fraternidade', fonte:'Colégio Estadual Rodolfo de Oliveira \u00b7 CERO \u00b7 Sociologia \u00b7 Prof. Claudio'},
+  {src:'img2/3.webp', titulo:'Direitos Humanos e Cidadania \u00b7 Imagem 3', alt:'Lâmina 3: Crítica Decolonial, Amefricanidade e Luta Antirracista', fonte:'Colégio Estadual Rodolfo de Oliveira \u00b7 CERO \u00b7 Sociologia \u00b7 Prof. Claudio'},
+  {src:'img2/4.webp', titulo:'Direitos Humanos e Cidadania \u00b7 Imagem 4', alt:'Lâmina 4: Juventudes, Interculturalidade e Práxis do Bem Viver', fonte:'Colégio Estadual Rodolfo de Oliveira \u00b7 CERO \u00b7 Sociologia \u00b7 Prof. Claudio'}
+];
+
+(function(){
+  var d=document;
+  var trilho=d.getElementById('igTrilho');
+  if(!trilho) return;
+  var box=trilho.closest('.ig-box');
+  var slides=trilho.querySelectorAll('.ig-slide');
+  var pags=d.getElementById('igPags');
+  var contador=d.getElementById('igAtual');
+  var btnAnt=box.querySelector('.ig-seta.ant');
+  var btnProx=box.querySelector('.ig-seta.prox');
+  var total=slides.length;
+
+  for(var i=0;i<total;i++){
+    var b=d.createElement('button');
+    if(i===0) b.className='on';
+    b.setAttribute('aria-label','Ir para imagem '+(i+1));
+    (function(idx){ b.addEventListener('click', function(){ ir(idx); }); })(i);
+    pags.appendChild(b);
+  }
+  var pontos=pags.querySelectorAll('button');
+
+  function atualizar(){
+    var idx=Math.round(trilho.scrollLeft/trilho.clientWidth);
+    idx=Math.max(0,Math.min(total-1,idx));
+    pontos.forEach(function(p,j){ p.className = (j===idx) ? 'on' : ''; });
+    if(contador) contador.textContent = idx+1;
+  }
+  function ir(idx){
+    idx=(idx+total)%total;
+    trilho.scrollTo({left: idx*trilho.clientWidth, behavior:'smooth'});
+  }
+  var t;
+  trilho.addEventListener('scroll', function(){
+    clearTimeout(t); t=setTimeout(atualizar,80);
+  }, {passive:true});
+  btnAnt.addEventListener('click', function(){
+    ir(Math.round(trilho.scrollLeft/trilho.clientWidth)-1);
+  });
+  btnProx.addEventListener('click', function(){
+    ir(Math.round(trilho.scrollLeft/trilho.clientWidth)+1);
+  });
+  window.addEventListener('resize', atualizar);
+
+  slides.forEach(function(sl, j){
+    var im = sl.querySelector('img');
+    if(!im) return;
+    im.setAttribute('role','button');
+    im.setAttribute('tabindex','0');
+    im.setAttribute('title','Clique para ampliar com zoom');
+    im.addEventListener('click', function(){
+      if(window.abrirVisualizador) window.abrirVisualizador(GALERIA_IG, j);
+    });
+    im.addEventListener('keydown', function(e){
+      if(e.key==='Enter' || e.key===' '){
+        e.preventDefault();
+        if(window.abrirVisualizador) window.abrirVisualizador(GALERIA_IG, j);
+      }
+    });
+  });
 })();
 </script>
 </body>
