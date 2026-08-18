@@ -7,6 +7,9 @@
 <meta name="theme-color" content="#1b3240">
 <meta name="color-scheme" content="light only">
 <title>Direitos Humanos, Igualdade e Diversidade — Sociologia · 3ª série EM · CERO</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
 <style>
 :root{
   --petroleo:#1b3240;      /* cor-base escura */
@@ -20,8 +23,8 @@
   --musgo:#4f6d46;         /* cor de apoio */
   --borda:#d6cebd;
   --branco:#fffefb;
-  --serif-titulo:Georgia,'Times New Roman',serif;
-  --serif-corpo:Georgia,'Times New Roman',serif;
+  --serif-titulo:'Playfair Display',Georgia,'Times New Roman',serif;
+  --serif-corpo:'Source Serif 4',Georgia,'Times New Roman',serif;
   --raio:10px;
   --sombra:0 2px 10px rgba(27,50,64,.10);
   --medida:900px;
@@ -125,68 +128,10 @@ p{margin:0 0 14px;text-align:justify;}
 .btn-recurso.atividade .br-seta{color:var(--petroleo-claro);}
 @media print{.btn-recurso{display:none;}}
 
-/* ---------- BOX PDF / MATERIAL DE APOIO ---------- */
-.slides-pdf-box{
-  margin:18px 0 26px;
-  background:var(--branco);
-  border-left-color:var(--musgo);
-  border-top:1px solid var(--borda);
-  border-right:1px solid var(--borda);
-  border-bottom:1px solid var(--borda);
-  box-shadow:var(--sombra);
-}
-.slides-pdf-box .br-ico{background:var(--musgo);}
-.slides-pdf-box .br-seta{color:var(--petroleo-claro);}
-.slides-pdf-box:hover{border-left-color:var(--terracota);}
-.slides-pdf-box:hover .br-ico{background:var(--terracota);}
-
 .termo-box{
   background:var(--branco);border:1px solid var(--borda);border-left:5px solid var(--terracota);
-  border-radius:var(--raio);padding:16px 20px;margin:18px 0;cursor:zoom-in;
-  transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease;
+  border-radius:var(--raio);padding:16px 20px;margin:18px 0;
 }
-.termo-box:hover{transform:translateY(-3px);border-color:var(--terracota-claro);box-shadow:0 8px 22px rgba(27,50,64,.18);}
-/* ---------- EFEITO DE DESTAQUE: CONCEITO-CHAVE ---------- */
-.termo-box{
-  cursor:zoom-in;
-  transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease;
-}
-.termo-box:hover{
-  transform:translateY(-3px);
-  border-color:var(--terracota-claro);
-  box-shadow:0 8px 22px rgba(27,50,64,.18);
-}
-.termo-box.destaque-ativo{
-  cursor:zoom-out;
-  transform:scale(1.025);
-  border-color:var(--terracota);
-  box-shadow:0 18px 45px rgba(27,50,64,.28);
-  position:relative;
-  z-index:1251;
-}
-.conceito-fundo{
-  display:none;position:fixed;inset:0;background:rgba(20,30,24,.72);
-  z-index:1250;align-items:center;justify-content:center;padding:24px;
-  backdrop-filter:blur(3px);
-}
-.conceito-fundo.ativo{display:flex;}
-.conceito-fundo .termo-box-clone{
-  width:min(900px,94vw);max-height:88vh;overflow:auto;
-  background:var(--branco);border:1px solid var(--terracota-claro);
-  border-left:5px solid var(--terracota);border-radius:var(--raio);
-  padding:24px 28px;box-shadow:0 22px 60px rgba(0,0,0,.35);
-  animation:conceitoZoom .22s ease-out;
-}
-.conceito-fundo .termo-box-clone .fechar-conceito{
-  float:right;border:0;background:var(--petroleo);color:#fff;
-  width:34px;height:34px;border-radius:8px;cursor:pointer;font-size:1.1rem;
-}
-@keyframes conceitoZoom{from{opacity:0;transform:scale(.92)}to{opacity:1;transform:scale(1)}}
-@media (max-width:600px){
-  .conceito-fundo{padding:14px;}
-  .conceito-fundo .termo-box-clone{width:100%;padding:20px;max-height:90vh;}
-}
-
 .termo-box .rot{
   display:block;font-family:var(--serif-titulo);color:var(--terracota);
   font-size:.82rem;letter-spacing:.12em;text-transform:uppercase;margin-bottom:6px;
@@ -678,56 +623,7 @@ h1{
 
 /* ---------- BOX DE SLIDES EM PDF ---------- */
 
-
-/* =========================================================
-   OTIMIZAÇÃO RESPONSIVA — UMA ÚNICA PÁGINA (PC + CELULAR)
-   ========================================================= */
-html { scroll-padding-top: 12px; }
-body { overflow-x: hidden; }
-
-@media (max-width:700px){
-  body{font-size:16px;line-height:1.6;}
-  main{width:100%;padding-left:14px;padding-right:14px;padding-bottom:40px;}
-  section{margin-top:32px;}
-  h2.secao{font-size:1.30rem;line-height:1.25;padding-bottom:8px;}
-  h2.secao .num{width:27px;height:27px;line-height:27px;margin-right:8px;font-size:.78rem;}
-  h3{font-size:1.08rem;margin-top:20px;}
-  p{text-align:justify;text-justify:inter-word;}
-  .lead{font-size:1rem;}
-  .objetivos{padding:17px 16px;margin-top:24px;}
-  .atv-box{padding:14px 14px 16px;}
-  .ficha-btn{padding:13px 12px;gap:9px;}
-  .ficha-btn .ico{width:30px;height:30px;font-size:.95rem;}
-  .ficha-btn .txt strong{font-size:.96rem;}
-  .ficha-btn .txt em{font-size:.80rem;}
-  .rec-card{padding:15px 14px;}
-  .tabela-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;}
-  .ig-box{margin-left:-2px;margin-right:-2px;}
-  .lb-topo{padding:8px 10px;}
-  .lb-ctrl button,.lb-fechar{min-width:36px;height:36px;padding:0 8px;}
-  .lb-rodape{padding:8px 10px;}
-}
-@media (prefers-reduced-motion:reduce){
-  *,*::before,*::after{
-    scroll-behavior:auto !important;
-    transition:none !important;
-    animation:none !important;
-  }
-}
-
-
-/* Texto corrido justificado — PC e celular */
-main p,
-.texto-apoio p,
-.objetivos li,
-.tabela-wrap td,
-.tabela-wrap th {
-  text-align: justify;
-  text-justify: inter-word;
-}
-
 </style>
-<meta name="format-detection" content="telephone=no">
 </head>
 <body>
 
@@ -786,7 +682,7 @@ main p,
         </ul>
         <div style="margin-top: 20px; text-align: center;">
           <a href="img2/info1.webp" target="_blank" rel="noopener noreferrer" style="display: inline-block; text-decoration: none; overflow: hidden; border-radius: var(--raio); box-shadow: var(--sombra); cursor: zoom-in;">
-            <img loading="lazy" decoding="async" fetchpriority="low" src="img2/info1.webp" alt="Infográfico explicativo sobre o descritor e os objetivos de aprendizagem" style="border-radius: var(--raio); border: 1px solid var(--borda); display: block; margin: 0 auto; transition: transform 0.3s ease, filter 0.3s ease;"scale(1.03)'; this.style.filter='brightness(1.03)'"scale(1)'; this.style.filter='none'">
+            <img src="img2/info1.webp" alt="Infográfico explicativo sobre o descritor e os objetivos de aprendizagem" style="border-radius: var(--raio); border: 1px solid var(--borda); display: block; margin: 0 auto; transition: transform 0.3s ease, filter 0.3s ease;" onmouseover="this.style.transform='scale(1.03)'; this.style.filter='brightness(1.03)'" onmouseout="this.style.transform='scale(1)'; this.style.filter='none'">
           </a>
         </div>
       </div>
@@ -802,11 +698,16 @@ main p,
       <span class="seta">&#8250;</span>
     </button>
 
-    <a class="btn-recurso slides-pdf-box" href="slides_topico1.html" aria-label="Abrir slides do tópico 1">
-      <span class="br-ico">SLD</span>
-      <span class="br-txt"><strong>Slides do tópico 1</strong><em>Apresentação em slides</em></span>
-      <span class="br-seta" aria-hidden="true">&#8599;</span>
-    </a>
+    <div class="atv-box slides-box">
+      <span class="rot">Material de apoio &middot; t&oacute;pico 1</span>
+      <h4>Slides do t&oacute;pico 1</h4>
+      <p class="intro">Acesse os slides em PDF para acompanhar e revisar os principais conte&uacute;dos do t&oacute;pico 1.</p>
+      <a class="btn-recurso atividade" href="https://drive.google.com/file/d/1U66wuTshrvn1pncrHl7e1ATfaPLbgAog/view?usp=sharing" target="_blank" rel="noopener noreferrer" aria-label="Abrir slides em PDF do t&oacute;pico 1">
+        <span class="br-ico">PDF</span>
+        <span class="br-txt"><strong>Abrir slides do t&oacute;pico 1</strong><em>Apresenta&ccedil;&atilde;o em PDF</em></span>
+        <span class="br-seta" aria-hidden="true">&#8599;</span>
+      </a>
+    </div>
 
     <div class="col2">
       <div class="col2-texto">
@@ -1723,39 +1624,6 @@ var GALERIA_IG = [
       }
     });
   });
-})();
-</script>
-
-<script>
-(function(){
-  function ativarConceito(){
-    const boxes=[...document.querySelectorAll('.termo-box')];
-    const box=boxes.find(el=>{const r=el.querySelector('.rot');return r && /C\. Wright Mills/i.test(r.textContent);});
-    if(!box) return;
-    box.setAttribute('tabindex','0');
-    box.setAttribute('role','button');
-    box.setAttribute('aria-label','Ampliar conceito-chave de C. Wright Mills');
-    function abrir(){
-      let fundo=document.getElementById('conceitoZoomFundo');
-      if(!fundo){
-        fundo=document.createElement('div');
-        fundo.id='conceitoZoomFundo';
-        fundo.className='conceito-fundo';
-        fundo.innerHTML='<div class="termo-box-clone" role="dialog" aria-modal="true" aria-label="Conceito-chave de C. Wright Mills"><button class="fechar-conceito" type="button" aria-label="Fechar">×</button><div class="conteudo-conceito"></div></div>';
-        document.body.appendChild(fundo);
-        fundo.querySelector('.fechar-conceito').addEventListener('click',fechar);
-        fundo.addEventListener('click',e=>{if(e.target===fundo) fechar();});
-      }
-      fundo.querySelector('.conteudo-conceito').innerHTML=box.innerHTML;
-      fundo.classList.add('ativo');
-      document.body.style.overflow='hidden';
-    }
-    function fechar(){const fundo=document.getElementById('conceitoZoomFundo');if(fundo){fundo.classList.remove('ativo');document.body.style.overflow='';}}
-    box.addEventListener('click',abrir);
-    box.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();abrir();}});
-    document.addEventListener('keydown',e=>{if(e.key==='Escape') fechar();});
-  }
-  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',ativarConceito); else ativarConceito();
 })();
 </script>
 </body>
