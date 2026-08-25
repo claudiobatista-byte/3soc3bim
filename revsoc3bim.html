@@ -1,0 +1,1200 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Revisa Goiás – 3ª Série | Sociologia | 3º Bimestre 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Source+Serif+4:wght@300;400;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--verde:#4a9e3f;--azul:#14657a;--laranja:#e0871f;--cinza-escuro:#12223a;--cinza-medio:#4a5a6a;--cinza-claro:#eef4f6;--branco:#fafafa;--sombra:0 4px 24px rgba(20,101,122,.14);--radius:12px}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Source Serif 4",Georgia,serif;background:var(--cinza-claro);color:var(--cinza-escuro);line-height:1.7;-webkit-touch-callout:none;-webkit-user-select:none;-ms-user-select:none;user-select:none}
+.campo-discursivo,.campo-nome{-webkit-user-select:text;user-select:text;-webkit-touch-callout:default}
+.contador-chars{font-size:.75rem;font-family:"JetBrains Mono",monospace;margin-top:6px;display:flex;justify-content:space-between;gap:10px;color:var(--cinza-medio)}
+.contador-chars .qtd{font-weight:700;color:#e0871f}
+.contador-chars.ok .qtd{color:var(--verde)}
+.contador-chars .meta{opacity:.8}
+#anti-cola-toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--cinza-escuro);color:#fff;padding:12px 22px;border-radius:10px;font-size:.85rem;font-family:"Source Serif 4",serif;z-index:99999;opacity:0;transition:opacity .3s;pointer-events:none;box-shadow:0 8px 28px rgba(0,0,0,.35);max-width:88%;text-align:center}
+#capa{min-height:100vh;background:linear-gradient(145deg,#12223a 0%,#14657a 55%,#4a9e3f 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px;position:relative;overflow:hidden}
+#capa::before{content:"";position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none'%3E%3Cg fill='%23ffffff' fill-opacity='.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")}
+.capa-logo-area{display:flex;align-items:center;gap:18px;margin-bottom:32px}
+.capa-logo-circle{width:80px;height:80px;background:white;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 32px rgba(0,0,0,.3)}
+.capa-titulo-revisa{font-family:"Playfair Display",serif;font-size:3rem;font-weight:900;color:white;line-height:1;text-shadow:0 2px 16px rgba(0,0,0,.4)}
+.capa-subtitulo-revisa{font-family:"Source Serif 4",serif;font-size:1rem;color:rgba(255,255,255,.75);font-style:italic}
+.capa-box{background:rgba(255,255,255,.12);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.25);border-radius:20px;padding:48px 56px;max-width:640px;width:100%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+.capa-serie{font-family:"Playfair Display",serif;font-size:2.4rem;font-weight:900;color:white;margin-bottom:8px}
+.capa-disciplina{background:var(--verde);color:white;border-radius:40px;padding:8px 28px;display:inline-block;font-size:1rem;font-weight:600;letter-spacing:.05em;margin-bottom:28px}
+.capa-bimestre{font-family:"JetBrains Mono",monospace;font-size:1.4rem;color:rgba(255,255,255,.9);background:rgba(255,255,255,.1);border-radius:8px;padding:12px 24px;margin-bottom:36px;letter-spacing:.08em}
+.campo-nome-area label{display:block;color:rgba(255,255,255,.8);font-size:.85rem;text-transform:uppercase;letter-spacing:.12em;margin-bottom:10px}
+.campo-nome{width:100%;padding:16px 20px;border:2px solid rgba(255,255,255,.35);border-radius:10px;background:rgba(255,255,255,.15);color:white;font-size:1.15rem;font-family:"Playfair Display",serif;outline:none;transition:border .2s}
+.campo-nome::placeholder{color:rgba(255,255,255,.45)}
+.campo-nome:focus{border-color:var(--verde);background:rgba(255,255,255,.2)}
+.btn-comecar{margin-top:28px;padding:16px 48px;background:var(--verde);color:white;border:none;border-radius:50px;font-size:1.1rem;font-family:"Source Serif 4",serif;font-weight:600;cursor:pointer;box-shadow:0 8px 24px rgba(74,158,63,.4);transition:transform .2s,box-shadow .2s;letter-spacing:.04em}
+.btn-comecar:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(74,158,63,.5)}
+.erro-nome{color:#ffcdd2;font-size:.82rem;margin-top:8px;display:none}
+.seduc-bar{position:absolute;bottom:0;left:0;right:0;background:rgba(255,255,255,.07);padding:14px;text-align:center;color:rgba(255,255,255,.6);font-size:.8rem;letter-spacing:.1em;text-transform:uppercase}
+#conteudo{display:none}
+.container{max-width:960px;margin:0 auto;padding:0 20px 60px}
+.header-top{background:linear-gradient(90deg,var(--azul) 0%,var(--cinza-escuro) 100%);color:white;padding:14px 32px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 16px rgba(0,0,0,.2)}
+.header-nome-aluno{font-family:"JetBrains Mono",monospace;font-size:.85rem;color:rgba(255,255,255,.75)}
+.header-nome-aluno span{color:#a8e090;font-weight:600}
+.progresso-geral{font-size:.8rem;color:rgba(255,255,255,.7);font-family:"JetBrains Mono",monospace}
+#progresso-count{color:#ffd700;font-weight:700}
+.barra-prog-wrap{height:4px;background:rgba(255,255,255,.15);position:sticky;top:52px;z-index:99}
+.barra-prog{height:4px;background:var(--verde);transition:width .4s;width:0%}
+.secao-texto{background:white;border-radius:var(--radius);padding:40px 48px;margin:32px 0;box-shadow:var(--sombra);border-left:5px solid var(--azul)}
+.secao-label{font-family:"JetBrains Mono",monospace;font-size:.72rem;text-transform:uppercase;letter-spacing:.15em;color:var(--azul);margin-bottom:16px;font-weight:600}
+.secao-titulo{font-family:"Playfair Display",serif;font-size:1.6rem;font-weight:700;color:var(--cinza-escuro);margin-bottom:20px;line-height:1.3}
+.secao-texto p{margin-bottom:14px;font-size:.97rem}
+.secao-texto strong{color:var(--azul)}
+.secao-texto h3{font-family:"Playfair Display",serif;font-size:1.15rem;margin:22px 0 10px;color:var(--verde)}
+.secao-texto h4{font-family:"Playfair Display",serif;font-size:1rem;margin:18px 0 8px;color:var(--azul)}
+.artigo-dudh{border-top:1px solid #e4edf0;padding-top:12px;margin-top:14px}
+.artigo-dudh .art-num{font-family:"JetBrains Mono",monospace;font-size:.75rem;font-weight:700;color:var(--laranja);text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px}
+.artigo-dudh p{margin-bottom:8px}
+.mapa-mental-img{padding:28px 24px}
+.mapa-mental-img a{display:block;border-radius:10px;overflow:hidden;border:1px solid #e0eaee;box-shadow:0 2px 12px rgba(0,0,0,.08)}
+.mapa-mental-img img{display:block;width:100%;height:auto}
+.atividades-header{background:linear-gradient(135deg,var(--azul),var(--cinza-escuro));color:white;border-radius:var(--radius);padding:24px 36px;margin:36px 0 24px;display:flex;align-items:center;gap:16px}
+.atividades-header .icon{font-size:2rem}
+.atividades-header h2{font-family:"Playfair Display",serif;font-size:1.5rem}
+.questao{background:white;border-radius:var(--radius);padding:32px 40px;margin:20px 0;box-shadow:var(--sombra);border-top:4px solid var(--cinza-claro);transition:border-color .3s}
+.questao.respondida{border-top-color:var(--verde)}
+.questao.errada{border-top-color:#e74c3c}
+.questao-num{font-family:"JetBrains Mono",monospace;font-size:.72rem;text-transform:uppercase;letter-spacing:.15em;color:var(--cinza-medio);margin-bottom:10px}
+.questao-num .badge{background:var(--azul);color:white;padding:2px 10px;border-radius:20px;font-size:.75rem;margin-left:8px}
+.questao-enunciado{font-size:.98rem;margin-bottom:20px;color:var(--cinza-escuro);line-height:1.7}
+.questao-enunciado p{margin-bottom:12px}
+.questao-fonte{font-size:.78rem;color:var(--cinza-medio);font-style:italic;margin:-10px 0 18px}
+.questao-img{max-width:340px;width:100%;border-radius:8px;margin:14px auto;display:block;border:1px solid #e0eaee;box-shadow:0 2px 10px rgba(0,0,0,.08)}
+.opcoes{display:flex;flex-direction:column;gap:10px}
+.opcao{display:flex;align-items:flex-start;gap:14px;padding:14px 18px;border-radius:8px;border:2px solid #e0eaee;cursor:pointer;transition:all .2s;font-size:.93rem;background:var(--cinza-claro)}
+.opcao:hover:not(.bloqueada){border-color:var(--azul);background:#e6f2f6}
+.opcao .letra{font-family:"JetBrains Mono",monospace;font-weight:700;font-size:.85rem;color:var(--azul);min-width:22px;padding-top:1px}
+.opcao.correta{border-color:var(--verde);background:#edfaeb}
+.opcao.correta .letra{color:var(--verde)}
+.opcao.errada-sel{border-color:#e74c3c;background:#fdecea}
+.opcao.errada-sel .letra{color:#e74c3c}
+.opcao.bloqueada{cursor:default;opacity:.75}
+.feedback-quiz{margin-top:16px;padding:14px 18px;border-radius:8px;font-size:.88rem;display:none;font-weight:600}
+.feedback-quiz.acerto{background:#edfaeb;color:#2d7a27;display:block}
+.feedback-quiz.erro{background:#fdecea;color:#c0392b;display:block}
+.campo-discursivo{width:100%;min-height:140px;padding:16px 18px;border:2px solid #e0eaee;border-radius:8px;font-family:"Source Serif 4",serif;font-size:.95rem;line-height:1.7;color:var(--cinza-escuro);background:var(--cinza-claro);resize:vertical;outline:none;transition:border-color .2s}
+.campo-discursivo:focus{border-color:var(--azul);background:white}
+.campo-discursivo.preenchida{border-color:var(--verde);background:#fafffa}
+.aviso-paste{font-size:.73rem;color:var(--cinza-medio);margin-top:5px;font-family:"JetBrains Mono",monospace}
+.aviso-paste::before{content:"⚠ "}
+.citacao-box{background:#f2f8fa;border-left:4px solid var(--azul);border-radius:0 8px 8px 0;padding:18px 22px;margin:16px 0;font-style:italic;font-size:.9rem;color:var(--cinza-medio)}
+.filmes-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin:20px 0}
+.filme-card{background:var(--cinza-claro);border-radius:10px;padding:20px;text-align:center;border:1px solid #ddd}
+.filme-icone{font-size:2.5rem;margin-bottom:10px}
+.filme-titulo{font-weight:700;font-size:.9rem;color:var(--cinza-escuro)}
+#alerta-incompleto{display:none;background:#fff3cd;border:2px solid #ffc107;border-radius:10px;padding:20px 28px;margin:24px 0;color:#7d5a00;font-weight:600}
+.acoes-finais{display:flex;gap:16px;margin:40px 0 20px;flex-wrap:wrap}
+.btn-imprimir,.btn-feedback{padding:16px 36px;border-radius:50px;font-size:1rem;font-family:"Source Serif 4",serif;font-weight:600;cursor:pointer;border:none;transition:all .2s;letter-spacing:.03em}
+.btn-imprimir{background:var(--azul);color:white;box-shadow:0 6px 20px rgba(20,101,122,.35)}
+.btn-imprimir:hover{transform:translateY(-2px);background:#0f5568}
+.btn-feedback{background:white;color:var(--verde);border:2px solid var(--verde);box-shadow:0 4px 14px rgba(74,158,63,.15)}
+.btn-feedback:hover{background:var(--verde);color:white}
+#modal-feedback{display:none;position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:999;align-items:flex-start;justify-content:center;padding:40px 20px;overflow-y:auto}
+#modal-feedback.aberto{display:flex}
+.modal-box{background:white;border-radius:16px;padding:40px;max-width:720px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.3);margin:auto}
+.modal-box h3{font-family:"Playfair Display",serif;font-size:1.5rem;margin-bottom:20px;color:var(--cinza-escuro)}
+.modal-resultado{background:var(--cinza-claro);border-radius:8px;padding:20px;margin-bottom:20px}
+.resultado-linha{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #dde8ec;font-size:.9rem}
+.resultado-linha:last-child{border-bottom:none}
+.resultado-val{font-weight:700;font-family:"JetBrains Mono",monospace}
+.resultado-val.verde{color:var(--verde)}
+.resultado-val.vermelho{color:#e74c3c}
+.secao-fb{margin:20px 0;border:1px solid #e0eaee;border-radius:10px;overflow:hidden}
+.secao-fb-titulo{background:var(--cinza-claro);padding:12px 18px;font-weight:700;font-size:.9rem;display:flex;align-items:center;gap:8px;border-bottom:1px solid #e0eaee}
+.item-fb{padding:14px 18px;border-bottom:1px solid #eef4f6;font-size:.88rem}
+.item-fb:last-child{border-bottom:none}
+.item-fb .qnum{font-family:"JetBrains Mono",monospace;font-weight:700;color:var(--azul);font-size:.8rem;margin-bottom:6px}
+.item-fb .resp-aluno{background:#f2f8fa;border-left:3px solid var(--azul);padding:8px 12px;border-radius:0 6px 6px 0;margin:6px 0;font-size:.87rem;white-space:pre-wrap;word-break:break-word}
+.item-fb .gabarito-correcao{background:#edfaeb;border-left:3px solid var(--verde);padding:8px 12px;border-radius:0 6px 6px 0;margin:6px 0;font-size:.87rem;color:#1a5c16}
+.item-fb .status-acerto{color:var(--verde);font-weight:700}
+.item-fb .status-erro{color:#e74c3c;font-weight:700}
+.item-fb .nao-resp{color:#e0871f;font-style:italic}
+.btn-fechar-modal{margin-top:24px;padding:12px 32px;background:var(--cinza-escuro);color:white;border:none;border-radius:30px;cursor:pointer;font-family:"Source Serif 4",serif;font-size:.95rem}
+.print-capa{display:none}
+@media print{
+  .header-top,.barra-prog-wrap,.btn-imprimir,.btn-feedback,.acoes-finais,#alerta-incompleto,#modal-feedback,.aviso-paste,.atividades-header .icon{display:none!important}
+  body{background:white;font-size:10.5pt}
+  .secao-texto,.questao{box-shadow:none;border:1px solid #ccc;page-break-inside:avoid;margin:12px 0}
+  .secao-texto{padding:20px 24px}
+  .questao{padding:18px 24px}
+  .campo-discursivo{border:1px solid #999;background:white;min-height:70px}
+  .contador-chars,#anti-cola-toast{display:none!important}
+  #capa{display:none}
+  #conteudo{display:block!important}
+  .container{padding:0}
+  .print-capa{display:block;text-align:center;padding:24px 0 16px;border-bottom:3px double #333;margin-bottom:20px}
+  .opcao.correta{border:2px solid #2d7a27!important;background:#edfaeb!important}
+  .opcao.errada-sel{border:2px solid #e74c3c!important;background:#fdecea!important}
+  .feedback-quiz{display:block!important}
+}
+@media(max-width:680px){
+  .secao-texto{padding:22px 18px}
+  .questao{padding:22px 18px}
+  .filmes-grid{grid-template-columns:1fr}
+  .capa-box{padding:30px 22px}
+  .capa-titulo-revisa{font-size:2.1rem}
+  .modal-box{padding:24px 18px}
+}
+</style>
+</head>
+<body>
+
+<!-- CAPA -->
+<section id="capa">
+  <div class="capa-logo-area">
+    <div class="capa-logo-circle">
+      <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg" width="48" height="48">
+        <circle cx="30" cy="30" r="28" stroke="#14657a" stroke-width="3"/>
+        <path d="M18 38 L28 18 L38 38" stroke="#e0871f" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        <path d="M14 42 L46 42" stroke="#4a9e3f" stroke-width="3" stroke-linecap="round"/>
+        <path d="M40 28 L46 18" stroke="#e0871f" stroke-width="3.5" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div>
+      <div class="capa-titulo-revisa">Revisa Goiás</div>
+      <div class="capa-subtitulo-revisa">Recompondo e ampliando aprendizagens…</div>
+    </div>
+  </div>
+  <div class="capa-box">
+    <div class="capa-serie">3ª SÉRIE</div>
+    <div class="capa-disciplina">Ciências Humanas e Sociais Aplicadas · Sociologia</div>
+    <div class="capa-bimestre">3º Bimestre — 2026</div>
+    <div class="campo-nome-area">
+      <label for="nome-aluno">Nome completo do(a) aluno(a)</label>
+      <input type="text" id="nome-aluno" class="campo-nome" placeholder="Digite seu nome completo aqui…" autocomplete="off">
+      <div class="erro-nome" id="erro-nome">Por favor, digite seu nome para continuar.</div>
+    </div>
+    <button class="btn-comecar" onclick="iniciar()">Iniciar Atividade →</button>
+  </div>
+  <div class="seduc-bar">SEDUC · Secretaria de Estado da Educação de Goiás · 2026</div>
+</section>
+
+<!-- CONTEÚDO -->
+<div id="conteudo">
+  <div class="header-top">
+    <div class="header-nome-aluno">Aluno(a): <span id="header-nome">—</span></div>
+    <div class="progresso-geral">Respondidas: <span id="progresso-count">0</span> / 9</div>
+  </div>
+  <div class="barra-prog-wrap"><div class="barra-prog" id="barra-prog"></div></div>
+
+  <div class="container">
+    <div class="print-capa">
+      <h1 style="font-family:serif;font-size:2rem">Revisa Goiás – 3ª Série | Sociologia</h1>
+      <p style="font-size:1.1rem;margin-top:6px">3º Bimestre – 2026</p>
+      <p style="margin-top:14px;font-size:1.2rem">Aluno(a): <strong id="print-nome"></strong></p>
+    </div>
+
+    <!-- ══════ TEMÁTICA ══════ -->
+    <div class="secao-texto">
+      <div class="secao-label">📌 Temática · Habilidade</div>
+      <div class="secao-titulo">TEMÁTICA: Direitos Humanos, democracia e desigualdades sociais no mundo contemporâneo</div>
+      <p><strong>Matriz de Habilidades Essenciais:</strong> <strong>(GO-EMCHS605B)</strong> Analisar os princípios da Declaração Universal dos Direitos Humanos, identificando os progressos e entraves à concretização desses direitos para refletir sobre as desigualdades sociais no Mundo Contemporâneo.</p>
+      <p><strong>Objeto de Conhecimento:</strong> Declaração Universal dos Direitos Humanos. Democracia, movimentos sociais e cidadania.</p>
+      <p style="font-size:.82rem;color:#888">Colaboração: Prof.ª Marta Valeirano — CEPMG Mendes Paraíso — Aparecida de Goiânia.</p>
+    </div>
+
+    <!-- ══════ TEXTO I ══════ -->
+    <div class="secao-texto">
+      <div class="secao-label">📖 Leia o texto · Texto I</div>
+      <div class="secao-titulo">DIREITOS HUMANOS: O QUE SÃO E PARA QUE SERVEM?</div>
+
+      <p>O século XX vivenciou duas grandes Guerras Mundiais, conflitos que levaram a milhões de mortes e destruições sem antecedentes. O desenvolvimento de tecnologias foi tão intenso que, ao fim da Segunda Guerra Mundial — no ano de 1945 —, os países mais influentes viram a necessidade de criar um pacto global para a paz, para mitigar a possibilidade de uma Terceira Grande Guerra, a qual poderia acabar com a vida humana como a conhecemos.</p>
+
+      <p>Como resultado dessa convenção surgiu a <strong>Organização das Nações Unidas (ONU)</strong>, em 1945, responsável pela <strong>Declaração Universal dos Direitos Humanos (DUDH)</strong>, promulgada em 1948. Esse documento buscava e ainda busca garantir a "dignidade inerente a todos os membros da família humana e dos seus direitos iguais e inalienáveis, [cujo reconhecimento constitui] o fundamento da liberdade, da justiça e da paz no mundo" (ONU, 1948), com base nos direitos descritos em sua declaração oficial.</p>
+
+      <p>No Brasil, os Direitos Humanos são incluídos na <strong>Constituição Federal de 1988</strong>, também conhecida como "Constituição Cidadã", pois inclui em seu repertório conceitos básicos da ONU para a proteção dos direitos e a garantia da dignidade dos cidadãos.</p>
+
+      <p>Neste sentido, os Direitos Humanos, seja na DUDH ou na Legislação brasileira, têm a função de garantir a qualidade de vida básica para todos os cidadãos, independentemente de origem, gênero, raça, nacionalidade, religião, orientação sexual ou qualquer outra característica individual ou coletiva. Os direitos universais, portanto, se aplicam a todos os humanos, sem exceção.</p>
+
+      <p>Além de garantir a dignidade a todos os indivíduos, os Direitos Humanos visam assegurar a liberdade individual, promover a igualdade, combater a discriminação, garantir o acesso à justiça, preservar a paz e a segurança, proteger o meio ambiente e responsabilizar os governos. Dessa forma, eles promovem o desenvolvimento humano e, em especial, a proteção da cidadania, com ênfase nos segmentos prioritários.</p>
+
+      <p style="font-size:.82rem;color:#888;margin-top:20px;">Referência: <em>Direitos Humanos em sala de aula: guia prático da ObservaDH</em>. Acesso em: 2026.</p>
+    </div>
+
+    <!-- ══════ TEXTO II ══════ -->
+    <div class="secao-texto">
+      <div class="secao-label">📖 Leia o texto · Texto II</div>
+      <div class="secao-titulo">Declaração Universal dos Direitos Humanos</div>
+      <p style="font-size:.9rem;color:var(--cinza-medio);font-style:italic">Adotada e proclamada pela Assembleia Geral das Nações Unidas (resolução 217 A III) em 10 de dezembro de 1948.</p>
+
+      <h3>Preâmbulo</h3>
+
+      <p>Considerando que o reconhecimento da dignidade inerente a todos os membros da família humana e de seus direitos iguais e inalienáveis é o fundamento da liberdade, da justiça e da paz no mundo,</p>
+
+      <p>Considerando que o desprezo e o desrespeito pelos direitos humanos resultaram em atos bárbaros que ultrajaram a consciência da humanidade e que o advento de um mundo em que mulheres e homens gozem de liberdade de palavra, de crença e da liberdade de viverem a salvo do temor e da necessidade foi proclamado como a mais alta aspiração do ser humano comum,</p>
+
+      <p>Considerando ser essencial que os direitos humanos sejam protegidos pelo império da lei, para que o ser humano não seja compelido, como último recurso, à rebelião contra a tirania e a opressão,</p>
+
+      <p>Considerando ser essencial promover o desenvolvimento de relações amistosas entre as nações,</p>
+
+      <p>Considerando que os povos das Nações Unidas reafirmaram, na Carta, sua fé nos direitos fundamentais do ser humano, na dignidade e no valor da pessoa humana e na igualdade de direitos do homem e da mulher e que decidiram promover o progresso social e melhores condições de vida em uma liberdade mais ampla,</p>
+
+      <p>Considerando que os Países-Membros se comprometeram a promover, em cooperação com as Nações Unidas, o respeito universal aos direitos e liberdades fundamentais do ser humano e a observância desses direitos e liberdades,</p>
+
+      <p>Considerando que uma compreensão comum desses direitos e liberdades é da mais alta importância para o pleno cumprimento desse compromisso,</p>
+
+      <p>Agora, portanto, a Assembleia Geral proclama a presente Declaração Universal dos Direitos Humanos como o ideal comum a ser atingido por todos os povos e todas as nações, com o objetivo de que cada indivíduo e cada órgão da sociedade, tendo sempre em mente esta Declaração, esforce-se, por meio do ensino e da educação, por promover o respeito a esses direitos e liberdades, e, pela adoção de medidas progressivas de caráter nacional e internacional, por assegurar o seu reconhecimento e a sua observância universais e efetivos, tanto entre os povos dos próprios Países-Membros quanto entre os povos dos territórios sob sua jurisdição.</p>
+
+      <div class="artigo-dudh"><div class="art-num">Artigo 1</div>
+      <p>Todos os seres humanos nascem livres e iguais em dignidade e direitos. São dotados de razão e consciência e devem agir em relação uns aos outros com espírito de fraternidade.</p></div>
+
+      <div class="artigo-dudh"><div class="art-num">Artigo 2</div>
+      <p>1. Todo ser humano tem capacidade para gozar os direitos e as liberdades estabelecidos nesta Declaração, sem distinção de qualquer espécie, seja de raça, cor, sexo, língua, religião, opinião política ou de outra natureza, origem nacional ou social, riqueza, nascimento, ou qualquer outra condição.</p>
+      <p>2. Não será também feita nenhuma distinção fundada na condição política, jurídica ou internacional do país ou território a que pertença uma pessoa, quer se trate de um território independente, sob tutela, sem governo próprio, quer sujeito a qualquer outra limitação de soberania.</p></div>
+
+      <div class="artigo-dudh"><div class="art-num">Artigo 3</div>
+      <p>Todo ser humano tem direito à vida, à liberdade e à segurança pessoal.</p></div>
+
+      <div class="artigo-dudh"><div class="art-num">Artigo 4</div>
+      <p>Ninguém será mantido em escravidão ou servidão; a escravidão e o tráfico de escravos serão proibidos em todas as suas formas.</p></div>
+
+      <div class="artigo-dudh"><div class="art-num">Artigo 5</div>
+      <p>Ninguém será submetido à tortura, nem a tratamento ou castigo cruel, desumano ou degradante.</p></div>
+
+      <div class="artigo-dudh"><div class="art-num">Artigo 6</div>
+      <p>Todo ser humano tem o direito de ser, em todos os lugares, reconhecido como pessoa perante a lei.</p></div>
+
+      <div class="artigo-dudh"><div class="art-num">Artigo 7</div>
+      <p>Todos são iguais perante a lei e têm direito, sem qualquer distinção, a igual proteção da lei. Todos têm direito a igual proteção contra qualquer discriminação que viole a presente Declaração e contra qualquer incitamento a tal discriminação.</p></div>
+
+      <div class="artigo-dudh"><div class="art-num">Artigo 8</div>
+      <p>Todo ser humano tem direito a receber dos tribunais nacionais competentes remédio efetivo para os atos que violem os direitos fundamentais que lhe sejam reconhecidos pela constituição ou pela lei.</p></div>
+
+      <div class="artigo-dudh"><div class="art-num">Artigo 9</div>
+      <p>Ninguém será arbitrariamente preso, detido ou exilado.</p></div>
+
+      <div class="artigo-dudh"><div class="art-num">Artigo 10</div>
+      <p>Todo ser humano tem direito, em plena igualdade, a uma justa e pública audiência por parte de um tribunal independente e imparcial, para decidir seus direitos e deveres ou fundamento de qualquer acusação criminal contra ele.</p></div>
+
+      <div class="artigo-dudh"><div class="art-num">Artigo 11</div>
+      <p>1. Todo ser humano acusado de um ato delituoso tem o direito de ser presumido inocente até que a sua culpabilidade tenha sido provada de acordo com a lei, em julgamento público no qual lhe tenham sido asseguradas todas as garantias necessárias à sua defesa.</p>
+      <p>2. Ninguém poderá ser culpado por qualquer ação ou omissão que, no momento, não constituíam delito perante o direito nacional ou internacional. Também não será imposta pena mais forte do que aquela que, no momento da prática, era aplicável ao ato delituoso.</p></div>
+
+      <div class="artigo-dudh"><div class="art-num">Artigo 12</div>
+      <p>Ninguém será sujeito a interferência na sua vida privada, na sua família, no seu lar ou na sua correspondência, nem a ataques à sua honra e reputação. Todo ser humano tem direito à proteção da lei contra tais interferências ou ataques.</p></div>
+
+      <div class="artigo-dudh"><div class="art-num">Artigo 13</div>
+      <p>1. Todo ser humano tem direito à liberdade de locomoção e residência dentro das fronteiras de cada Estado.</p>
+      <p>2. Todo ser humano tem o direito de deixar qualquer país, inclusive o próprio, e a esse regressar.</p></div>
+
+      <div class="artigo-dudh"><div class="art-num">Artigo 14</div>
+      <p>1. Todo ser humano, vítima de perseguição, tem o direito de procurar e de gozar asilo em outros países.</p>
+      <p>2. Esse direito não pode ser invocado em caso de perseguição legitimamente motivada por crimes de direito comum ou por atos contrários aos objetivos e princípios das Nações Unidas.</p></div>
+
+      <div class="artigo-dudh"><div class="art-num">Artigo 15</div>
+      <p>1. Todo ser humano tem direito a uma nacionalidade.</p>
+      <p>2. Ninguém será arbitrariamente privado de sua nacionalidade, nem do direito de mudar de nacionalidade.</p></div>
+
+      <div class="artigo-dudh"><div class="art-num">Artigo 16</div>
+      <p>1. Os homens e mulheres de maior idade, sem qualquer restrição de raça, nacionalidade ou religião, têm o direito de contrair matrimônio e fundar uma família. Gozam de iguais direitos em relação ao casamento, sua duração e sua dissolução.</p>
+      <p>2. O casamento não será válido senão com o livre e pleno consentimento dos nubentes.</p>
+      <p>3. A família é o núcleo natural e fundamental da sociedade e tem direito à proteção da sociedade e do Estado.</p></div>
+
+      <div class="artigo-dudh"><div class="art-num">Artigo 17</div>
+      <p>1. Todo ser humano tem direito à propriedade, só ou em sociedade com outros.</p>
+      <p>2. Ninguém será arbitrariamente privado de sua propriedade.</p></div>
+
+      <div class="artigo-dudh"><div class="art-num">Artigo 18</div>
+      <p>Todo ser humano tem direito à liberdade de pensamento, consciência e religião; esse direito inclui a liberdade de mudar de religião ou crença e a liberdade de manifestar essa religião ou crença pelo ensino, pela prática, pelo culto em público ou em particular.</p></div>
+
+      <div class="artigo-dudh"><div class="art-num">Artigo 19</div>
+      <p>Todo ser humano tem direito à liberdade de opinião e expressão; esse direito inclui a liberdade de, sem interferência, ter opiniões e de procurar, receber e transmitir informações e ideias por quaisquer meios e independentemente de fronteiras.</p></div>
+
+      <div class="artigo-dudh"><div class="art-num">Artigo 20</div>
+      <p>1. Todo ser humano tem direito à liberdade de reunião e associação pacífica.</p>
+      <p>2. Ninguém pode ser obrigado a fazer parte de uma associação.</p></div>
+
+      <div class="artigo-dudh"><div class="art-num">Artigo 21</div>
+      <p>1. Todo ser humano tem o direito de tomar parte no governo de seu país, diretamente ou por intermédio de representantes livremente escolhidos.</p>
+      <p>2. Todo ser humano tem igual direito de acesso ao serviço público do seu país.</p>
+      <p>3. A vontade do povo será a base da autoridade do governo; essa vontade será expressa em eleições periódicas e legítimas, por sufrágio universal, por voto secreto ou processo equivalente que assegure a liberdade de voto.</p></div>
+
+      <div class="artigo-dudh"><div class="art-num">Artigo 22</div>
+      <p>Todo ser humano, como membro da sociedade, tem direito à segurança social, à realização, pelo esforço nacional, pela cooperação internacional e de acordo com a organização e recursos de cada Estado, dos direitos econômicos, sociais e culturais indispensáveis à sua dignidade e ao livre desenvolvimento da sua personalidade.</p></div>
+
+      <div class="artigo-dudh"><div class="art-num">Artigo 23</div>
+      <p>1. Todo ser humano tem direito ao trabalho, à livre escolha de emprego, a condições justas e favoráveis de trabalho e à proteção contra o desemprego.</p>
+      <p>2. Todo ser humano, sem qualquer distinção, tem direito a igual remuneração por igual trabalho.</p>
+      <p>3. Todo ser humano que trabalha tem direito a uma remuneração justa e satisfatória que lhe assegure, assim como à sua família, uma existência compatível com a dignidade humana e a que se acrescentarão, se necessário, outros meios de proteção social.</p>
+      <p>4. Todo ser humano tem direito a organizar sindicatos e a neles ingressar para proteção de seus interesses.</p></div>
+
+      <div class="artigo-dudh"><div class="art-num">Artigo 24</div>
+      <p>Todo ser humano tem direito a repouso e lazer, inclusive a limitação razoável das horas de trabalho e a férias remuneradas periódicas.</p></div>
+
+      <div class="artigo-dudh"><div class="art-num">Artigo 25</div>
+      <p>1. Todo ser humano tem direito a um padrão de vida capaz de assegurar a si e a sua família saúde, bem-estar, inclusive alimentação, vestuário, habitação, cuidados médicos e os serviços sociais indispensáveis e direito à segurança em caso de desemprego, doença, invalidez, viuvez, velhice ou outros casos de perda dos meios de subsistência em circunstâncias fora de seu controle.</p>
+      <p>2. A maternidade e a infância têm direito a cuidados e assistência especiais. Todas as crianças, nascidas dentro ou fora do matrimônio, gozarão da mesma proteção social.</p></div>
+
+      <div class="artigo-dudh"><div class="art-num">Artigo 26</div>
+      <p>1. Todo ser humano tem direito à instrução. A instrução será gratuita, pelo menos nos graus elementares e fundamentais. A instrução elementar será obrigatória. A instrução técnico-profissional será acessível a todos, bem como a instrução superior, esta baseada no mérito.</p>
+      <p>2. A instrução será orientada no sentido do pleno desenvolvimento da personalidade humana e do fortalecimento do respeito pelos direitos do ser humano e pelas liberdades fundamentais. A instrução promoverá a compreensão, a tolerância e a amizade entre todas as nações e grupos raciais ou religiosos e coadjuvará as atividades das Nações Unidas em prol da manutenção da paz.</p>
+      <p>3. Os pais têm prioridade de direito na escolha do gênero de instrução que será ministrada a seus filhos.</p></div>
+
+      <div class="artigo-dudh"><div class="art-num">Artigo 27</div>
+      <p>1. Todo ser humano tem o direito de participar livremente da vida cultural da comunidade, de fruir as artes e de participar do progresso científico e de seus benefícios.</p>
+      <p>2. Todo ser humano tem direito à proteção dos interesses morais e materiais decorrentes de qualquer produção científica, literária ou artística da qual seja autor.</p></div>
+
+      <div class="artigo-dudh"><div class="art-num">Artigo 28</div>
+      <p>Todo ser humano tem direito a uma ordem social e internacional em que os direitos e liberdades estabelecidos na presente Declaração possam ser plenamente realizados.</p></div>
+
+      <div class="artigo-dudh"><div class="art-num">Artigo 29</div>
+      <p>1. Todo ser humano tem deveres para com a comunidade, na qual o livre e pleno desenvolvimento de sua personalidade é possível.</p>
+      <p>2. No exercício de seus direitos e liberdades, todo ser humano estará sujeito apenas às limitações determinadas pela lei, exclusivamente com o fim de assegurar o devido reconhecimento e respeito dos direitos e liberdades de outrem e de satisfazer as justas exigências da moral, da ordem pública e do bem-estar de uma sociedade democrática.</p>
+      <p>3. Esses direitos e liberdades não podem, em hipótese alguma, ser exercidos contrariamente aos objetivos e princípios das Nações Unidas.</p></div>
+
+      <div class="artigo-dudh"><div class="art-num">Artigo 30</div>
+      <p>Nenhuma disposição da presente Declaração pode ser interpretada como o reconhecimento a qualquer Estado, grupo ou pessoa, do direito de exercer qualquer atividade ou praticar qualquer ato destinado à destruição de quaisquer dos direitos e liberdades aqui estabelecidos.</p></div>
+    </div>
+
+    <!-- ══════ MAPA MENTAL ══════ -->
+    <div class="secao-texto" style="border-left-color:var(--laranja)">
+      <div class="secao-label" style="color:var(--laranja)">🗺️ Mapa mental 1</div>
+      <div class="secao-titulo">Direitos Humanos — princípios e documentos históricos</div>
+      <p><strong>Princípios destacados no mapa mental:</strong></p>
+      <ul style="margin:10px 0 14px 22px;font-size:.95rem">
+        <li><strong>Inalienáveis:</strong> ninguém pode voluntariamente desistir deles, nem outros podem tirá-los de uma pessoa.</li>
+        <li><strong>Inerentes:</strong> todos os indivíduos são seres humanos e os possuem em virtude da dignidade inerente de cada pessoa humana.</li>
+        <li><strong>Obrigatórios:</strong> os Estados e outros detentores de deveres têm de cumprir as normas e os padrões legais que garantem esses direitos.</li>
+        <li><strong>Indivisíveis e interdependentes:</strong> não é suficiente respeitar apenas alguns direitos, pois, na prática, a violação de um direito vai afetar o respeito por muitos outros.</li>
+        <li><strong>Universais:</strong> todos os seres humanos têm direito a seus direitos humanos, sem distinção de raça, cor, sexo, etnia, idioma, religião, opinião política ou outra, deficiência, origem social, nacional, propriedade, nascimento ou outro status.</li>
+      </ul>
+      <p>A DUDH foi assinada na Assembleia Geral das Nações Unidas em 1948, após os horrores da 2ª Guerra Mundial, e em seus 30 artigos destacam-se o direito à vida, à liberdade, à segurança, a proibição da escravidão e o direito de asilo político, entre outros. Existem vários documentos históricos que possuem relação com os Direitos Humanos, considerando a época em que foram escritos: o Código de Hamurabi previa punições em caso de desrespeito às leis, proibia o adultério e o incesto, previa o direito de propriedade e condenava o furto e o latrocínio; a Magna Carta defende os direitos do homem perante o poder político do Estado, estabelecendo que ninguém pode ser preso sem prévio julgamento; o <em>habeas corpus</em> garante que os acusados por qualquer delito, não presos em flagrante, aguardem julgamento em liberdade. Os Direitos Humanos devem ser compreendidos em cada momento histórico.</p>
+      <p style="font-size:.82rem;color:#888">Material produzido por @sociologianarruapas.</p>
+    </div>
+
+    <!-- ══════ IMAGEM DO MAPA MENTAL ══════ -->
+    <div class="secao-texto mapa-mental-img" style="border-left-color:var(--laranja)">
+      <div class="secao-label" style="color:var(--laranja)">🖼️ Mapa mental · Imagem</div>
+      <a href="rev/mapamental.webp" target="_blank" rel="noopener">
+        <img src="rev/mapamental.webp" alt="Mapa mental: Direitos Humanos — principais características e breve histórico" onerror="this.parentNode.parentNode.style.display='none'">
+      </a>
+      <p style="font-size:.82rem;color:#888;text-align:center;margin-top:10px">Direitos Humanos: principais características e breve histórico. Material produzido por @sociologianarruapas. Toque na imagem para ampliar.</p>
+    </div>
+
+    <!-- ══════ TEXTO III ══════ -->
+    <div class="secao-texto">
+      <div class="secao-label">📖 Leia o texto · Texto III</div>
+      <div class="secao-titulo">DESIGUALDADE NO SÉCULO XXI: A TENSÃO ENTRE DIREITOS HUMANOS, DEMOCRACIA E O NORMATIVO E O REAL</div>
+
+      <p>Trabalhar a Declaração Universal dos Direitos Humanos (DUDH) de 1948 em sala de aula exige do professor de Sociologia ultrapassar a mera leitura jurídica do documento. Sob a ótica sociológica, os Direitos Humanos não devem ser apresentados como concessões estáticas ou consensos naturais, mas sim como um campo de disputas históricas e políticas intensas.</p>
+
+      <p>A essência da habilidade <strong>GO-EMCHS605B</strong> reside em capacitar o estudante a enxergar a constante tensão entre o <strong>plano normativo</strong> (aquilo que a lei assegura no papel) e o <strong>plano real</strong> (as condições concretas de existência das populações). Enquanto a DUDH desenha um horizonte ético de igualdade e dignidade, a estrutura social e econômica contemporânea impõe barreiras que impedem a universalização dessas garantias.</p>
+
+      <p>Para apoiar sua mediação didática, este texto está estruturado em três grandes eixos que fundamentam a habilidade: os entraves gerados pelas desigualdades, os progressos viabilizados pelo Estado e o papel dos movimentos sociais.</p>
+
+      <h3>1. OS ENTRAVES: A DESIGUALDADE QUE TRANSFORMA DIREITOS EM PRIVILÉGIOS (Foco no Artigo 25º da DUDH)</h3>
+
+      <p>O Artigo 25º da DUDH assegura que todo ser humano tem direito a um padrão de vida capaz de garantir saúde, bem-estar, alimentação, vestuário, habitação e serviços sociais básicos. No entanto, ao confrontar esse princípio com a realidade urbana e social do século XXI, deparamo-nos com um descompasso estrutural.</p>
+
+      <p>No capitalismo contemporâneo, a desigualdade socioeconômica atua como o principal entrave à concretização dos direitos. Ocorre um processo de <strong>mercantilização dos direitos sociais</strong>: quando o acesso à moradia digna, à alimentação de qualidade e aos cuidados médicos de ponta passa a depender da capacidade financeira do indivíduo, esses elementos deixam de funcionar como direitos universais e passam a operar como privilégios de consumo.</p>
+
+      <h4>Abordagem em sala de aula:</h4>
+      <p>Discuta com os estudantes como a vulnerabilidade social e a segregação urbana privam indivíduos das garantias básicas.</p>
+      <p>Problematize a noção de "viver nesse mundo" idealizado pela legislação. Mostre que a exclusão social não é um fenômeno natural ou fruto do "fracasso individual", mas o resultado de uma distribuição desigual de recursos e oportunidades estruturais.</p>
+
+      <h3>2. OS PROGRESSOS: O ESTADO E AS POLÍTICAS PÚBLICAS COMO VETORES DE CIDADANIA (Foco no Artigo 26º da DUDH)</h3>
+
+      <p>Se as desigualdades estruturais representam o entrave, as ações do Estado constituem a principal ferramenta de progresso e mediação. O Artigo 26º da DUDH estabelece o direito universal à instrução e à educação gratuita nos graus fundamentais. Na prática contemporânea, contudo, a garantia de que crianças e jovens vulneráveis permaneçam na escola exige mais do que a simples existência de salas de aula: exige a remoção de barreiras socioeconômicas.</p>
+
+      <p>Historicamente, os maiores saltos nos índices de desenvolvimento humano (como o IDH) ocorrem quando o Estado assume um papel ativo na redistribuição de renda e na assistência social. Programas de transferência de renda que envolvem condicionalidades — como a exigência de frequência escolar e vacinação em dia — exemplificam como a política pública atua diretamente no combate à evasão escolar e na quebra do ciclo intergeracional da pobreza.</p>
+
+      <div class="citacao-box" style="font-style:normal"><strong>Para saber mais:</strong> Dados do Observatório Nacional dos Direitos Humanos. Disponível em: https://observadh.mdh.gov.br/</div>
+
+      <h4>Abordagem em sala de aula:</h4>
+      <p>Demonstre que os avanços nos indicadores sociais (como a elevação do IDH) não ocorrem por forças espontâneas de mercado ou por mera filantropia privada.</p>
+      <p>Ajude o estudante a associar que a efetivação das garantias descritas na DUDH depende diretamente da robustez de políticas sociais e institucionais promovidas pelo Estado para acolher populações historicamente marginalizadas.</p>
+
+      <h3>3. A GARANTIA DA DIGNIDADE: DEMOCRACIA E MOVIMENTOS SOCIAIS (Foco no Artigo 5º da DUDH e Direitos de Minorias)</h3>
+
+      <p>Os Direitos Humanos não nascem de gabinetes jurídicos; eles são conquistados nas ruas, por meio de conflitos e pressões sociais. A história demonstra que os maiores avanços contra a violência institucional e a discriminação sistêmica são frutos diretos da ação coletiva e organizada da sociedade civil.</p>
+
+      <h4>O combate à violência institucional (o exemplo da Reforma Psiquiátrica e o Artigo 5º):</h4>
+
+      <p>O Artigo 5º da DUDH afirma que ninguém será submetido à tortura ou a tratamentos cruéis, desumanos ou degradantes. Apesar disso, ao longo do século XX, o Estado brasileiro validou modelos de confinamento violento de populações marginalizadas, negros, homossexuais e pessoas sem diagnóstico mental em manicômios higienistas (como o trágico caso do Hospital de Barbacena). A desconstrução desse modelo desumano só foi viabilizada pela mobilização da sociedade civil no movimento da Reforma Psiquiátrica, que lutou para substituir o isolamento por tratamentos comunitários e humanizados, consolidando na prática o respeito à dignidade humana contido no Artigo 5º.</p>
+
+      <div class="citacao-box" style="font-style:normal"><strong>Para saber mais!</strong> Livro e documentário <em>Holocausto Brasileiro</em>, de Daniela Arbex.</div>
+
+      <h4>A luta pelo reconhecimento e igualdade (o exemplo do Movimento LGBTQIA+ e o Artigo 2º):</h4>
+
+      <p>Da mesma forma, as garantias de não discriminação expressas no Artigo 2º da DUDH só avançaram devido à mobilização de movimentos de minorias políticas. Eventos históricos de resistência à violência policial e institucional — como as revoltas de Stonewall em 1969 — lançaram as bases para que movimentos organizados em torno da diversidade pudessem pautar o debate político global. A atuação desses movimentos visa combater o preconceito estrutural, mobilizar as instituições democráticas e garantir que o Estado formule leis protetivas e inclusivas para todos.</p>
+
+      <div class="citacao-box" style="font-style:normal"><strong>Para saber mais!</strong> Reportagem da National Geographic Brasil, por Erin Blakemore, publicada em junho de 2021. Disponível em: https://www.nationalgeographicbrasil.com/cultura/2021/06/gay-lgbt-revolta-de-stonewall</div>
+
+      <h4>Abordagem em sala de aula:</h4>
+      <p>Enfatize que a democracia não se resume ao ato de votar, mas se realiza na participação ativa da sociedade civil por meio dos movimentos sociais.</p>
+      <p>Explique aos alunos que o objetivo central desses movimentos não é enfraquecer o Estado ou criar "privilégios para grupos específicos", mas sim exigir que o Estado cumpra sua promessa constitucional e internacional de garantir direitos iguais e proteção contra a discriminação e a violência.</p>
+
+      <div class="citacao-box" style="font-style:normal"><strong>INTERESSANTE:</strong> <em>Direitos Humanos em sala de aula: guia prático da ObservaDH</em>.<br><strong>INTERESSANTE:</strong> Entrevista com o professor Solon Eduardo Annes Viola, autor do livro <em>Direitos humanos e democracia no Brasil</em> (São Leopoldo: Editora Unisinos, 2008).</div>
+    </div>
+
+    <!-- ══════ ENTREVISTA ══════ -->
+    <div class="secao-texto">
+      <div class="secao-label">🎙️ Entrevista · IHU On-Line</div>
+      <div class="secao-titulo">A força dos movimentos sociais na luta por direitos humanos e democracia no Brasil</div>
+
+      <p>Para Solon Eduardo Annes Viola, a grande contribuição desses movimentos para a sociedade brasileira tem sido a formação de uma nova cultura que se manifesta em novas formas de organização social e de participação política.</p>
+
+      <div class="citacao-box">"Os movimentos sociais, especialmente aqueles ligados aos direitos humanos, cumpriram um papel primordial na redemocratização política, desde as primeiras resistências ao estado autoritário no combate às violações da privacidade e da cidadania. Desde a Ditadura Militar, os movimentos sociais trazem conquistas para a sociedade, mesmo que estas ainda não sejam suficientes. Os direitos civis e políticos foram conquistas do movimento social em luta contra o autoritarismo militar. A redemocratização insere-se como uma conquista dos movimentos."</div>
+
+      <p>Segundo Viola, este autoritarismo é um dos mitos fundadores de nossa cultura política. "Faz parte da herança colonial do latifúndio exportador. Reduziu seres humanos à condição de instrumentos de trabalho."</p>
+
+      <p><strong>IHU On-Line — No livro <em>Direitos humanos e democracia no Brasil</em>, você fala em velhas questões não resolvidas pelo capitalismo. Que questões seriam estas e no que isto implica na sociedade atual?</strong></p>
+
+      <p>Solon Viola — No livro <em>Pelas mãos de Alice</em>, Boaventura Souza Santos argumenta que o capitalismo construiu promessas que não poderia cumprir. A distribuição de riquezas na sociedade globalizada dá razão ao sociólogo português. Na medida em que não pode, por exemplo, concretizar o pressuposto da igualdade, um dos fundamentos dos direitos humanos da modernidade, o capitalismo ampliou a desigualdade, criando concentração de possibilidades e universalizando um quadro de dificuldades que envolve a maioria da população do planeta.</p>
+
+      <p><strong>IHU On-Line — Qual é a importância da luta dos movimentos sociais para a redemocratização do país? A atual estrutura socioeconômica favorece esta luta?</strong></p>
+
+      <p>Solon Viola — Os movimentos sociais, especialmente aqueles ligados aos direitos humanos, cumpriram um papel primordial na redemocratização política, desde as primeiras resistências ao estado autoritário no combate às violações da privacidade e da cidadania. Posteriormente, lutaram pela anistia de exilados e perseguidos políticos, em defesa da livre manifestação de pensamento, pelas eleições diretas e pela constituinte soberana. Ao longo do período de abertura política, produziram um universo intenso de lutas contra a carestia, em defesa da reforma agrária e de moradia digna. Estas últimas não estão resolvidas e se fazem presentes na atual estrutura, mesmo que esta não favoreça a ação mais efetiva dos movimentos sociais.</p>
+
+      <p><strong>IHU On-Line — Por que você acredita que os direitos humanos dependem mais da luta dos movimentos sociais do que da sua garantia por força da Lei?</strong></p>
+
+      <p>Solon Viola — Os direitos civis e políticos foram conquistas do movimento social em luta contra o autoritarismo militar. A Declaração Universal dos Direitos Humanos da ONU, que completa 60 anos em dezembro, proclama princípios que a Constituição Cidadã incorporou, notadamente aqueles que dizem respeito aos direitos sociais e econômicos. No entanto, tais direitos não são efetivados para a maioria da população brasileira. Mesmo que algumas medidas tenham amenizado nossas desigualdades sociais, ela permanece presente e diminui a eficácia de nossos direitos civis e políticos. O reconhecimento pela legislação se mostra, portanto, insuficiente para alterar uma herança de mais de quatro séculos de injustiça. Como no processo de redemocratização, a justiça social deverá ser uma exigência da sociedade como um todo. Talvez como uma forma de alcançar a paz interna.</p>
+
+      <p><strong>IHU On-Line — Qual a sua visão sobre a crise da democracia e o autoritarismo no Brasil? É possível acreditar que os princípios de igualdade e liberdade, uma das bandeiras dos movimentos sociais, serão conquistados?</strong></p>
+
+      <p>Solon Viola — O autoritarismo é um dos mitos fundadores de nossa cultura política. Faz parte da herança colonial e do latifúndio exportador. Reduziu seres humanos à condição de instrumentos de trabalho. Não se reduz à ação do Estado, ou mesmo de governo. Está enraizado nas relações sociais e suas práticas de dominação. Elimina a liberdade e impede a igualdade. Os movimentos sociais procuram construir uma nova cultura orientada para a superação das desigualdades e para a consolidação das liberdades. A redemocratização insere-se como uma conquista dos movimentos. A manutenção da violência, tanto por parte do Estado como no interior da própria sociedade, é um dos tantos limites para a realização dos direitos humanos e da consolidação do processo democrático. Ou, como afirmava Perez Aguirre, os direitos humanos, nas sociedades contemporâneas, têm sempre a dupla função de ser, ao mesmo tempo, crítica e utopia frente à realidade social.</p>
+
+      <p><strong>IHU On-Line — A consolidação dos movimentos sociais tem origem na Ditadura Militar. Como você percebe a trajetória destes movimentos desde então e o que você destacaria como conquistas para a sociedade? Podemos classificar os movimentos sociais entre novos e velhos? Se sim, qual é o diferencial entre eles?</strong></p>
+
+      <p>Solon Viola — Alain Touraine chama de "velhos" os movimentos sociais típicos da segunda metade do século XIX e das três primeiras décadas do século XX. Foram movimentos organizados pelos trabalhadores industriais que englobaram desde as lutas por direitos sociais e econômicos até modelos distintos de organização social. O mesmo autor chama de "novos" movimentos sociais aqueles nascidos na segunda metade do século passado. Movimentos que se caracterizaram para além dos clássicos conflitos pelo controle do Estado. Entre eles os movimentos feministas, os movimentos ambientalistas e aqueles relacionados à defesa dos direitos humanos. No caso do Brasil, os chamados "novos" movimentos sociais se constituíram no vazio de representação sociopolítica decorrente da intensa repressão exercida contra os setores organizados da população após o golpe de estado e, especialmente, após a decretação do AI-5 em 1968. A grande contribuição desses movimentos para a sociedade brasileira tem sido a formação de uma nova cultura que se manifesta em novas formas de organização social e de participação política.</p>
+
+      <p><strong>IHU On-Line — Como você avalia a relação da mídia com os movimentos sociais na luta pelos direitos humanos?</strong></p>
+
+      <p>Solon Viola — Felizmente, não existe só uma mídia. A chamada grande mídia, os grandes jornais, as principais revistas de circulação nacional e a mídia eletrônica seguem uma linha editorial muito igual. Procuram, permanentemente, criminalizar os movimentos sociais e constroem uma visão preconcebida a respeito dos direitos humanos. O tom de suas coberturas segue uma linha, herdada do período militar, de preconceitos simbolizados na antiga expressão de que os direitos humanos servem para defender bandidos. No tempo da ditadura, a acusação era de defesa de subversivos e terroristas. Se, por outro lado, analisarmos mídias alternativas, veremos uma outra leitura dos direitos humanos, aquela que diz respeito à sua divulgação e aquela que se coloca, de forma efetiva, em sua defesa.</p>
+
+      <p style="font-size:.82rem;color:#888;margin-top:20px;">Entrevista com Solon Eduardo Annes Viola — IHU On-Line.</p>
+    </div>
+
+    <!-- ══════ ATIVIDADES ══════ -->
+    <div class="atividades-header">
+      <span class="icon">⚖️</span>
+      <div>
+        <div style="font-size:.75rem;opacity:.7;text-transform:uppercase;letter-spacing:.12em">3ª Série · 3º Bimestre/2026 · Ciências Humanas e Sociais Aplicadas</div>
+        <h2>Atividades – Questões 01 a 09</h2>
+      </div>
+    </div>
+
+    <div class="questao" id="q1" data-tipo="objetiva" data-gabarito="B" data-num="01">
+      <div class="questao-num">Questão 01 <span class="badge">ENEM 2019</span></div>
+      <div class="questao-enunciado">
+        <p>A Declaração Universal dos Direitos Humanos, adotada e proclamada pela Assembleia Geral da ONU na Resolução 217-A, de 10 de dezembro de 1948, foi um acontecimento histórico de grande relevância. Ao afirmar, pela primeira vez em escala planetária, o papel dos direitos humanos na convivência coletiva, pode ser considerada um evento inaugural de uma nova concepção de vida internacional.</p>
+        <p style="font-size:.82rem;font-style:italic">LAFER, C. Declaração Universal dos Direitos Humanos (1948). In: MAGNOLI, D. (Org.). História da paz. São Paulo: Contexto, 2008.</p>
+        <p>A declaração citada no texto introduziu uma nova concepção nas relações internacionais ao possibilitar a</p>
+      </div>
+      <div class="opcoes">
+        <div class="opcao" onclick="responderObjetiva('q1','A',this)"><span class="letra">A</span> superação da soberania estatal.</div>
+        <div class="opcao" onclick="responderObjetiva('q1','B',this)"><span class="letra">B</span> defesa dos grupos vulneráveis.</div>
+        <div class="opcao" onclick="responderObjetiva('q1','C',this)"><span class="letra">C</span> redução da truculência belicista.</div>
+        <div class="opcao" onclick="responderObjetiva('q1','D',this)"><span class="letra">D</span> impunidade dos atos criminosos.</div>
+        <div class="opcao" onclick="responderObjetiva('q1','E',this)"><span class="letra">E</span> inibição dos choques civilizacionais.</div>
+      </div>
+      <div class="feedback-quiz" id="fb-q1"></div>
+    </div>
+
+    <div class="questao" id="q2" data-tipo="objetiva" data-gabarito="B" data-num="02">
+      <div class="questao-num">Questão 02 <span class="badge">Objetiva</span></div>
+      <div class="questao-enunciado">A Declaração Universal dos Direitos Humanos (DUDH) foi adotada pela Organização das Nações Unidas (ONU) em 10 de dezembro de 1948. Historicamente, o principal fator que impulsionou a criação desse documento foi:</div>
+      <div class="opcoes">
+        <div class="opcao" onclick="responderObjetiva('q2','A',this)"><span class="letra">A</span> A necessidade de regulamentar o comércio internacional e as taxas alfandegárias entre as potências econômicas.</div>
+        <div class="opcao" onclick="responderObjetiva('q2','B',this)"><span class="letra">B</span> O choque e o repúdio global diante das atrocidades e do extermínio em massa cometidos durante a Segunda Guerra Mundial.</div>
+        <div class="opcao" onclick="responderObjetiva('q2','C',this)"><span class="letra">C</span> A eclosão da Revolução Industrial na Inglaterra, que exigia a proteção imediata dos operários das fábricas.</div>
+        <div class="opcao" onclick="responderObjetiva('q2','D',this)"><span class="letra">D</span> A assinatura do Tratado de Tordesilhas, que buscou pacificar a disputa territorial na América Latina.</div>
+        <div class="opcao" onclick="responderObjetiva('q2','E',this)"><span class="letra">E</span> O fim da Guerra Fria e a consequente dissolução da União Soviética.</div>
+      </div>
+      <div class="feedback-quiz" id="fb-q2"></div>
+    </div>
+
+    <div class="questao" id="q3" data-tipo="objetiva" data-gabarito="D" data-num="03">
+      <div class="questao-num">Questão 03 <span class="badge">Objetiva</span></div>
+      <div class="questao-enunciado">O Artigo 1º da DUDH afirma que "todos os seres humanos nascem livres e iguais em dignidade e direitos". Sociologicamente, para que esse princípio não seja apenas uma "letra morta" na realidade do século XXI, é necessário que:</div>
+      <div class="opcoes">
+        <div class="opcao" onclick="responderObjetiva('q3','A',this)"><span class="letra">A</span> Os indivíduos aceitem as desigualdades econômicas como uma condição natural e imutável da vida em sociedade.</div>
+        <div class="opcao" onclick="responderObjetiva('q3','B',this)"><span class="letra">B</span> A sociedade civil abra mão do direito de protesto para evitar instabilidades institucionais.</div>
+        <div class="opcao" onclick="responderObjetiva('q3','C',this)"><span class="letra">C</span> As leis diferenciem os cidadãos de acordo com sua origem étnica para manter a ordem pública.</div>
+        <div class="opcao" onclick="responderObjetiva('q3','D',this)"><span class="letra">D</span> O Estado garanta políticas públicas que combatam as barreiras históricas, econômicas e sociais que impedem a igualdade real.</div>
+        <div class="opcao" onclick="responderObjetiva('q3','E',this)"><span class="letra">E</span> O acesso aos direitos básicos seja restrito àqueles que possuem maior capacidade tributária.</div>
+      </div>
+      <div class="feedback-quiz" id="fb-q3"></div>
+    </div>
+
+    <div class="questao" id="q4" data-tipo="objetiva" data-gabarito="A" data-num="04">
+      <div class="questao-num">Questão 04 <span class="badge">Objetiva</span></div>
+      <div class="questao-enunciado">O Artigo 5º da DUDH estipula que "ninguém será submetido à tortura nem a tratamento ou castigo cruel, desumano ou degradante". Ao analisar a realidade contemporânea de muitos países em desenvolvimento, inclusive o Brasil, observa-se um grave entrave à concretização desse artigo. Esse entrave manifesta-se claramente:</div>
+      <div class="opcoes">
+        <div class="opcao" onclick="responderObjetiva('q4','A',this)"><span class="letra">A</span> Nas condições precárias e superlotadas do sistema penitenciário, que muitas vezes viola a integridade física e moral dos detentos.</div>
+        <div class="opcao" onclick="responderObjetiva('q4','B',this)"><span class="letra">B</span> Na ampliação do acesso à educação pública superior e gratuita para jovens da periferia.</div>
+        <div class="opcao" onclick="responderObjetiva('q4','C',this)"><span class="letra">C</span> Na criação de leis de proteção ambiental que regulam o uso de agrotóxicos no campo.</div>
+        <div class="opcao" onclick="responderObjetiva('q4','D',this)"><span class="letra">D</span> Na obrigatoriedade do voto para os maiores de 18 anos alfabetizados.</div>
+        <div class="opcao" onclick="responderObjetiva('q4','E',this)"><span class="letra">E</span> No aumento do uso de urnas eletrônicas auditáveis nos processos eleitorais urbanos.</div>
+      </div>
+      <div class="feedback-quiz" id="fb-q4"></div>
+    </div>
+
+    <div class="questao" id="q5" data-tipo="objetiva" data-gabarito="B" data-num="05">
+      <div class="questao-num">Questão 05 <span class="badge">Objetiva</span></div>
+      <div class="questao-enunciado">Os movimentos sociais (como o movimento negro, o movimento feminista, os movimentos LGBTQIA+ e de trabalhadores sem-terra) desempenham um papel fundamental na estrutura democrática. Em relação aos Direitos Humanos, a principal função histórica desses movimentos tem sido:</div>
+      <div class="opcoes">
+        <div class="opcao" onclick="responderObjetiva('q5','A',this)"><span class="letra">A</span> Substituir completamente o poder judiciário na aplicação de penas e julgamentos criminais.</div>
+        <div class="opcao" onclick="responderObjetiva('q5','B',this)"><span class="letra">B</span> Pressionar o Estado e a sociedade para o reconhecimento, a ampliação e a garantia efetiva de direitos fundamentais.</div>
+        <div class="opcao" onclick="responderObjetiva('q5','C',this)"><span class="letra">C</span> Desestabilizar a economia de mercado para impor o retorno ao escambo e à subsistência.</div>
+        <div class="opcao" onclick="responderObjetiva('q5','D',this)"><span class="letra">D</span> Apoiar governos autoritários desde que recebam cargos na administração pública.</div>
+        <div class="opcao" onclick="responderObjetiva('q5','E',this)"><span class="letra">E</span> Extinguir os partidos políticos para centralizar as decisões nas mãos de lideranças corporativas.</div>
+      </div>
+      <div class="feedback-quiz" id="fb-q5"></div>
+    </div>
+
+    <div class="questao" id="q6" data-tipo="objetiva" data-gabarito="C" data-num="06">
+      <div class="questao-num">Questão 06 <span class="badge">Objetiva</span></div>
+      <div class="questao-enunciado">O Artigo 23 da DUDH prevê que "todo ser humano tem direito ao trabalho, à livre escolha de emprego, a condições justas e favoráveis de trabalho e à proteção contra o desemprego". No contexto do capitalismo globalizado do século XXI, qual fenômeno socioeconômico representa um dos principais entraves para a realização plena desse direito?</div>
+      <div class="opcoes">
+        <div class="opcao" onclick="responderObjetiva('q6','A',this)"><span class="letra">A</span> O fortalecimento dos sindicatos de trabalhadores e das leis de proteção ao salário mínimo.</div>
+        <div class="opcao" onclick="responderObjetiva('q6','B',this)"><span class="letra">B</span> O avanço do cooperativismo comunitário na produção de alimentos orgânicos.</div>
+        <div class="opcao" onclick="responderObjetiva('q6','C',this)"><span class="letra">C</span> A expansão do modelo de uberização e da informalidade, que geram postos de trabalho flexíveis, porém desprovidos de garantias e redes de proteção social.</div>
+        <div class="opcao" onclick="responderObjetiva('q6','D',this)"><span class="letra">D</span> A redução da jornada semanal de trabalho nas indústrias de alta tecnologia.</div>
+        <div class="opcao" onclick="responderObjetiva('q6','E',this)"><span class="letra">E</span> O aumento das contratações públicas por meio de concursos baseados exclusivamente em critérios meritocráticos.</div>
+      </div>
+      <div class="feedback-quiz" id="fb-q6"></div>
+    </div>
+
+    <div class="questao" id="q7" data-tipo="discursiva" data-num="07">
+      <div class="questao-num">Questão 07 <span class="badge">Dissertativa</span></div>
+      <div class="questao-enunciado">
+        <p>O Artigo 25º da Declaração Universal dos Direitos Humanos (DUDH) prevê que toda pessoa tem direito a um padrão de vida que assegure a si e a seus dependentes a saúde e o bem-estar. No entanto, nas periferias urbanas contemporâneas, o acesso a alimentos saudáveis e ao saneamento básico é limitado pela renda familiar. A sociologia aponta que, sob a lógica do mercado, bens vitais de sobrevivência são transformados em mercadorias.</p>
+        <p><strong>a)</strong> Explique a diferença entre a perspectiva normativa (a lei escrita) e a realidade social na aplicação do Artigo 25º da DUDH.</p>
+        <p><strong>b)</strong> Como a desigualdade socioeconômica atua como um entrave para que esses direitos se tornem universais?</p>
+      </div>
+      <textarea class="campo-discursivo" id="resp-q7" style="min-height:180px" placeholder="Escreva sua resposta aqui…" onpaste="return false;" oncopy="return false;" oncut="return false;" ondrop="return false;" oninput="marcarDiscursiva('q7',this)"></textarea>
+      <div class="aviso-paste">Copiar e colar não é permitido neste campo.</div>
+    </div>
+
+    <div class="questao" id="q8" data-tipo="discursiva" data-num="08">
+      <div class="questao-num">Questão 08 <span class="badge">Dissertativa</span></div>
+      <div class="questao-enunciado">Argumente contra a ideia de que a "garantia dos Direitos Humanos depende exclusivamente do esforço individual ou da caridade privada". Em sua resposta, destaque o papel que o Estado deve desempenhar para consolidar os direitos previstos na DUDH.</div>
+      <textarea class="campo-discursivo" id="resp-q8" style="min-height:180px" placeholder="Escreva sua resposta aqui…" onpaste="return false;" oncopy="return false;" oncut="return false;" ondrop="return false;" oninput="marcarDiscursiva('q8',this)"></textarea>
+      <div class="aviso-paste">Copiar e colar não é permitido neste campo.</div>
+    </div>
+
+    <div class="questao" id="q9" data-tipo="discursiva" data-num="09">
+      <div class="questao-num">Questão 09 <span class="badge">Dissertativa</span></div>
+      <div class="questao-enunciado">Considerando a relação entre democracia, movimentos sociais e direitos humanos: explique por que a mobilização coletiva e os movimentos sociais são fundamentais para que as minorias políticas tenham seus direitos humanos efetivamente assegurados e protegidos pelo Estado.</div>
+      <textarea class="campo-discursivo" id="resp-q9" style="min-height:180px" placeholder="Escreva sua resposta aqui…" onpaste="return false;" oncopy="return false;" oncut="return false;" ondrop="return false;" oninput="marcarDiscursiva('q9',this)"></textarea>
+      <div class="aviso-paste">Copiar e colar não é permitido neste campo.</div>
+    </div>
+
+    <!-- ALERTA -->
+    <div id="alerta-incompleto">
+      ⚠️ Você ainda não respondeu todas as questões. Faltam <strong id="qtd-faltando"></strong> questão(ões). Lembre-se: as dissertativas só são validadas quando atingem o mínimo de caracteres indicado abaixo de cada campo.
+    </div>
+
+    <!-- BOTÕES FINAIS -->
+    <div class="acoes-finais">
+      <button class="btn-imprimir" onclick="tentarSalvarPDF()">📄 Salvar Atividade em PDF</button>
+      <button class="btn-feedback" onclick="abrirFeedback()">📊 Ver Feedback e Correção</button>
+    </div>
+
+  </div>
+</div>
+
+<!-- MODAL FEEDBACK -->
+<div id="modal-feedback">
+  <div class="modal-box">
+    <h3>📊 Feedback Completo e Correção</h3>
+    <div class="modal-resultado" id="resultado-resumo"></div>
+    <div id="feedback-detalhado"></div>
+    <button class="btn-fechar-modal" onclick="fecharFeedback()">✕ Fechar</button>
+  </div>
+</div>
+
+<script>
+// ═══════ CONFIG ═══════
+const TOTAL = 9;
+const GABARITOS_CORRETOS = {
+  q1:'B', q2:'B', q3:'D', q4:'A', q5:'B', q6:'C'
+};
+
+const DESC_B1 = "<br><em style='font-size:.8rem;color:#666'>B1 – Analisar os princípios da Declaração Universal dos Direitos Humanos e suas aplicações na realidade do século XXI.</em>";
+const DESC_B2 = "<br><em style='font-size:.8rem;color:#666'>B2 – Refletir sobre a importância da democracia e dos movimentos sociais para a garantia dos Direitos Humanos.</em>";
+
+const CORRECCOES = {
+  q1: "Gabarito: B — A Declaração Universal dos Direitos Humanos foi elaborada em resposta às graves violações ocorridas durante a Segunda Guerra Mundial, especialmente ao Holocausto. Seu objetivo foi estabelecer princípios universais voltados à proteção da dignidade humana, influenciando as relações internacionais e os sistemas jurídicos nacionais." + DESC_B1,
+  q2: "Gabarito: B — A DUDH nasce como resposta ao trauma provocado pela Segunda Guerra Mundial e pelos crimes contra a humanidade. O documento procura impedir que violações semelhantes voltem a ocorrer." + DESC_B1,
+  q3: "Gabarito: D — A igualdade prevista na DUDH exige mais do que o reconhecimento jurídico. Sua concretização depende de políticas públicas capazes de reduzir desigualdades históricas e garantir acesso efetivo aos direitos sociais." + DESC_B1,
+  q4: "Gabarito: A — A violação dos direitos humanos pode ocorrer quando o Estado submete indivíduos a condições degradantes. O sistema prisional superlotado constitui exemplo recorrente desse problema." + DESC_B1,
+  q5: "Gabarito: B — Os movimentos sociais desempenham papel essencial na ampliação e defesa dos direitos humanos, pressionando o Estado e a sociedade pela efetivação da igualdade e da cidadania." + DESC_B2,
+  q6: "Gabarito: C — A expansão da informalidade e da chamada uberização evidencia novas formas de precarização do trabalho, dificultando a efetivação dos direitos previstos no Artigo 23 da DUDH." + DESC_B1,
+  q7: "Sugestão de resposta: a) A perspectiva normativa corresponde aos direitos garantidos pela Declaração Universal dos Direitos Humanos, que estabelece que todas as pessoas devem ter acesso à saúde, à alimentação, à moradia e ao bem-estar. Já a realidade social demonstra que esses direitos nem sempre são efetivados, pois muitas pessoas vivem em situação de pobreza e exclusão, sem acesso aos serviços e recursos necessários para uma vida digna. b) A desigualdade dificulta a universalização desses direitos porque o acesso a bens essenciais, como alimentação de qualidade, saneamento básico, moradia e serviços de saúde, muitas vezes depende da renda familiar. Dessa forma, pessoas em situação de vulnerabilidade enfrentam maiores dificuldades para usufruir dos direitos previstos na DUDH, evidenciando a distância entre o que a lei garante e o que ocorre na prática." + DESC_B1,
+  q8: "Sugestão de resposta: embora a iniciativa individual possa contribuir para amenizar problemas sociais, cabe ao Estado garantir políticas públicas universais que assegurem educação, saúde, trabalho, assistência social e demais direitos previstos na DUDH. A efetivação dos Direitos Humanos depende da atuação estatal articulada com a sociedade civil." + DESC_B2,
+  q9: "Sugestão de resposta: os movimentos sociais representam diferentes grupos da sociedade e pressionam o Estado pela criação e efetivação de políticas públicas que assegurem igualdade, combate à discriminação e proteção dos direitos fundamentais. Sua atuação fortalece a democracia e amplia a participação cidadã." + DESC_B2
+};
+
+let nomeAluno = '';
+const respostas = {};
+
+// ═══════ INICIAR ═══════
+function iniciar() {
+  nomeAluno = document.getElementById('nome-aluno').value.trim();
+  const erroEl = document.getElementById('erro-nome');
+  if (!nomeAluno) {
+    erroEl.style.display = 'block';
+    document.getElementById('nome-aluno').focus();
+    return;
+  }
+  erroEl.style.display = 'none';
+  document.getElementById('capa').style.display = 'none';
+  document.getElementById('conteudo').style.display = 'block';
+  document.getElementById('header-nome').textContent = nomeAluno;
+  document.getElementById('print-nome').textContent = nomeAluno;
+  atualizarProgresso();
+  window.scrollTo(0,0);
+}
+
+// ═══════ OBJETIVAS ═══════
+function responderObjetiva(qId, letra, elem) {
+  const questao = document.getElementById(qId);
+  if (questao.dataset.respondida === '1') return;
+  questao.dataset.respondida = '1';
+  const gabarito = GABARITOS_CORRETOS[qId];
+  questao.querySelectorAll('.opcao').forEach(o => o.classList.add('bloqueada'));
+  const fb = document.getElementById('fb-' + qId);
+  if (letra === gabarito) {
+    elem.classList.add('correta');
+    fb.textContent = '✅ Correto! Boa resposta.';
+    fb.className = 'feedback-quiz acerto';
+    questao.classList.add('respondida');
+    respostas[qId] = {tipo:'objetiva', escolha:letra, gabarito, acertou:true};
+  } else {
+    elem.classList.add('errada-sel');
+    questao.querySelectorAll('.opcao').forEach(o => {
+      if (o.querySelector('.letra').textContent.trim() === gabarito) o.classList.add('correta');
+    });
+    fb.textContent = '❌ Incorreto. A resposta correta é a alternativa ' + gabarito + '.';
+    fb.className = 'feedback-quiz erro';
+    questao.classList.add('errada');
+    respostas[qId] = {tipo:'objetiva', escolha:letra, gabarito, acertou:false};
+  }
+  atualizarProgresso();
+}
+
+// ═══════ DISCURSIVAS ═══════
+const MIN_PADRAO = 180;   // mínimo de caracteres para validar uma dissertativa
+const MIN_LONGAS = 250;   // questões que exigem resposta mais desenvolvida
+const QUESTOES_LONGAS = ['q7','q8','q9'];
+
+function minimoDe(qId) {
+  const q = document.getElementById(qId);
+  if (q && q.dataset.min) return parseInt(q.dataset.min, 10);
+  return QUESTOES_LONGAS.indexOf(qId) >= 0 ? MIN_LONGAS : MIN_PADRAO;
+}
+
+function marcarDiscursiva(qId, campo) {
+  const questao = document.getElementById(qId);
+  const val = campo.value.trim();
+  const minimo = minimoDe(qId);
+  const cont = document.getElementById('cont-' + qId);
+
+  if (cont) {
+    const falta = minimo - val.length;
+    cont.querySelector('.qtd').textContent = val.length + ' / ' + minimo + ' caracteres';
+    cont.querySelector('.meta').textContent = falta > 0
+      ? 'faltam ' + falta + ' para validar'
+      : '✔ resposta validada';
+    cont.classList.toggle('ok', falta <= 0);
+  }
+
+  if (val.length >= minimo) {
+    questao.dataset.respondida = '1';
+    campo.classList.add('preenchida');
+    questao.classList.add('respondida');
+    respostas[qId] = {tipo:'discursiva', texto:val};
+  } else {
+    delete questao.dataset.respondida;
+    campo.classList.remove('preenchida');
+    questao.classList.remove('respondida');
+    delete respostas[qId];
+  }
+  atualizarProgresso();
+}
+
+// ═══════ PROGRESSO ═══════
+function atualizarProgresso() {
+  const count = document.querySelectorAll('.questao[data-respondida="1"]').length;
+  document.getElementById('progresso-count').textContent = count;
+  document.getElementById('barra-prog').style.width = (count/TOTAL*100) + '%';
+}
+
+function totalRespondidas() {
+  return document.querySelectorAll('.questao[data-respondida="1"]').length;
+}
+
+// ═══════ FEEDBACK ═══════
+function abrirFeedback() {
+  const todasQuestoes = document.querySelectorAll('.questao');
+  const objetivas = Object.values(respostas).filter(r => r.tipo==='objetiva');
+  const acertos = objetivas.filter(r => r.acertou).length;
+  const erros = objetivas.filter(r => !r.acertou).length;
+  const discResp = Object.values(respostas).filter(r => r.tipo==='discursiva').length;
+  const naoResp = TOTAL - totalRespondidas();
+
+  document.getElementById('resultado-resumo').innerHTML = `
+    <div class="resultado-linha"><span>Aluno(a)</span><span class="resultado-val">${nomeAluno}</span></div>
+    <div class="resultado-linha"><span>Total de questões</span><span class="resultado-val">${TOTAL}</span></div>
+    <div class="resultado-linha"><span>Questões respondidas</span><span class="resultado-val">${totalRespondidas()}</span></div>
+    <div class="resultado-linha"><span>Objetivas corretas</span><span class="resultado-val verde">${acertos} / ${Object.keys(GABARITOS_CORRETOS).length}</span></div>
+    <div class="resultado-linha"><span>Objetivas incorretas</span><span class="resultado-val vermelho">${erros}</span></div>
+    <div class="resultado-linha"><span>Dissertativas respondidas</span><span class="resultado-val">${discResp}</span></div>
+    ${naoResp > 0 ? '<div class="resultado-linha"><span>Não respondidas</span><span class="resultado-val vermelho">'+naoResp+'</span></div>' : ''}
+  `;
+
+  let html = '';
+  todasQuestoes.forEach(q => {
+    const qId = q.id;
+    const num = q.dataset.num;
+    const tipo = q.dataset.tipo;
+    const r = respostas[qId];
+    const correcao = CORRECCOES[qId] || '';
+
+    html += '<div class="secao-fb">';
+    if (tipo === 'objetiva') {
+      const status = !r ? 'nao-resp' : (r.acertou ? 'status-acerto' : 'status-erro');
+      const statusTxt = !r ? '— Não respondida' : (r.acertou ? '✅ Correto' : '❌ Incorreto');
+      html += `<div class="secao-fb-titulo"><span class="qnum">Q${num}</span> Objetiva <span class="${status}" style="margin-left:auto">${statusTxt}</span></div>`;
+      html += '<div class="item-fb">';
+      if (r) {
+        html += `<div class="qnum">Sua resposta: ${r.escolha}</div>`;
+        if (!r.acertou) html += `<div class="qnum" style="color:#e74c3c">Gabarito: ${r.gabarito}</div>`;
+      } else {
+        html += '<div class="nao-resp">Questão não respondida.</div>';
+      }
+      if (correcao) html += `<div class="gabarito-correcao" style="margin-top:8px"><strong>📝 Comentário:</strong><br>${correcao}</div>`;
+      html += '</div>';
+    } else {
+      const respondida = !!r;
+      html += `<div class="secao-fb-titulo"><span class="qnum">Q${num}</span> Dissertativa <span style="margin-left:auto;font-size:.8rem;color:${respondida?'var(--verde)':'#e0871f'}">${respondida?'✅ Respondida':'⚠️ Não respondida'}</span></div>`;
+      html += '<div class="item-fb">';
+      if (r && r.texto) {
+        html += `<div class="qnum">Sua resposta:</div><div class="resp-aluno">${escapeHtml(r.texto)}</div>`;
+      } else {
+        html += '<div class="nao-resp">Questão não respondida.</div>';
+      }
+      if (correcao) html += `<div class="gabarito-correcao" style="margin-top:8px"><strong>✏️ Resposta esperada / comentário:</strong><br>${correcao}</div>`;
+      html += '</div>';
+    }
+    html += '</div>';
+  });
+
+  document.getElementById('feedback-detalhado').innerHTML = html;
+  document.getElementById('modal-feedback').classList.add('aberto');
+}
+
+function fecharFeedback() {
+  document.getElementById('modal-feedback').classList.remove('aberto');
+}
+
+function escapeHtml(t) {
+  return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');
+}
+
+// Fechar modal clicando fora
+document.getElementById('modal-feedback').addEventListener('click', function(e) {
+  if (e.target === this) fecharFeedback();
+});
+
+/* ═══════ PROTEÇÃO ANTI-COLA ═══════ */
+(function () {
+  const LIMITE_BLOCO = 25;   // nº de caracteres inseridos de uma só vez que caracteriza colagem
+  const MSG = 'Colar não é permitido nesta atividade. Escreva sua resposta.';
+
+  function mostrarToast(mensagem) {
+    let toast = document.getElementById('anti-cola-toast');
+    if (!toast) {
+      toast = document.createElement('div');
+      toast.id = 'anti-cola-toast';
+      document.body.appendChild(toast);
+    }
+    toast.textContent = mensagem;
+    toast.style.opacity = '1';
+    clearTimeout(toast._timeout);
+    toast._timeout = setTimeout(function () { toast.style.opacity = '0'; }, 2500);
+  }
+
+  function bloquear(e) {
+    e.preventDefault();
+    mostrarToast(MSG);
+    return false;
+  }
+
+  document.querySelectorAll('textarea.campo-discursivo').forEach(function (campo) {
+    const qId = campo.id.replace('resp-', '');
+
+    // contador de caracteres + aviso do mínimo
+    const questao = document.getElementById(qId);
+    const minimo = (questao && questao.dataset.min) ? parseInt(questao.dataset.min, 10) : minimoDe(qId);
+    const cont = document.createElement('div');
+    cont.className = 'contador-chars';
+    cont.id = 'cont-' + qId;
+    cont.innerHTML = '<span class="qtd">0 / ' + minimo + ' caracteres</span><span class="meta">faltam ' + minimo + ' para validar</span>';
+    campo.insertAdjacentElement('afterend', cont);
+
+    // aviso textual abaixo do campo
+    const aviso = cont.nextElementSibling;
+    if (aviso && aviso.classList.contains('aviso-paste')) {
+      aviso.textContent = 'Copiar e colar não é permitido. Mínimo de ' + minimo + ' caracteres para validar a questão.';
+    }
+
+    ['paste','copy','cut','drop','dragover','dragstart','contextmenu'].forEach(function (evt) {
+      campo.addEventListener(evt, bloquear);
+    });
+
+    campo.addEventListener('beforeinput', function (e) {
+      if (e.inputType === 'insertFromPaste' || e.inputType === 'insertFromDrop' ||
+          e.inputType === 'insertFromPasteAsQuotation' || e.inputType === 'insertFromYank') {
+        e.preventDefault();
+        mostrarToast(MSG);
+      }
+    });
+
+    // neutraliza o painel de área de transferência do Gboard/Android
+    let valorAnterior = campo.value;
+    campo.addEventListener('input', function (e) {
+      const diferenca = campo.value.length - valorAnterior.length;
+      if (diferenca >= LIMITE_BLOCO && e.inputType !== 'insertReplacementText') {
+        campo.value = valorAnterior;
+        mostrarToast(MSG);
+      } else {
+        valorAnterior = campo.value;
+      }
+      marcarDiscursiva(qId, campo);
+    });
+  });
+
+  // reforço global
+  document.addEventListener('paste', function (e) {
+    if (e.target && e.target.classList && e.target.classList.contains('campo-discursivo')) bloquear(e);
+  });
+  document.addEventListener('drop', function (e) {
+    if (e.target && e.target.classList && e.target.classList.contains('campo-discursivo')) bloquear(e);
+  });
+  document.addEventListener('contextmenu', function (e) {
+    if (e.target && e.target.tagName !== 'INPUT') e.preventDefault();
+  });
+})();
+
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<style>
+.pdf-spinner{width:40px;height:40px;border:4px solid #e0eaee;border-top-color:#14657a;border-radius:50%;animation:spin .8s linear infinite;margin:16px auto 0}
+@keyframes spin{to{transform:rotate(360deg)}}
+#pdf-overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:9999;display:flex;align-items:center;justify-content:center}
+.pdf-overlay-box{background:white;border-radius:16px;padding:44px 52px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.35);max-width:380px;width:90%}
+.pdf-overlay-box .icon{font-size:2.8rem;margin-bottom:12px}
+.pdf-overlay-box h4{font-family:serif;font-size:1.25rem;font-weight:700;margin-bottom:8px;color:#12223a}
+.pdf-overlay-box p{color:#666;font-size:.88rem;margin-bottom:4px}
+#pdf-progress-bar-wrap{height:6px;background:#e0eaee;border-radius:4px;margin-top:18px;overflow:hidden}
+#pdf-progress-bar{height:6px;background:#14657a;border-radius:4px;width:0%;transition:width .3s}
+#pdf-progress-text{font-size:.78rem;color:#888;margin-top:6px;font-family:monospace}
+</style>
+<script>
+async function tentarSalvarPDF() {
+  const faltando = TOTAL - totalRespondidas();
+  const al = document.getElementById('alerta-incompleto');
+  if (faltando > 0) {
+    document.getElementById('qtd-faltando').textContent = faltando;
+    al.style.display = 'block';
+    al.scrollIntoView({behavior:'smooth', block:'center'});
+    return;
+  }
+  al.style.display = 'none';
+
+  // Build overlay
+  const overlay = document.createElement('div');
+  overlay.id = 'pdf-overlay';
+  overlay.innerHTML = `<div class="pdf-overlay-box">
+    <div class="icon">📄</div>
+    <h4>Gerando PDF…</h4>
+    <p>Renderizando questões e respostas.</p>
+    <p>Aguarde, isso pode levar alguns instantes.</p>
+    <div id="pdf-progress-bar-wrap"><div id="pdf-progress-bar"></div></div>
+    <div id="pdf-progress-text">0%</div>
+  </div>`;
+  document.body.appendChild(overlay);
+  await sleep(80);
+
+  const setProgress = (pct, msg) => {
+    document.getElementById('pdf-progress-bar').style.width = pct + '%';
+    document.getElementById('pdf-progress-text').textContent = msg || pct + '%';
+  };
+
+  const agora = new Date();
+  const dtStr = agora.toLocaleDateString('pt-BR') + ' às ' +
+                agora.toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'});
+  const carimbo = agora.getFullYear() + '-' +
+                  String(agora.getMonth()+1).padStart(2,'0') + '-' +
+                  String(agora.getDate()).padStart(2,'0') + '_' +
+                  String(agora.getHours()).padStart(2,'0') + 'h' +
+                  String(agora.getMinutes()).padStart(2,'0');
+
+  try {
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF({ orientation: 'portrait', unit: 'px', format: 'a4', hotfixes: ['px_scaling'] });
+    const PW = pdf.internal.pageSize.getWidth();
+    const PH = pdf.internal.pageSize.getHeight();
+    const MARGIN = 28;
+    const CONTENT_W = PW - MARGIN * 2;
+    let y = MARGIN;
+
+    // ── Helper: add image to pdf, paginating if needed ──
+    // Troca <img> por um marcador de texto (evita canvas "tainted" com imagens locais)
+    const removerImagens = (el) => {
+      el.querySelectorAll('img').forEach(img => {
+        const legenda = img.getAttribute('alt') || 'imagem';
+        const box = document.createElement('div');
+        box.style.cssText = 'background:#eef4f6;border:1px dashed #b9c8cc;border-radius:6px;padding:10px 14px;margin:10px 0;font-size:11.5px;color:#666;font-style:italic';
+        box.textContent = '[Imagem: ' + legenda + ' — ver atividade on-line]';
+        img.parentNode.replaceChild(box, img);
+      });
+    };
+
+    const capturar = async (el) => html2canvas(el, {
+      scale: 2,
+      useCORS: true,
+      logging: false,
+      backgroundColor: '#ffffff',
+      scrollX: 0,
+      scrollY: 0,
+      windowWidth: 900,
+    });
+
+    const addImg = async (el, extraStyle) => {
+      const prev = el.style.cssText;
+      if (extraStyle) el.style.cssText += extraStyle;
+
+      let canvas, dataUrl;
+      try {
+        canvas = await capturar(el);
+        dataUrl = canvas.toDataURL('image/jpeg', 0.92);
+      } catch (secErr) {
+        console.warn('Imagem local impediu a captura; gerando sem a imagem.', secErr);
+        removerImagens(el);
+        canvas = await capturar(el);
+        dataUrl = canvas.toDataURL('image/jpeg', 0.92);
+      }
+      if (extraStyle) el.style.cssText = prev;
+
+      const imgW = CONTENT_W;
+      const imgH = (canvas.height / canvas.width) * imgW;
+
+      if (y + imgH > PH - MARGIN) {
+        pdf.addPage();
+        y = MARGIN;
+      }
+      if (imgH > PH - MARGIN * 2) {
+        const scaledH = PH - MARGIN * 2;
+        pdf.addImage(dataUrl, 'JPEG', MARGIN, y, CONTENT_W, scaledH);
+        y += scaledH + 6;
+      } else {
+        pdf.addImage(dataUrl, 'JPEG', MARGIN, y, imgW, imgH);
+        y += imgH + 6;
+      }
+    };
+
+    setProgress(5, 'Preparando capa…');
+    await sleep(50);
+
+    // ── COVER PAGE ──
+    const coverEl = document.createElement('div');
+    coverEl.style.cssText = 'width:860px;font-family:Arial,sans-serif;overflow:hidden;border-radius:0';
+    coverEl.innerHTML = `
+      <div style="background:linear-gradient(135deg,#12223a 0%,#14657a 60%,#4a9e3f 100%);padding:48px 52px 42px;color:white">
+        <div style="font-size:32px;font-weight:900;letter-spacing:-0.5px;margin-bottom:6px">Revisa Goiás</div>
+        <div style="font-size:14px;opacity:.8;font-style:italic;margin-bottom:28px">Recompondo e ampliando aprendizagens…</div>
+        <div style="font-size:22px;font-weight:700;margin-bottom:4px">3ª Série — Ciências Humanas e Sociais Aplicadas</div>
+        <div style="font-size:26px;font-weight:900;background:rgba(255,255,255,.15);display:inline-block;padding:6px 18px;border-radius:8px;margin-top:4px">SOCIOLOGIA</div>
+        <div style="font-size:16px;margin-top:18px;opacity:.85">3º Bimestre — 2026</div>
+      </div>
+      <div style="background:#eef4f6;padding:28px 52px 28px">
+        <div style="font-size:10px;text-transform:uppercase;letter-spacing:2px;color:#14657a;font-weight:700;margin-bottom:8px">Aluno(a)</div>
+        <div style="font-size:22px;font-weight:700;color:#12223a;border-bottom:3px solid #14657a;padding-bottom:8px;display:inline-block;margin-bottom:18px">${nomeAluno}</div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap">
+          <div style="background:white;border-radius:8px;padding:12px 18px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.07);min-width:84px">
+            <div style="font-size:22px;font-weight:900;color:#14657a">${TOTAL}</div>
+            <div style="font-size:9px;text-transform:uppercase;letter-spacing:1px;color:#888;margin-top:2px">Questões</div></div>
+          <div style="background:white;border-radius:8px;padding:12px 18px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.07);min-width:84px">
+            <div style="font-size:22px;font-weight:900;color:#e0871f">${Object.keys(GABARITOS_CORRETOS).length}</div>
+            <div style="font-size:9px;text-transform:uppercase;letter-spacing:1px;color:#888;margin-top:2px">Objetivas</div></div>
+          <div style="background:white;border-radius:8px;padding:12px 18px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.07);min-width:160px">
+            <div style="font-size:13px;font-weight:700;color:#333">${dtStr}</div>
+            <div style="font-size:9px;text-transform:uppercase;letter-spacing:1px;color:#888;margin-top:2px">Gerado em</div></div>
+        </div>
+        <div style="margin-top:16px;font-size:11px;color:#aaa">SEDUC — Secretaria de Estado da Educação de Goiás · Colégio Estadual Rodolfo de Oliveira · 2026</div>
+      </div>`;
+    document.body.appendChild(coverEl);
+    await sleep(60);
+    await addImg(coverEl);
+    document.body.removeChild(coverEl);
+
+    // ── QUESTIONS ──
+    const questoes = Array.from(document.querySelectorAll('.questao'));
+    const total = questoes.length;
+
+    for (let i = 0; i < questoes.length; i++) {
+      const q = questoes[i];
+      const qId = q.id;
+      const num = q.dataset.num;
+      const tipo = q.dataset.tipo;
+      const r = respostas[qId];
+
+      setProgress(Math.round(8 + (i / total) * 82), `Questão ${num} de ${total}…`);
+      await sleep(20);
+
+      const wrap = document.createElement('div');
+      wrap.style.cssText = 'width:860px;font-family:Arial,sans-serif;background:#fff;padding:0;border-radius:8px;overflow:hidden;border:1px solid #e0eaee';
+
+      const isOK = r && (tipo === 'objetiva' ? r.acertou : true);
+      const noResp = !r;
+      const barBg = noResp ? '#aaa' : isOK ? '#4a9e3f' : '#e74c3c';
+      const barLabel = tipo === 'objetiva' ? 'OBJETIVA' : 'DISSERTATIVA';
+      const statusIcon = noResp ? '—' : isOK ? '✓' : '✗';
+
+      wrap.innerHTML = `<div style="background:${barBg};padding:10px 20px;display:flex;justify-content:space-between;align-items:center">
+        <span style="color:white;font-weight:700;font-size:13px;letter-spacing:.5px">QUESTÃO ${num}  ·  ${barLabel}</span>
+        <span style="color:white;font-size:13px;font-weight:700">${statusIcon}</span>
+      </div>`;
+
+      const enuncEl = q.querySelector('.questao-enunciado');
+      const enuncDiv = document.createElement('div');
+      enuncDiv.style.cssText = 'padding:16px 20px 10px;font-size:13px;line-height:1.65;color:#12223a';
+      if (enuncEl) {
+        const clone = enuncEl.cloneNode(true);
+        clone.querySelectorAll('img').forEach(img => {
+          img.style.maxWidth = '300px';
+          img.style.height = 'auto';
+          img.style.display = 'block';
+          img.style.margin = '10px 0';
+        });
+        enuncDiv.appendChild(clone);
+      }
+      wrap.appendChild(enuncDiv);
+
+      if (tipo === 'objetiva') {
+        const optsDiv = document.createElement('div');
+        optsDiv.style.cssText = 'padding:4px 20px 14px';
+        const opcoes = q.querySelectorAll('.opcao');
+        opcoes.forEach(op => {
+          const letra = op.querySelector('.letra').textContent.trim();
+          const textoOp = Array.from(op.childNodes)
+            .filter(n => !n.classList || !n.classList.contains('letra'))
+            .map(n => n.textContent).join('').trim();
+          const isCorr = op.classList.contains('correta');
+          const isErr = op.classList.contains('errada-sel');
+          const bg = isCorr ? '#edfaeb' : isErr ? '#fdecea' : '#f4f8fa';
+          const border = isCorr ? '2px solid #4a9e3f' : isErr ? '2px solid #e74c3c' : '1px solid #e0eaee';
+          const mark = isCorr ? ' ✓' : isErr ? ' ✗' : '';
+          const fc = isCorr ? '#2d7a27' : isErr ? '#c0392b' : '#333';
+          optsDiv.innerHTML += `<div style="background:${bg};border:${border};border-radius:6px;padding:8px 14px;margin-bottom:6px;font-size:12.5px;color:${fc};font-weight:${isCorr||isErr?'700':'400'}">
+            <strong>${letra}</strong>) ${textoOp}${mark}
+          </div>`;
+        });
+        wrap.appendChild(optsDiv);
+
+        if (r) {
+          const resBg = r.acertou ? '#edfaeb' : '#fdecea';
+          const resColor = r.acertou ? '#2d7a27' : '#c0392b';
+          const resTxt = r.acertou
+            ? `✓ Correto! Alternativa ${r.gabarito}.`
+            : `✗ Incorreto. Sua resposta: ${r.escolha}  |  Gabarito: ${r.gabarito}`;
+          const resDiv = document.createElement('div');
+          resDiv.style.cssText = `background:${resBg};padding:10px 20px;font-size:12px;font-weight:700;color:${resColor};border-top:1px solid rgba(0,0,0,.06)`;
+          resDiv.textContent = resTxt;
+          wrap.appendChild(resDiv);
+        }
+
+        const comm = CORRECCOES[qId];
+        if (comm) {
+          const commDiv = document.createElement('div');
+          commDiv.style.cssText = 'background:#f0f8ff;border-top:1px solid #d0e8ff;padding:12px 20px';
+          commDiv.innerHTML = `<div style="font-size:11px;font-weight:700;color:#1a5ca8;margin-bottom:5px;text-transform:uppercase;letter-spacing:.5px">📝 Comentário do professor</div>
+            <div style="font-size:12px;color:#12223a;line-height:1.6">${comm}</div>`;
+          wrap.appendChild(commDiv);
+        }
+
+      } else {
+        const alunoDiv = document.createElement('div');
+        alunoDiv.style.cssText = 'padding:12px 20px;border-top:1px solid #f0f0f0';
+        if (r && r.texto) {
+          alunoDiv.innerHTML = `<div style="font-size:11px;font-weight:700;color:#14657a;text-transform:uppercase;letter-spacing:.5px;margin-bottom:7px">✏️ Resposta do aluno</div>
+            <div style="background:#f2f8fa;border-left:4px solid #14657a;border-radius:0 6px 6px 0;padding:12px 14px;font-size:12.5px;color:#12223a;line-height:1.7;white-space:pre-wrap;word-break:break-word">${escapeHtml(r.texto)}</div>`;
+        } else {
+          alunoDiv.innerHTML = `<div style="background:#fff8e8;border-left:4px solid #e0871f;border-radius:0 6px 6px 0;padding:10px 14px;font-size:12px;color:#7d5a00;font-style:italic">Questão não respondida.</div>`;
+        }
+        wrap.appendChild(alunoDiv);
+
+        const comm = CORRECCOES[qId];
+        if (comm) {
+          const commDiv = document.createElement('div');
+          commDiv.style.cssText = 'padding:12px 20px;border-top:1px solid #eafaea';
+          commDiv.innerHTML = `<div style="font-size:11px;font-weight:700;color:#2d7a27;text-transform:uppercase;letter-spacing:.5px;margin-bottom:7px">✅ Resposta esperada / Comentário do professor</div>
+            <div style="background:#edfaeb;border-left:4px solid #4a9e3f;border-radius:0 6px 6px 0;padding:12px 14px;font-size:12.5px;color:#1a3a1a;line-height:1.7">${comm}</div>`;
+          wrap.appendChild(commDiv);
+        }
+      }
+
+      wrap.style.position = 'absolute';
+      wrap.style.left = '-9999px';
+      wrap.style.top = '0';
+      document.body.appendChild(wrap);
+      await sleep(30);
+
+      await addImg(wrap);
+      document.body.removeChild(wrap);
+    }
+
+    // ── PAGE NUMBERS ──
+    setProgress(94, 'Finalizando…');
+    await sleep(30);
+    const totalPages = pdf.getNumberOfPages();
+    for (let p = 1; p <= totalPages; p++) {
+      pdf.setPage(p);
+      pdf.setFillColor(238, 244, 246);
+      pdf.rect(0, PH - 22, PW, 22, 'F');
+      const footerEl = document.createElement('div');
+      footerEl.style.cssText = `width:${Math.round(PW)}px;height:22px;background:#eef4f6;display:flex;align-items:center;justify-content:space-between;padding:0 ${MARGIN}px;font-size:10px;color:#888;font-family:Arial,sans-serif;position:absolute;left:-9999px;top:0`;
+      footerEl.innerHTML = `<span>Revisa Goiás · 3ª Série | Sociologia | 3º Bimestre 2026 · Aluno(a): ${nomeAluno} · Gerado em ${dtStr}</span><span>Página ${p} de ${totalPages}</span>`;
+      document.body.appendChild(footerEl);
+      const fc = await html2canvas(footerEl, { scale: 2, logging: false, backgroundColor: '#eef4f6' });
+      document.body.removeChild(footerEl);
+      let fUrl;
+      try { fUrl = fc.toDataURL('image/jpeg', 0.9); } catch (e) { continue; }
+      const fH = (fc.height / fc.width) * PW;
+      pdf.addImage(fUrl, 'JPEG', 0, PH - fH, PW, fH);
+    }
+
+    setProgress(100, 'Salvando…');
+    await sleep(200);
+
+    const safeName = nomeAluno.replace(/[^a-zA-Z0-9_\-À-ɏ]/g, '_');
+    pdf.save(`RevisaGoias_Sociologia_3serie_${safeName}_${carimbo}.pdf`);
+
+  } catch(err) {
+    console.error(err);
+    alert('Erro ao gerar PDF: ' + err.message +
+      '\n\nDica: se o problema persistir, use o botão do navegador (Ctrl+P / Compartilhar › Imprimir) e escolha "Salvar como PDF".');
+  } finally {
+    const ov = document.getElementById('pdf-overlay');
+    if (ov) document.body.removeChild(ov);
+  }
+}
+
+function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+</script>
+
+</body>
+</html>
